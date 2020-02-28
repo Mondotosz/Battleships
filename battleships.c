@@ -19,8 +19,14 @@ typedef struct {
     bool authenticated;
 } users;
 
+typedef struct{
+    char username[MAX_USERNAME_LENGTH];
+    int score;
+}scores;
+
 #include "libraries/utilities/utilities.h"
 #include "libraries/authentication.h"
+#include "libraries/scoreboard.h"
 #include "libraries/help.h"
 #include "libraries/quit.h"
 #include "menu.h"
@@ -49,7 +55,7 @@ int main() {
                 helpMenu();
                 break;
             case 3://displays scoreboard
-
+                displayScoreboard();
                 break;
             case 4://authentication panel
                 currentUser = authenticationMenu(currentUser);

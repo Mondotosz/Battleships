@@ -3,7 +3,6 @@
  * requires {stdio.h,stdlib.h,string.h,stdbool.h}
  */
 
-//TODO: numbered choice function with strtol
 
 #ifndef BATTLESHIPS_UTILITIES_H
 #define BATTLESHIPS_UTILITIES_H
@@ -31,6 +30,26 @@ bool yesOrNo() {
     }
 
     return result;
+}
+
+/**
+ * get a clean int value from a user selection
+ * @param min number in the selection
+ * @param max number in the selection
+ * @return
+ */
+int intSelector(int min,int max){
+    char str[3];
+    char *ptr = NULL;
+    int selection;
+
+    do {
+        fflush(stdin);
+        scanf("%s", str);
+        selection = strtol(str, &ptr, max + 1);
+    } while (selection < min || selection > max);
+
+    return selection;
 }
 
 #endif //BATTLESHIPS_UTILITIES_H

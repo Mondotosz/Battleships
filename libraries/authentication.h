@@ -39,7 +39,7 @@ users authenticationMenu(users currentUser) {
         printf("Hello %s\n", currentUser.username);
     }
 
-    printf("Would you like to? ");
+    printf("Would you like to authenticate? ");
 
     if (yesOrNo())
         currentUser = authenticate(currentUser);

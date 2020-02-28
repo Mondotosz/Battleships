@@ -8,13 +8,11 @@
 #ifndef BATTLESHIPS_MENU_H
 #define BATTLESHIPS_MENU_H
 
-//number of choices available
+//range of choices available
+#define MIN_SELECTION 1
 #define MAX_SELECTION 5
 
 int menu() {
-    char str[2];
-    char *ptr = NULL;
-    int selection;
 
     //hard coded menu
     system("cls");
@@ -25,13 +23,7 @@ int menu() {
     printf("4 - Authenticate\n");
     printf("5 - Quit\n");
 
-    do {
-        fflush(stdin);
-        scanf("%s", str);
-        selection = strtol(str, &ptr, MAX_SELECTION + 1);
-    } while (selection < 1 || selection > MAX_SELECTION);
-
-    return selection;
+    return intSelector(MIN_SELECTION,MAX_SELECTION);
 }
 
 #endif //BATTLESHIPS_MENU_H
