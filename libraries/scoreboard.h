@@ -7,23 +7,33 @@
 //TODO: read from file
 //TODO: order by points
 //TODO: put the file content in a struct
+//TODO:WTF FIX THIS SHIT
 
 #ifndef BATTLESHIPS_SCOREBOARD_H
 #define BATTLESHIPS_SCOREBOARD_H
 
 #define MAX_SCORE_HISTORY 50
-#define SCORE_FILE "score.history"
 
 void displayScoreboard() {
     scores score[MAX_SCORE_HISTORY];
+    filePath path={"./assets/scores",".history"};
     FILE *scoreHistory;
     int readCursor;
+    char scorePath[MAX_PATH_LENGTH];
 
+    strcpy(scorePath,path.path);
+    strcat(scorePath,"/score");
+    strcat(scorePath,path.extension);
 
-    scoreHistory = fopen(SCORE_FILE, "r");
+    //setup
+    system("cls");
+    printf("SCOREBOARD\n");
+
+    //score reading
+    scoreHistory = fopen(scorePath, "r");
 
     if (scoreHistory == NULL) {
-        fopen(SCORE_FILE,"w+");
+        fopen(scorePath,"w+");
     }
 
     for (int j = 0; j < MAX_SCORE_HISTORY; ++j) {
@@ -51,7 +61,7 @@ void displayScoreboard() {
         printf("\n");
         printf("Back?");
 
-    } while (!yesOrNo());
+    } while (!trueFalse());
 
 }
 

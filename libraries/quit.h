@@ -12,9 +12,12 @@
  */
 bool quit() {
 
+    //exit confirmation setup
     system("cls");
     printf("Are you sure?");
-    return yesOrNo();
+
+    //user answer (true/false)
+    return trueFalse();
 }
 
 #endif //BATTLESHIPS_QUIT_H

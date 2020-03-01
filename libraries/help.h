@@ -22,7 +22,7 @@ void helpMenu() {
 
         printf("\n");
         printf("Back?");
-    } while (!yesOrNo());
+    } while (!trueFalse());
 
 }
 

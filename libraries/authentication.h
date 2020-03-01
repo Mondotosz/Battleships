@@ -3,6 +3,8 @@
  * requires {stdio.h,stdlib.h,string.h,stdbool.h}
  */
 
+//currently without passwords
+
 #ifndef BATTLESHIPS_AUTHENTICATION_H
 #define BATTLESHIPS_AUTHENTICATION_H
 
@@ -13,10 +15,12 @@
  */
 users authenticate(users authenticatingUser) {
 
+    //changes user's username
     printf("username : ");
     fflush(stdin);
     scanf("%s", authenticatingUser.username);
 
+    //sets user as authenticated
     authenticatingUser.authenticated = true;
 
     return authenticatingUser;
@@ -28,22 +32,24 @@ users authenticate(users authenticatingUser) {
  * @return
  */
 users authenticationMenu(users currentUser) {
-    char yesNo;
 
+    //authentication menu setup
     system("cls");
     printf("AUTHENTICATION\n");
 
+    //depending on the user status
     if (!currentUser.authenticated) {
         printf("You aren't authenticated\n");
     } else {
         printf("Hello %s\n", currentUser.username);
     }
 
+    //authentication validation
     printf("Would you like to authenticate? ");
-
-    if (yesOrNo())
+    if (trueFalse())
         currentUser = authenticate(currentUser);
 
+    //returns the modified user
     return currentUser;
 }
 
