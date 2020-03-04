@@ -12,6 +12,8 @@
 #define MENU_MIN_SELECTION 1
 #define MENU_MAX_SELECTION 5
 
+#include "libraries/help.h"
+
 void mainMenu() {
     char string[2];
     char *pointer = NULL;
@@ -46,6 +48,7 @@ void mainMenu() {
             case 1://Start
                 break;
             case 2://Help
+                displayHelp();
                 break;
             case 3://Scoreboard
                 break;
