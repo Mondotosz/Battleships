@@ -5,12 +5,69 @@
  * \version 0.1
  */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+#define MENU_MIN_SELECTION 1
+#define MENU_MAX_SELECTION 5
+
+void mainMenu() {
+    char string[2];
+    char *pointer = NULL;
+    int selection;
+    bool quit = false;
+
+    do {
+        //display available options
+        system("cls");
+        printf("Battleships\n");
+        printf("\n");
+        printf("1 - Start\n");
+        printf("2 - Help\n");
+        printf("3 - Scoreboard\n");
+        printf("4 - User\n");
+        printf("5 - Quit\n");
+
+        //user input
+        printf("\n");
+        printf(": ");
+
+        //clean string to long
+        //TODO:add as a function
+        do {
+            fflush(stdin);
+            scanf("%s", string);
+            selection = strtol(string, &pointer, MENU_MAX_SELECTION + 1);
+        } while (selection < MENU_MIN_SELECTION || selection > MENU_MAX_SELECTION);
+
+        //resulting calls
+        switch (selection) {
+            case 1://Start
+                break;
+            case 2://Help
+                break;
+            case 3://Scoreboard
+                break;
+            case 4://User
+                break;
+            case 5://Quit
+                quit = true;
+                break;
+            default:
+                printf("Unexpected selection : %d", selection);
+                system("pause");
+        }
+
+    } while (quit == false);
+
+}
 
 /**
  * main program
  * @return 0
  */
 int main() {
-
+    mainMenu();
     return 0;
 }
