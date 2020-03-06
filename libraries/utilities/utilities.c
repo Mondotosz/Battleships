@@ -46,6 +46,7 @@ bool trueFalse() {
     return result;
 }
 
+//TODO:create a function which take a string and return a clean int
 /**
  * gets an int value from user
  * @param min value returned
