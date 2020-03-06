@@ -65,6 +65,17 @@ grids fire(grids stateGrid){
     return stateGrid;
 }
 
+grids checkState(grids stateGrid, grids checkGrid){
+    for (int i = 0; i < MAX_X; ++i) {
+        for (int j = 0; j < MAX_Y; ++j) {
+            if (stateGrid.grid[i][j]==CHECKING){
+                stateGrid.grid[i][j]=checkGrid.grid[i][j];
+            }
+        }
+    }
+    return stateGrid;
+}
+
 bool checkWin(grids stateGrid, grids checkGrid) {
     bool win = true;
 
