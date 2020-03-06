@@ -9,10 +9,10 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include "libraries/help.h"
+
 #define MENU_MIN_SELECTION 1
 #define MENU_MAX_SELECTION 5
-
-#include "libraries/help.h"
 
 void mainMenu() {
     char string[2];
