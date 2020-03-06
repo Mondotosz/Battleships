@@ -20,4 +20,6 @@ typedef struct{
 
 void gameHub(users currentUser);
 
+bool checkWin(int stateGrid[MAX_X][MAX_Y], int checkGrid[MAX_X][MAX_Y]);
+
 #endif //BATTLESHIPS_GAME_H
