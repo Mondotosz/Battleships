@@ -37,3 +37,17 @@ void gameHub(users currentUser) {
     }while (win==false);
 
 }
+
+bool checkWin(int stateGrid[MAX_X][MAX_Y], int checkGrid[MAX_X][MAX_Y]) {
+    bool win = true;
+
+    for (int i = 0; i < MAX_X; ++i) {
+        for (int j = 0; j < MAX_Y; ++j) {
+            if (checkGrid[i][j] == 1 && stateGrid[i][j] != 1) {
+                win = false;
+            }
+        }
+    }
+
+    return win;
+}
