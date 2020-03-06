@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include "libraries/utilities/utilities.h"
 #include "libraries/authentication.h"
 #include "libraries/help.h"
 
@@ -28,8 +29,6 @@ void displayMenu() {
 }
 
 void menu() {
-    char string[2];
-    char *pointer = NULL;
     int selection;
     bool quit = false;
     users currentUser;
@@ -38,18 +37,7 @@ void menu() {
     do {
 
         displayMenu();
-
-        //user input
-        printf("\n");
-        printf(": ");
-
-        //clean string to long
-        //TODO:add as a function
-        do {
-            fflush(stdin);
-            scanf("%s", string);
-            selection = strtol(string, &pointer, MENU_MAX_SELECTION + 1);
-        } while (selection < MENU_MIN_SELECTION || selection > MENU_MAX_SELECTION);
+        selection = getCleanInt(MENU_MIN_SELECTION, MENU_MAX_SELECTION);
 
         //resulting calls
         switch (selection) {
