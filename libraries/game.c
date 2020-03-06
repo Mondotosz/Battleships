@@ -2,10 +2,11 @@
 // Created by kenan.augsburger on 06.03.2020.
 //
 
-#include "game.h"
-#include "authentication.h"
 #include <stdio.h>
+#include <stdbool.h>
 #include <string.h>
+#include "authentication.h"
+#include "game.h"
 
 /**
  * main game function
@@ -50,6 +51,7 @@ grids fire(grids stateGrid) {
     //asks for x coordinates
     printf("x : ");
     do {
+        fflush(stdin);
         scanf("%d", &x);
     } while (x < 0 || x > MAX_X);
 
@@ -57,6 +59,7 @@ grids fire(grids stateGrid) {
     //asks for y coordinates and convert them
     printf("y : ");//char
     do {
+        fflush(stdin);
         scanf("%c", &y);
         convertedY = (int) (y) - 65;
     } while (convertedY < 0 || convertedY > MAX_Y);

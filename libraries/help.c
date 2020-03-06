@@ -2,10 +2,10 @@
 // Created by mondotosz on 04/03/2020.
 //
 
-#include "help.h"
-#include "utilities/utilities.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "help.h"
+#include "utilities/utilities.h"
 
 /**
  * Displays the help info

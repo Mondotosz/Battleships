@@ -2,11 +2,12 @@
 // Created by kenan.augsburger on 06.03.2020.
 //
 
-#include "authentication.h"
-#include "utilities/utilities.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
+#include "utilities/utilities.h"
+#include "authentication.h"
 
 /**
  *
