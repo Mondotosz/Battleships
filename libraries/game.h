@@ -29,6 +29,8 @@ typedef struct {
 
 void gameHub(users currentUser);
 
+grids fire(grids stateGrid);
+
 bool checkWin(grids stateGrid, grids checkGrid);
 
 #endif //BATTLESHIPS_GAME_H
