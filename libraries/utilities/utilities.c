@@ -4,6 +4,7 @@
 
 #include "utilities.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 void pause() {
@@ -36,4 +37,23 @@ bool trueFalse() {
     }
 
     return result;
+}
+
+int getCleanInt(int min, int max){
+    char string[2];
+    char *pointer = NULL;
+    int selection;
+
+    //user input
+    printf("\n");
+    printf(": ");
+
+    //clean string to long
+    do {
+        fflush(stdin);
+        scanf("%s", string);
+        selection = strtol(string, &pointer, max + 1);
+    } while (selection < min || selection > max);
+
+    return selection;
 }
