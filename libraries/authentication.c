@@ -5,23 +5,34 @@
 #include "authentication.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-users authenticationMenu(users currentUser){
 
+users authenticationMenu(users currentUser) {
+    char answer;
     system("cls");
 
-    if (currentUser.authenticated==true){
-        printf("you're authenticated!\n");
-    }else if (currentUser.authenticated==false){
-        printf("you aren't authenticated!\n");
-        currentUser.authenticated=true;
+    //To move onto utility later
+    char trueChar[2] = "y";
+    char falseChar[2] = "n";
+
+    if (currentUser.authenticated == true) {
+        printf("Hello %s\n", currentUser.nickname);
+    } else if (currentUser.authenticated == false) {
+        printf("You aren't authenticated!\n");
     }
 
-    //wait for input to return
-    printf("\n");
-    printf("press enter to return");
-    fflush(stdin);
-    getchar();
+    //whether we authenticate the user or not
+    printf("Would you like to authenticate ? (y/n)\n");
+    printf(": ");
+
+    do {
+        scanf("%c", &answer);
+    } while (strcmp(&answer, trueChar) != 0 && strcmp(&answer, falseChar) != 0);
+
+    if (strcmp(&answer, trueChar) == 0) {
+        currentUser = authenticateUser(currentUser);
+    }
 
     return currentUser;
 }
