@@ -15,7 +15,7 @@
 #define MENU_MIN_SELECTION 1
 #define MENU_MAX_SELECTION 5
 
-void mainMenu() {
+void menu() {
     char string[2];
     char *pointer = NULL;
     int selection;
@@ -75,6 +75,6 @@ void mainMenu() {
  * @return 0
  */
 int main() {
-    mainMenu();
+    menu();
     return 0;
 }
