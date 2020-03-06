@@ -35,6 +35,7 @@ void gameHub(users currentUser) {
     //game
     do {
         stateGrid=fire(stateGrid);
+        stateGrid=checkState(stateGrid,checkGrid);
         win = checkWin(stateGrid, checkGrid);
     } while (win == false);
 
