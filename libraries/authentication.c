@@ -7,7 +7,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-
+/**
+ *
+ * @param currentUser
+ * @return updated user
+ */
 users authenticationMenu(users currentUser) {
     char answer;
     system("cls");
@@ -16,6 +20,7 @@ users authenticationMenu(users currentUser) {
     char trueChar[2] = "y";
     char falseChar[2] = "n";
 
+    //welcomes user depending on whether he is authenticated
     if (currentUser.authenticated == true) {
         printf("Hello %s\n", currentUser.nickname);
     } else if (currentUser.authenticated == false) {
@@ -26,10 +31,12 @@ users authenticationMenu(users currentUser) {
     printf("Would you like to authenticate ? (y/n)\n");
     printf(": ");
 
+    //gets the answer
     do {
         scanf("%c", &answer);
     } while (strcmp(&answer, trueChar) != 0 && strcmp(&answer, falseChar) != 0);
 
+    //authenticate if the user wants it
     if (strcmp(&answer, trueChar) == 0) {
         currentUser = authenticateUser(currentUser);
     }
@@ -38,7 +45,7 @@ users authenticationMenu(users currentUser) {
 }
 
 /**
- *
+ * authenticate the user
  * @param authenticatingUser
  * @return authenticated user
  */
