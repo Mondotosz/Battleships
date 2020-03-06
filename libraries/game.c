@@ -32,9 +32,9 @@ void gameHub(users currentUser) {
     }
 
     //game
-    do{
-
-    }while (win==false);
+    do {
+        win=checkWin(stateGrid,checkGrid);
+    } while (win == false);
 
 }
 
