@@ -16,6 +16,9 @@
 #define MENU_MIN_SELECTION 1
 #define MENU_MAX_SELECTION 5
 
+/**
+ * displays the menu
+ */
 void displayMenu() {
     //display available options
     system("cls");
@@ -28,6 +31,9 @@ void displayMenu() {
     printf("5 - Quit\n");
 }
 
+/**
+ * calls the various functions depending on the user
+ */
 void menu() {
     int selection;
     bool quit = false;

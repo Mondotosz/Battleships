@@ -7,6 +7,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+/**
+ * pauses the program until the user presses enter
+ */
 void pause() {
     //wait for input to return
     printf("\n");
@@ -15,6 +18,10 @@ void pause() {
     getchar();
 }
 
+/**
+ * gets a yes/no answer from the user
+ * @return true/false
+ */
 bool trueFalse() {
     char answer;
     bool result;
@@ -39,6 +46,12 @@ bool trueFalse() {
     return result;
 }
 
+/**
+ * gets an int value from user
+ * @param min value returned
+ * @param max value returned
+ * @return
+ */
 int getCleanInt(int min, int max){
     char string[2];
     char *pointer = NULL;
