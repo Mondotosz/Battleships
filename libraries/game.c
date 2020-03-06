@@ -28,7 +28,7 @@ void gameHub(users currentUser) {
     //setup
     for (int i = 0; i < MAX_X; ++i) {
         for (int j = 0; j < MAX_Y; ++j) {
-            stateGrid.grid[i][j] = 0;
+            stateGrid.grid[i][j] = UNCHECKED;
         }
     }
 
@@ -70,7 +70,7 @@ bool checkWin(grids stateGrid, grids checkGrid) {
 
     for (int i = 0; i < MAX_X; ++i) {
         for (int j = 0; j < MAX_Y; ++j) {
-            if (checkGrid.grid[i][j] == 1 && stateGrid.grid[i][j] != 1) {
+            if (checkGrid.grid[i][j] == HIT && stateGrid.grid[i][j] != HIT) {
                 win = false;
             }
         }
