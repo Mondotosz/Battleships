@@ -15,24 +15,29 @@
 #define MENU_MIN_SELECTION 1
 #define MENU_MAX_SELECTION 5
 
+void displayMenu() {
+    //display available options
+    system("cls");
+    printf("Battleships\n");
+    printf("\n");
+    printf("1 - Start\n");
+    printf("2 - Help\n");
+    printf("3 - Scoreboard\n");
+    printf("4 - User\n");
+    printf("5 - Quit\n");
+}
+
 void menu() {
     char string[2];
     char *pointer = NULL;
     int selection;
     bool quit = false;
     users currentUser;
-    currentUser.authenticated=false;
+    currentUser.authenticated = false;
 
     do {
-        //display available options
-        system("cls");
-        printf("Battleships\n");
-        printf("\n");
-        printf("1 - Start\n");
-        printf("2 - Help\n");
-        printf("3 - Scoreboard\n");
-        printf("4 - User\n");
-        printf("5 - Quit\n");
+
+        displayMenu();
 
         //user input
         printf("\n");
@@ -56,7 +61,7 @@ void menu() {
             case 3://Scoreboard
                 break;
             case 4://User
-                currentUser=authenticationMenu(currentUser);
+                currentUser = authenticationMenu(currentUser);
                 break;
             case 5://Quit
                 quit = true;
