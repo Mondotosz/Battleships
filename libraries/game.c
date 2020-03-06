@@ -42,6 +42,15 @@ void gameHub(users currentUser) {
 
 }
 
+void displayGrid(grids displayedGrid){
+    for (int i = 0; i < MAX_X; ++i) {
+        for (int j = 0; j < MAX_Y; ++j) {
+            printf("%d",displayedGrid.grid[i][j]);
+        }
+        printf("\n");
+    }
+}
+
 grids fire(grids stateGrid) {
     int x;
     char y;
