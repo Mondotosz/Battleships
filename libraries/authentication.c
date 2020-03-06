@@ -42,7 +42,7 @@ users authenticationMenu(users currentUser) {
  * @param authenticatingUser
  * @return authenticated user
  */
-users authenticateUser(users authenticatingUser){
+users authenticateUser(users authenticatingUser) {
     //setup
     system("cls");
     printf("Authenticate\n");
@@ -54,7 +54,7 @@ users authenticateUser(users authenticatingUser){
     gets(authenticatingUser.nickname);
 
     //set user as authenticated
-    authenticatingUser.authenticated=true;
+    authenticatingUser.authenticated = true;
 
     return authenticatingUser;
 }
