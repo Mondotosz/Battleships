@@ -10,13 +10,18 @@
 #define false	0
 
 #define MAX_NICKNAME_LENGTH 16
-#define MAX_X 9
-#define MAX_Y 9
 
 typedef struct{
     char nickname[MAX_NICKNAME_LENGTH];
     bool authenticated;
 }users;
+
+#define MAX_X 9
+#define MAX_Y 9
+
+typedef struct {
+    int grid[MAX_X][MAX_Y];
+}grids;
 
 void gameHub(users currentUser);
 
