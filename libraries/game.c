@@ -34,14 +34,14 @@ void gameHub(users currentUser) {
 
     //game
     do {
-        stateGrid=fire(stateGrid);
-        stateGrid=checkState(stateGrid,checkGrid);
+        stateGrid = fire(stateGrid);
+        stateGrid = checkState(stateGrid, checkGrid);
         win = checkWin(stateGrid, checkGrid);
     } while (win == false);
 
 }
 
-grids fire(grids stateGrid){
+grids fire(grids stateGrid) {
     int x;
     char y;
     int convertedY;
@@ -49,29 +49,29 @@ grids fire(grids stateGrid){
     printf("\n");
     //asks for x coordinates
     printf("x : ");
-    do{
-        scanf("%d",&x);
-    }while (x<0||x>MAX_X);
+    do {
+        scanf("%d", &x);
+    } while (x < 0 || x > MAX_X);
 
     //TODO:create char to int as a separate function
     //asks for y coordinates and convert them
     printf("y : ");//char
-    do{
-        scanf("%c",&y);
-        convertedY= (int)(y)-65;
-    }while (convertedY<0||convertedY>MAX_Y);
+    do {
+        scanf("%c", &y);
+        convertedY = (int) (y) - 65;
+    } while (convertedY < 0 || convertedY > MAX_Y);
 
     //puts them in stateGrid
-    stateGrid.grid[x][convertedY]=CHECKING;
+    stateGrid.grid[x][convertedY] = CHECKING;
 
     return stateGrid;
 }
 
-grids checkState(grids stateGrid, grids checkGrid){
+grids checkState(grids stateGrid, grids checkGrid) {
     for (int i = 0; i < MAX_X; ++i) {
         for (int j = 0; j < MAX_Y; ++j) {
-            if (stateGrid.grid[i][j]==CHECKING){
-                stateGrid.grid[i][j]=checkGrid.grid[i][j];
+            if (stateGrid.grid[i][j] == CHECKING) {
+                stateGrid.grid[i][j] = checkGrid.grid[i][j];
             }
         }
     }
