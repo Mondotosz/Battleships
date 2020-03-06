@@ -16,6 +16,7 @@ typedef struct{
     bool authenticated;
 }users;
 
+users authenticateUser(users authenticatingUser);
 users authenticationMenu(users currentUser);
 
 #endif //BATTLESHIPS_AUTHENTICATION_H
