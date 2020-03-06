@@ -13,4 +13,6 @@ void pause(void);
 
 bool trueFalse(void);
 
+int getCleanInt(int min, int max);
+
 #endif //BATTLESHIPS_UTILITIES_H
