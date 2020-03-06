@@ -14,12 +14,7 @@
  * @return updated user
  */
 users authenticationMenu(users currentUser) {
-    char answer;
     system("cls");
-
-    //To move onto utility later
-    char trueChar[2] = "y";
-    char falseChar[2] = "n";
 
     //welcomes user depending on whether he is authenticated
     if (currentUser.authenticated == true) {
