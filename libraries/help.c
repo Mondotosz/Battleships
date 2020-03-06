@@ -3,6 +3,7 @@
 //
 
 #include "help.h"
+#include "utilities/utilities.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -25,9 +26,5 @@ void displayHelp() {
     printf("\n");
     printf("Good luck on the sea young sailor!\n");
 
-    //wait for input to return
-    printf("\n");
-    printf("press enter to return");
-    fflush(stdin);
-    getchar();
+    pause();
 }
