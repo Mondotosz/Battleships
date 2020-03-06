@@ -3,6 +3,7 @@
 //
 
 #include "authentication.h"
+#include "utilities/utilities.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -29,16 +30,9 @@ users authenticationMenu(users currentUser) {
 
     //whether we authenticate the user or not
     printf("\n");
-    printf("Would you like to authenticate ? (y/n)\n");
-    printf(": ");
+    printf("Would you like to authenticate ? ");
 
-    //gets the answer
-    do {
-        scanf("%c", &answer);
-    } while (strcmp(&answer, trueChar) != 0 && strcmp(&answer, falseChar) != 0);
-
-    //authenticate if the user wants it
-    if (strcmp(&answer, trueChar) == 0) {
+    if (trueFalse()) {
         currentUser = authenticateUser(currentUser);
     }
 
