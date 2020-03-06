@@ -5,4 +5,6 @@
 #ifndef BATTLESHIPS_UTILITIES_H
 #define BATTLESHIPS_UTILITIES_H
 
+void pause(void);
+
 #endif //BATTLESHIPS_UTILITIES_H
