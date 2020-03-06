@@ -31,6 +31,8 @@ void gameHub(users currentUser);
 
 grids fire(grids stateGrid);
 
+grids checkState(grids stateGrid, grids checkGrid);
+
 bool checkWin(grids stateGrid, grids checkGrid);
 
 #endif //BATTLESHIPS_GAME_H
