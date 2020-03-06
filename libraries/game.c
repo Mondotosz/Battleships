@@ -8,26 +8,26 @@
 /**
  * main game function
  */
-void gameHub(users currentUser){
-    bool win=false;
-    int stateGrid[9][9];
+void gameHub(users currentUser) {
+    bool win = false;
+    int stateGrid[MAX_X][MAX_Y];
     //hard codded grid
-    int checkGrid[9][9]={
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,1,0,0,0,0,0},
-            {0,0,0,1,0,0,0,0,0},
-            {0,0,0,1,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0}
+    int checkGrid[MAX_X][MAX_Y] = {
+            {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 1, 0, 0, 0, 0, 0},
+            {0, 0, 0, 1, 0, 0, 0, 0, 0},
+            {0, 0, 0, 1, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}
     };
 
     //setup
-    for (int i = 0; i < sizeof(stateGrid)/ sizeof(stateGrid[0]); ++i) {
-        for (int j = 0; j < sizeof(stateGrid)/ sizeof(stateGrid[0]); ++j) {
-            stateGrid[i][j]=0;
+    for (int i = 0; i < MAX_X; ++i) {
+        for (int j = 0; j < MAX_Y; ++j) {
+            stateGrid[i][j] = 0;
         }
     }
 
