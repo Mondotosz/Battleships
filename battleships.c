@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include "libraries/authentication.h"
 #include "libraries/help.h"
 
 #define MENU_MIN_SELECTION 1
@@ -19,6 +20,8 @@ void mainMenu() {
     char *pointer = NULL;
     int selection;
     bool quit = false;
+    users currentUser;
+    currentUser.authenticated=false;
 
     do {
         //display available options
@@ -53,6 +56,7 @@ void mainMenu() {
             case 3://Scoreboard
                 break;
             case 4://User
+                currentUser=authenticationMenu(currentUser);
                 break;
             case 5://Quit
                 quit = true;
