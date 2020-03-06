@@ -12,6 +12,7 @@
 #include "libraries/utilities/utilities.h"
 #include "libraries/authentication.h"
 #include "libraries/help.h"
+#include "libraries/game.h"
 
 #define MENU_MIN_SELECTION 1
 #define MENU_MAX_SELECTION 5
@@ -48,6 +49,7 @@ void menu() {
         //resulting calls
         switch (selection) {
             case 1://Start
+                gameHub(currentUser);
                 break;
             case 2://Help
                 displayHelp();
