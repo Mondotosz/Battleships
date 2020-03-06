@@ -10,40 +10,39 @@
  */
 void gameHub(users currentUser) {
     bool win = false;
-    int stateGrid[MAX_X][MAX_Y];
+    grids stateGrid;
     //hard codded grid
-    int checkGrid[MAX_X][MAX_Y] = {
-            {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 1, 0, 0, 0, 0, 0},
-            {0, 0, 0, 1, 0, 0, 0, 0, 0},
-            {0, 0, 0, 1, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0}
-    };
+    grids checkGrid = {{
+                               {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                               {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                               {0, 0, 0, 1, 0, 0, 0, 0, 0},
+                               {0, 0, 0, 1, 0, 0, 0, 0, 0},
+                               {0, 0, 0, 1, 0, 0, 0, 0, 0},
+                               {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                               {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                               {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                               {0, 0, 0, 0, 0, 0, 0, 0, 0}}};
 
     //setup
     for (int i = 0; i < MAX_X; ++i) {
         for (int j = 0; j < MAX_Y; ++j) {
-            stateGrid[i][j] = 0;
+            stateGrid.grid[i][j] = 0;
         }
     }
 
     //game
     do {
-        win=checkWin(stateGrid,checkGrid);
+        win = checkWin(stateGrid, checkGrid);
     } while (win == false);
 
 }
 
-bool checkWin(int stateGrid[MAX_X][MAX_Y], int checkGrid[MAX_X][MAX_Y]) {
+bool checkWin(grids stateGrid, grids checkGrid) {
     bool win = true;
 
     for (int i = 0; i < MAX_X; ++i) {
         for (int j = 0; j < MAX_Y; ++j) {
-            if (checkGrid[i][j] == 1 && stateGrid[i][j] != 1) {
+            if (checkGrid.grid[i][j] == 1 && stateGrid.grid[i][j] != 1) {
                 win = false;
             }
         }

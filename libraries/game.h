@@ -25,6 +25,6 @@ typedef struct {
 
 void gameHub(users currentUser);
 
-bool checkWin(int stateGrid[MAX_X][MAX_Y], int checkGrid[MAX_X][MAX_Y]);
+bool checkWin(grids stateGrid, grids checkGrid);
 
 #endif //BATTLESHIPS_GAME_H
