@@ -4,6 +4,8 @@
 
 #include "game.h"
 #include "authentication.h"
+#include <stdio.h>
+#include <string.h>
 
 /**
  * main game function
