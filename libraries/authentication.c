@@ -25,3 +25,25 @@ users authenticationMenu(users currentUser){
 
     return currentUser;
 }
+
+/**
+ *
+ * @param authenticatingUser
+ * @return authenticated user
+ */
+users authenticateUser(users authenticatingUser){
+    //setup
+    system("cls");
+    printf("Authenticate\n");
+    printf("\n");
+
+    //gets the username
+    printf("Nickname : ");
+    fflush(stdin);
+    gets(authenticatingUser.nickname);
+
+    //set user as authenticated
+    authenticatingUser.authenticated=true;
+
+    return authenticatingUser;
+}
