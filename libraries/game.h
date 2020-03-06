@@ -18,6 +18,10 @@ typedef struct{
 
 #define MAX_X 9
 #define MAX_Y 9
+#define UNCHECKED 0
+#define HIT 1
+#define MISS 2
+#define CHECKING 3
 
 typedef struct {
     int grid[MAX_X][MAX_Y];
