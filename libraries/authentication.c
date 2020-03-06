@@ -28,6 +28,7 @@ users authenticationMenu(users currentUser) {
     }
 
     //whether we authenticate the user or not
+    printf("\n");
     printf("Would you like to authenticate ? (y/n)\n");
     printf(": ");
 
