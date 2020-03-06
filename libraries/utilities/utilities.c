@@ -3,3 +3,12 @@
 //
 
 #include "utilities.h"
+#include <stdio.h>
+
+void pause(){
+    //wait for input to return
+    printf("\n");
+    printf("press enter to return");
+    fflush(stdin);
+    getchar();
+}
