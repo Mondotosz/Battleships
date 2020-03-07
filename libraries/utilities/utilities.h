@@ -15,4 +15,6 @@ bool trueFalse(void);
 
 int getCleanInt(int min, int max);
 
+int stringToInt(char *string, int maxReturnedValue);
+
 #endif //BATTLESHIPS_UTILITIES_H
