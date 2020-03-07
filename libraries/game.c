@@ -125,3 +125,17 @@ bool checkWin(grids stateGrid, grids checkGrid) {
 
     return win;
 }
+
+void displayResult(users currentUser, int tries) {
+    system("cls");
+    if (currentUser.authenticated) {
+        printf("Well done %s !\n", currentUser.nickname);
+    } else {
+        printf("Well done !\n");
+    }
+
+    printf("\n");
+    printf("Tries : %d", tries);
+    printf("\n");
+    pause();
+}

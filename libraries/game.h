@@ -29,4 +29,6 @@ void displayGrid(grids stateGrid);
 
 bool checkWin(grids stateGrid, grids checkGrid);
 
+void displayResult(users currentUser, int tries);
+
 #endif //BATTLESHIPS_GAME_H
