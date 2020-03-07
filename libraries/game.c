@@ -35,8 +35,13 @@ void gameHub(users currentUser) {
 
     //game
     do {
+        //displays the grid before firing
+        displayGrid(stateGrid);
+        //select the shooting coordinates
         stateGrid = fire(stateGrid);
+        //compare the 2 grids
         stateGrid = checkState(stateGrid, checkGrid);
+        //check if it's a win
         win = checkWin(stateGrid, checkGrid);
     } while (win == false);
 
