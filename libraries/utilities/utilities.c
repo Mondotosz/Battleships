@@ -116,11 +116,11 @@ int charToInt(char letter) {
 
     /*uppercase letters*/
     if (letter >= 'A' && letter <= 'Z') {
-        intValue = letter - 'A';
+        intValue = letter - 'A' + 1;
     }
         /*lowercase letters*/
     else if (letter >= 'a' && letter <= 'z') {
-        intValue = letter - 'a';
+        intValue = letter - 'a' + 1;
     }
     return intValue;
 }
