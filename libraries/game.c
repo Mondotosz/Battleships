@@ -60,6 +60,7 @@ void displayGrid(grids displayedGrid) {
 }
 
 grids fire(grids stateGrid) {
+    char string[5];
     int x;
     char y;
     int convertedY;
@@ -69,8 +70,10 @@ grids fire(grids stateGrid) {
     printf("x : ");
     do {
         fflush(stdin);
-        scanf("%d", &x);
-    } while (x < 0 || x > MAX_X);
+        scanf("%s", string);
+        x = stringToInt(string, MAX_X);
+    } while (x < 1 || x > MAX_X);
+    x -= 1;
 
     //TODO:create char to int as a separate function
     //asks for y coordinates and convert them
