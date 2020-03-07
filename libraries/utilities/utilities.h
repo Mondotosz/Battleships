@@ -13,7 +13,7 @@ void pause(void);
 
 bool trueFalse(void);
 
-int getCleanInt(int min, int max);
+int getInt(int min, int max);
 
 int stringToInt(char *string, int maxReturnedValue);
 

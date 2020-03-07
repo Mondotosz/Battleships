@@ -44,7 +44,8 @@ void menu() {
     do {
 
         displayMenu();
-        selection = getCleanInt(MENU_MIN_SELECTION, MENU_MAX_SELECTION);
+        printf("\n");
+        selection = getInt(MENU_MIN_SELECTION, MENU_MAX_SELECTION);
 
         //resulting calls
         switch (selection) {

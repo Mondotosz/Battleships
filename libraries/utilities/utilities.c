@@ -46,27 +46,25 @@ bool trueFalse() {
     return result;
 }
 
-//TODO:create a function which take a string and return a clean int
 /**
+ * @warning avoid 0 as min value as letters
  * gets an int value from user
  * @param min value returned
  * @param max value returned
  * @return
  */
-int getCleanInt(int min, int max) {
+int getInt(int min, int max) {
     char string[2];
-    char *pointer = NULL;
     int selection;
 
-    //user input
-    printf("\n");
+    //visual indicator
     printf(": ");
 
     //clean string to long
     do {
         fflush(stdin);
         scanf("%s", string);
-        selection = strtol(string, &pointer, max + 1);
+        selection=stringToInt(string,max);
     } while (selection < min || selection > max);
 
     return selection;
