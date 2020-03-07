@@ -83,6 +83,30 @@ int stringToInt(char *string, int maxReturnedValue) {
 }
 
 /**
+ * @warning avoid 0 as min value as letters
+ * gets a char from user and translates it to int
+ * @param min value returned
+ * @param max value returned
+ * @return intValue
+ */
+int getIntFromChar(int min, int max) {
+    char charInput;
+    int selection;
+
+    //visual indicator
+    printf(": ");
+
+    //clean string to long
+    do {
+        fflush(stdin);
+        scanf("%c", &charInput);
+        selection = charToInt(charInput);
+    } while (selection < min || selection > max);
+
+    return selection;
+}
+
+/**
  *
  * @param string
  * @return int translated from letter or 0 if the passed char doesn't contain letters

@@ -17,6 +17,8 @@ int getInt(int min, int max);
 
 int stringToInt(char *string, int maxReturnedValue);
 
+int getIntFromChar(int min, int max);
+
 int charToInt(char letter);
 
 #endif //BATTLESHIPS_UTILITIES_H
