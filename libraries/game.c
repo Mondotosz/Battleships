@@ -61,32 +61,22 @@ void displayGrid(grids displayedGrid) {
 }
 
 grids fire(grids stateGrid) {
-    char string[5];
     int x;
-    char y;
-    int convertedY;
+    int y;
 
     printf("\n");
     //asks for x coordinates
-    printf("x : ");
-    do {
-        fflush(stdin);
-        scanf("%s", string);
-        x = stringToInt(string, MAX_X);
-    } while (x < 1 || x > MAX_X);
+    printf("x ");
+    x=getInt(1,MAX_X);
     x -= 1;
 
-    //TODO:create char to int as a separate function
     //asks for y coordinates and convert them
-    printf("y : ");//char
-    do {
-        fflush(stdin);
-        scanf("%c", &y);
-        convertedY = (int) (y) - 65;
-    } while (convertedY < 0 || convertedY > MAX_Y);
+    printf("y ");
+    y=getIntFromChar(1,MAX_Y);
+    y-=1;
 
     //puts them in stateGrid
-    stateGrid.grid[x][convertedY] = CHECKING;
+    stateGrid.grid[x][y] = CHECKING;
 
     return stateGrid;
 }
