@@ -64,7 +64,7 @@ int getInt(int min, int max) {
     do {
         fflush(stdin);
         scanf("%s", string);
-        selection=stringToInt(string,max);
+        selection = stringToInt(string, max);
     } while (selection < min || selection > max);
 
     return selection;
@@ -79,5 +79,24 @@ int stringToInt(char *string, int maxReturnedValue) {
     char *pointer = NULL;
     int intValue;
     intValue = strtol(string, &pointer, maxReturnedValue + 1);
+    return intValue;
+}
+
+/**
+ *
+ * @param string
+ * @return int translated from letter or 0 if the passed char doesn't contain letters
+ */
+int charToInt(char letter) {
+    int intValue = 0;
+
+    /*uppercase letters*/
+    if (letter >= 'A' && letter <= 'Z') {
+        intValue = letter - 'A';
+    }
+        /*lowercase letters*/
+    else if (letter >= 'a' && letter <= 'z') {
+        intValue = letter - 'a';
+    }
     return intValue;
 }
