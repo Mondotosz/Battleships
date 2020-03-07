@@ -64,16 +64,24 @@ grids fire(grids stateGrid) {
     int x;
     int y;
 
-    printf("\n");
-    //asks for x coordinates
-    printf("x ");
-    x=getInt(1,MAX_X);
-    x -= 1;
+    do {
+        printf("\n");
+        //asks for x coordinates
+        printf("x ");
+        x = getInt(1, MAX_X);
+        x -= 1;
 
-    //asks for y coordinates and convert them
-    printf("y ");
-    y=getIntFromChar(1,MAX_Y);
-    y-=1;
+        //asks for y coordinates and convert them
+        printf("y ");
+        y = getIntFromChar(1, MAX_Y);
+        y -= 1;
+
+        if (stateGrid.grid[x][y] != UNCHECKED) {
+            printf("\n");
+            printf("You already checked this cell !\n");
+        }
+
+    } while (stateGrid.grid[x][y] != UNCHECKED);
 
     //puts them in stateGrid
     stateGrid.grid[x][y] = CHECKING;
