@@ -71,3 +71,15 @@ int getCleanInt(int min, int max){
 
     return selection;
 }
+
+/**
+ *
+ * @param string
+ * @return int from 1 to max or 0 if there were no int
+ */
+int stringToInt(char *string, int maxReturnedValue) {
+    char *pointer = NULL;
+    int intValue;
+    intValue = strtol(string, &pointer, maxReturnedValue + 1);
+    return intValue;
+}
