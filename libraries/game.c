@@ -54,7 +54,19 @@ void displayGrid(grids displayedGrid) {
 
     for (int i = 0; i < MAX_X; ++i) {
         for (int j = 0; j < MAX_Y; ++j) {
-            printf("%d", displayedGrid.grid[j][i]);
+            switch (displayedGrid.grid[j][i]) {
+                case UNCHECKED:
+                    printf("%c%c", 176, 176);
+                    break;
+                case MISS:
+                    printf("  ");
+                    break;
+                case HIT:
+                    printf("%c%c", 219, 219);
+                    break;
+                default:
+                    printf("Unexpected value : %d", displayedGrid.grid[j][i]);
+            }
         }
         printf("\n");
     }
