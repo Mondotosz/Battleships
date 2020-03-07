@@ -53,7 +53,7 @@ bool trueFalse() {
  * @param max value returned
  * @return
  */
-int getCleanInt(int min, int max){
+int getCleanInt(int min, int max) {
     char string[2];
     char *pointer = NULL;
     int selection;

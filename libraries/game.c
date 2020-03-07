@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include "utilities/utilities.h"
 #include "authentication.h"
 #include "game.h"
 
@@ -50,7 +51,7 @@ void gameHub(users currentUser) {
 
 void displayGrid(grids displayedGrid) {
     system("cls");
-    
+
     for (int i = 0; i < MAX_X; ++i) {
         for (int j = 0; j < MAX_Y; ++j) {
             printf("%d", displayedGrid.grid[j][i]);

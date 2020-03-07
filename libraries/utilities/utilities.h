@@ -5,9 +5,9 @@
 #ifndef BATTLESHIPS_UTILITIES_H
 #define BATTLESHIPS_UTILITIES_H
 
-#define bool	_Bool
-#define true	1
-#define false	0
+#define bool    _Bool
+#define true    1
+#define false    0
 
 void pause(void);
 
