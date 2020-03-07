@@ -15,6 +15,7 @@
  */
 void gameHub(users currentUser) {
     bool win = false;
+    int tries = 0;
     grids stateGrid;
     //hard codded grid
     grids checkGrid = {{
@@ -41,11 +42,14 @@ void gameHub(users currentUser) {
         displayGrid(stateGrid);
         //select the shooting coordinates
         stateGrid = fire(stateGrid);
+        tries++;
         //compare the 2 grids
         stateGrid = checkState(stateGrid, checkGrid);
         //check if it's a win
         win = checkWin(stateGrid, checkGrid);
     } while (win == false);
+
+    displayResult(currentUser, tries);
 
 }
 
