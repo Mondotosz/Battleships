@@ -9,6 +9,7 @@
 
 #define MAX_X 9
 #define MAX_Y 9
+#define OFFSET 1
 #define UNCHECKED 0
 #define MISS 1
 #define HIT 2

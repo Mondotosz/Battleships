@@ -68,13 +68,13 @@ grids fire(grids stateGrid) {
         printf("\n");
         //asks for x coordinates
         printf("x ");
-        x = getInt(1, MAX_X);
-        x -= 1;
+        x = getInt(OFFSET, MAX_X);
+        x -= OFFSET;
 
         //asks for y coordinates and convert them
         printf("y ");
-        y = getIntFromChar(1, MAX_Y);
-        y -= 1;
+        y = getIntFromChar(OFFSET, MAX_Y);
+        y -= OFFSET;
 
         if (stateGrid.grid[x][y] != UNCHECKED) {
             printf("\n");
