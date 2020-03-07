@@ -54,7 +54,7 @@ void displayGrid(grids displayedGrid) {
 
     for (int i = 0; i < MAX_X; ++i) {
         for (int j = 0; j < MAX_Y; ++j) {
-            switch (displayedGrid.grid[j][i]) {
+            switch (displayedGrid.grid[i][j]) {
                 case UNCHECKED:
                     printf("%c%c", 176, 176);
                     break;
@@ -65,7 +65,7 @@ void displayGrid(grids displayedGrid) {
                     printf("%c%c", 219, 219);
                     break;
                 default:
-                    printf("Unexpected value : %d", displayedGrid.grid[j][i]);
+                    printf("Unexpected value : %d", displayedGrid.grid[i][j]);
             }
         }
         printf("\n");
@@ -93,10 +93,10 @@ grids fire(grids stateGrid) {
             printf("You already checked this cell !\n");
         }
 
-    } while (stateGrid.grid[x][y] != UNCHECKED);
+    } while (stateGrid.grid[y][x] != UNCHECKED);
 
     //puts them in stateGrid
-    stateGrid.grid[x][y] = CHECKING;
+    stateGrid.grid[y][x] = CHECKING;
 
     return stateGrid;
 }
