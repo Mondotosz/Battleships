@@ -10,8 +10,8 @@
 #define MAX_X 9
 #define MAX_Y 9
 #define UNCHECKED 0
-#define HIT 1
-#define MISS 2
+#define MISS 1
+#define HIT 2
 #define CHECKING 3
 
 typedef struct {
@@ -23,6 +23,8 @@ void gameHub(users currentUser);
 grids fire(grids stateGrid);
 
 grids checkState(grids stateGrid, grids checkGrid);
+
+void displayGrid(grids stateGrid);
 
 bool checkWin(grids stateGrid, grids checkGrid);
 
