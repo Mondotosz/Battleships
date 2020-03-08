@@ -39,7 +39,7 @@ void gameHub(users currentUser) {
         //displays the grid before firing
         displayGrid(stateGrid);
         printf("\n");
-        printf("tries : %d", tries);
+        printf("tries : %d\n", tries);
         //select the shooting coordinates
         stateGrid = fire(stateGrid);
         tries++;
