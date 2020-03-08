@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "utilities/utilities.h"
+#include "score.h"
 #include "authentication.h"
 #include "game.h"
 
@@ -13,7 +14,7 @@
  */
 void gameHub(users currentUser) {
     bool win = false;
-    int tries = 0;
+    scores currentScore;
     grids stateGrid;
     //hard codded grid
     grids checkGrid = {{
@@ -27,6 +28,8 @@ void gameHub(users currentUser) {
                                {1, 1, 1, 1, 1, 1, 1, 1, 1},
                                {1, 1, 1, 1, 1, 1, 1, 1, 1}}};
 
+    currentScore.tries = 0;
+
     //setup
     for (int i = 0; i < MAX_X; ++i) {
         for (int j = 0; j < MAX_Y; ++j) {
@@ -39,17 +42,19 @@ void gameHub(users currentUser) {
         //displays the grid before firing
         displayGrid(stateGrid);
         printf("\n");
-        printf("tries : %d\n", tries);
+        printf("tries : %d\n", currentScore.tries);
         //select the shooting coordinates
         stateGrid = fire(stateGrid);
-        tries++;
+        currentScore.tries++;
         //compare the 2 grids
         stateGrid = checkState(stateGrid, checkGrid);
         //check if it's a win
         win = checkWin(stateGrid, checkGrid);
     } while (win == false);
 
-    displayResult(currentUser, tries);
+    displayResult(currentUser, currentScore.tries);
+
+    //TODO:Store score if user is authenticated
 
 }
 
