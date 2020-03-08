@@ -4,8 +4,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
 #include "utilities/utilities.h"
 #include "authentication.h"
 #include "game.h"
