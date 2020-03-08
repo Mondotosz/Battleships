@@ -39,7 +39,7 @@ void gameHub(users currentUser) {
         //displays the grid before firing
         displayGrid(stateGrid);
         printf("\n");
-        printf("tries : %d",tries);
+        printf("tries : %d", tries);
         //select the shooting coordinates
         stateGrid = fire(stateGrid);
         tries++;
@@ -95,7 +95,7 @@ grids fire(grids stateGrid) {
         y = getIntFromChar(OFFSET, MAX_Y);
         y -= OFFSET;
 
-        if (stateGrid.grid[x][y] != UNCHECKED) {
+        if (stateGrid.grid[y][x] != UNCHECKED) {
             printf("\n");
             printf("You already checked this cell !\n");
         }
