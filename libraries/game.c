@@ -54,22 +54,25 @@ void gameHub(users currentUser) {
 void displayGrid(grids displayedGrid) {
     system("cls");
 
+    printf("  1  2  3  4  5  6  7  8  9\n");
     for (int i = 0; i < MAX_X; ++i) {
+        printf("%c ", intToChar(i + 1));
         for (int j = 0; j < MAX_Y; ++j) {
             switch (displayedGrid.grid[i][j]) {
                 case UNCHECKED:
-                    printf("%c%c", 176, 176);
+                    printf("%c%c ", 176, 176);
                     break;
                 case MISS:
-                    printf("  ");
+                    printf("   ");
                     break;
                 case HIT:
-                    printf("%c%c", 219, 219);
+                    printf("%c%c ", 219, 219);
                     break;
                 default:
-                    printf("Unexpected value : %d", displayedGrid.grid[i][j]);
+                    printf("\nUnexpected value : %d\n", displayedGrid.grid[i][j]);
             }
         }
+        printf("\n");
         printf("\n");
     }
 }
