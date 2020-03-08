@@ -21,4 +21,6 @@ int getIntFromChar(int min, int max);
 
 int charToInt(char letter);
 
+char intToChar(int intValue);
+
 #endif //BATTLESHIPS_UTILITIES_H

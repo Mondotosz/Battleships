@@ -125,3 +125,16 @@ int charToInt(char letter) {
     }
     return intValue;
 }
+
+/**
+ *
+ * @param intValue
+ * @return a char from A=1, B=2 => ...
+ */
+char intToChar(int intValue) {
+    char letter;
+
+    letter='A'-1+intValue;
+
+    return letter;
+}
