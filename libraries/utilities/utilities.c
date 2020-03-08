@@ -5,6 +5,7 @@
 #include "utilities.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <conio.h>
 #include <string.h>
 
 /**
@@ -13,9 +14,9 @@
 void pause() {
     //wait for input to return
     printf("\n");
-    printf("press enter to return");
+    printf("press any key to return\n");
     fflush(stdin);
-    getchar();
+    getch();
 }
 
 /**
