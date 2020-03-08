@@ -5,3 +5,5 @@
 #include <stdio.h>
 #include "score.h"
 
+//TODO:Write scores to files
+//TODO:Read scores from files
