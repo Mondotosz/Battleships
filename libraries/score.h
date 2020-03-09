@@ -12,4 +12,10 @@ typedef struct {
     int tries;
 } scores;
 
+#define SCOREBOARD "scoreboard.score"
+#define NICKNAME 'n'
+#define SCORE 's'
+
+void displayScores(void);
+
 #endif //BATTLESHIPS_SCORE_H

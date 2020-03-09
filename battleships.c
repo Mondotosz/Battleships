@@ -11,6 +11,7 @@
 
 #include "libraries/utilities/utilities.h"
 #include "libraries/authentication.h"
+#include "libraries/score.h"
 #include "libraries/help.h"
 #include "libraries/game.h"
 
@@ -40,6 +41,8 @@ void menu() {
     bool quit = false;
     users currentUser;
     currentUser.authenticated = false;
+
+    displayScores();
 
     do {
 
