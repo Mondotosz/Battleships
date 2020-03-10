@@ -71,6 +71,7 @@ int getInt(int min, int max) {
     return selection;
 }
 
+//TODO:Check for bugs
 /**
  *
  * @param string
