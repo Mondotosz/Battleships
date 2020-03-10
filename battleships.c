@@ -42,8 +42,6 @@ void menu() {
     users currentUser;
     currentUser.authenticated = false;
 
-    displayScores();
-
     do {
 
         displayMenu();
@@ -59,6 +57,7 @@ void menu() {
                 displayHelp();
                 break;
             case 3://Scoreboard
+                displayScores();
                 break;
             case 4://User
                 currentUser = authenticationMenu(currentUser);

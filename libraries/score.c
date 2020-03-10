@@ -13,16 +13,16 @@
 
 void displayScores() {
     FILE *filePointer;
-    char tempString[6];
-    char c;
-    int currentVar = NICKNAME;
-    scores scoreboard[10];
+    char tempString[16];
+    int cursor;
+    char swap;
+    int currentScore = 0;
+    scores scoreboard[MAX_RECORDED_SCORES];
 
-    for (int i = 0; i < 9; ++i) {
-        strcpy(scoreboard[i].nickname, "");
-    }
-
+    //setup
     system("cls");
+    printf("Score\n");
+    printf("\n");
 
     filePointer = fopen(SCOREBOARD, "r");
     if (filePointer == NULL) {
@@ -31,37 +31,41 @@ void displayScores() {
     }
 
     while (!feof(filePointer)) {
-        c = fgetc(filePointer);
-        if (c != ';') {
-            switch (currentVar) {
-                case NICKNAME:
-                    strncat(scoreboard[0].nickname, &c, 1);
-
-                    break;
-                case SCORE:
-
-                    break;
-                default:
-                    printf("Unexpected currentVar : %d", currentVar);
-            }
-        } else {
-            switch (currentVar) {
-                case NICKNAME:
-                    scoreboard[0]=stringToInt(tempString,100);
-                    currentVar = SCORE;
-                    break;
-                case SCORE:
-                    currentVar = NICKNAME;
-                    break;
-                default:
-                    printf("Unexpected currentVar : %d", currentVar);
-
+        //get nickname
+        //reset variables
+        strcpy(scoreboard[currentScore].nickname, "");
+        cursor = ' ';
+        //loop until ';'
+        while (cursor != SEPARATOR && !feof(filePointer)) {
+            cursor = fgetc(filePointer);
+            swap = cursor;
+            if (cursor != SEPARATOR && !feof(filePointer)) {
+                strncat(scoreboard[currentScore].nickname, &swap, 1);
             }
         }
+
+        //get score
+        //reset variables
+        strcpy(tempString, "");
+        cursor = ' ';
+        //loop until '\n'
+        while (cursor != RETURN && !feof(filePointer)) {
+            cursor = fgetc(filePointer);
+            swap = cursor;
+            if (cursor != RETURN && !feof(filePointer)) {
+                strncat(tempString, &swap, 1);
+            } else {
+                scoreboard[currentScore].tries = atoi(tempString);
+            }
+        }
+        //goes to the next score
+        currentScore++;
     }
     fclose(filePointer);
 
-    printf("%s", scoreboard[0].nickname);
+    for (int i = 0; i < currentScore; ++i) {
+        printf("%s\t: %d\n", scoreboard[i].nickname, scoreboard[i].tries);
+    }
 
     pause();
 

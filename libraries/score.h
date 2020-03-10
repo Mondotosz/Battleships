@@ -6,6 +6,7 @@
 #define BATTLESHIPS_SCORE_H
 
 #define MAX_NICKNAME_LENGTH 16
+#define MAX_RECORDED_SCORES 50
 
 typedef struct {
     char nickname[MAX_NICKNAME_LENGTH];
@@ -13,8 +14,8 @@ typedef struct {
 } scores;
 
 #define SCOREBOARD "scoreboard.score"
-#define NICKNAME 'n'
-#define SCORE 's'
+#define SEPARATOR ';'
+#define RETURN '\n'
 
 void displayScores(void);
 
