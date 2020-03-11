@@ -23,4 +23,10 @@ typedef struct {
 
 void displayScores(void);
 
+#define SCOREBOARD_JSON "scoreboard.json"
+#define NICKNAME 'n'
+#define TRIES 't'
+
+scoreboard getScoreboard();
+
 #endif //BATTLESHIPS_SCORE_H
