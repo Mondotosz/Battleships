@@ -13,7 +13,11 @@ typedef struct {
     int tries;
 } scores;
 
-#define SCOREBOARD "scoreboard.score"
+typedef struct {
+    scores existingScores[MAX_RECORDED_SCORES];
+} scoreboard;
+
+#define SCOREBOARD_FILE_NAME "scoreboard.score"
 #define SEPARATOR ';'
 #define RETURN '\n'
 
