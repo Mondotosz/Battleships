@@ -15,11 +15,8 @@ typedef struct {
 
 typedef struct {
     scores existingScores[MAX_RECORDED_SCORES];
+    int range;
 } scoreboard;
-
-#define SCOREBOARD_FILE_NAME "scoreboard.score"
-#define SEPARATOR ';'
-#define RETURN '\n'
 
 void displayScores(void);
 
