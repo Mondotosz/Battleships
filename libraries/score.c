@@ -112,3 +112,22 @@ scoreboard getScoreboard() {
 
     return currentScoreboard;
 }
+
+void newScore(scores newScore) {
+    FILE *filePointer;
+    scoreboard currentScoreboard;
+
+    //get current scoreboard
+    currentScoreboard = getScoreboard();
+    //add new score to the variable
+    currentScoreboard.existingScores[currentScoreboard.range] = newScore;
+    currentScoreboard.range++;
+
+    filePointer = fopen(SCOREBOARD_JSON, "w");
+    for (int i = 0; i < currentScoreboard.range; ++i) {
+        fprintf(filePointer, "\"nickname\":\"%s\",\n", currentScoreboard.existingScores[i].nickname);
+        fprintf(filePointer, "\"tries\":\"%d\",\n", currentScoreboard.existingScores[i].tries);
+    }
+    fclose(filePointer);
+
+}

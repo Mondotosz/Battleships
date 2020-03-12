@@ -26,4 +26,6 @@ void displayScores(void);
 
 scoreboard getScoreboard();
 
+void newScore(scores newScore);
+
 #endif //BATTLESHIPS_SCORE_H
