@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "utilities/utilities.h"
 #include "score.h"
 #include "authentication.h"
@@ -53,6 +54,11 @@ void gameHub(users currentUser) {
     } while (win == false);
 
     displayResult(currentUser, currentScore.tries);
+
+    if (currentUser.authenticated) {
+        strcpy(currentScore.nickname, currentUser.nickname);
+        newScore(currentScore);
+    }
 
     //TODO:Store score if user is authenticated
 

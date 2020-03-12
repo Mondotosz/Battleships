@@ -9,11 +9,11 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include "libraries/utilities/utilities.h"
-#include "libraries/authentication.h"
-#include "libraries/score.h"
-#include "libraries/help.h"
-#include "libraries/game.h"
+#include "sources/utilities/utilities.h"
+#include "sources/authentication.h"
+#include "sources/score.h"
+#include "sources/help.h"
+#include "sources/game.h"
 
 #define MENU_MIN_SELECTION 1
 #define MENU_MAX_SELECTION 5

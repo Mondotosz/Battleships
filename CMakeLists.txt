@@ -3,4 +3,4 @@ project(BATTLESHIPS C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(Battleships battleships.c libraries/help.c libraries/help.h libraries/authentication.c libraries/authentication.h libraries/utilities/utilities.c libraries/utilities/utilities.h libraries/game.c libraries/game.h libraries/score.c libraries/score.h)
+add_executable(Battleships battleships.c sources/help.c sources/help.h sources/authentication.c sources/authentication.h sources/utilities/utilities.c sources/utilities/utilities.h sources/game.c sources/game.h sources/score.c sources/score.h)
