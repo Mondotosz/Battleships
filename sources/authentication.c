@@ -9,6 +9,8 @@
 #include "utilities/utilities.h"
 #include "authentication.h"
 
+//TODO:fix max name length issue
+
 /**
  *
  * @param currentUser
