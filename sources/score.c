@@ -19,16 +19,29 @@ void displayScores() {
     printf("Score\n");
     printf("\n");
 
+    //gets the scoreboard
     currentScoreboard = getScoreboard();
 
+    //displays its content
     if (currentScoreboard.range > 0) {
-        for (int i = 0; i < currentScoreboard.range; ++i) {
-            printf("nickname : %s \ttries : %d\n", currentScoreboard.existingScores[i].nickname,
-                   currentScoreboard.existingScores[i].tries);
+        printf("%c", 201);
+        for (int j = 0; j < 24; ++j) {
+            printf("%c", 205);
         }
+        printf("%c\n", 187);
+        for (int i = 0; i < currentScoreboard.range; ++i) {
+            printf("%c %15s : %4d %c\n", 186, currentScoreboard.existingScores[i].nickname,
+                   currentScoreboard.existingScores[i].tries, 186);
+        }
+        printf("%c", 200);
+        for (int j = 0; j < 24; ++j) {
+            printf("%c", 205);
+        }
+        printf("%c\n", 188);
     } else {
         printf("No scores yet!\n");
     }
+
     pause();
 
 }
