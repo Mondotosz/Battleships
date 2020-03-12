@@ -60,32 +60,48 @@ void gameHub(users currentUser) {
         newScore(currentScore);
     }
 
-    //TODO:Store score if user is authenticated
+    //TODO:enhance result functions
 
 }
 
+//TODO:Close grid on the sides and add an offset
 void displayGrid(grids displayedGrid) {
     system("cls");
 
-    printf("  1  2  3  4  5  6  7  8  9\n");
+    printf(" %c", 186);
+    for (int l = 1; l < 10; ++l) {
+        printf("%d %c", l, 186);
+    }
+    printf("\n");
     for (int i = 0; i < MAX_X; ++i) {
-        printf("%c ", intToChar(i + 1));
+
+        //grid layout
+        for (int k = 0; k < MAX_X * 3 + 1; ++k) {
+            if ((k - 1) % 3 == 0) {
+                printf("%c", 206);
+            } else {
+                printf("%c", 205);
+            }
+        }
+        printf("%c\n", 185);
+        //side letter indicators
+        printf("%c%c", intToChar(i + 1), 186);
+
         for (int j = 0; j < MAX_Y; ++j) {
             switch (displayedGrid.grid[i][j]) {
                 case UNCHECKED:
-                    printf("%c%c ", 176, 176);
+                    printf("%c%c%c", 176, 176, 186);
                     break;
                 case MISS:
-                    printf("   ");
+                    printf("  %c", 186);
                     break;
                 case HIT:
-                    printf("%c%c ", 219, 219);
+                    printf("%c%c%c", 219, 219, 186);
                     break;
                 default:
                     printf("\nUnexpected value : %d\n", displayedGrid.grid[i][j]);
             }
         }
-        printf("\n");
         printf("\n");
     }
 }
