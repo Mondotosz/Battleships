@@ -28,4 +28,6 @@ scoreboard getScoreboard();
 
 void newScore(scores newScore);
 
+scoreboard bubbleSortScoreboard(scoreboard unsortedScoreboard);
+
 #endif //BATTLESHIPS_SCORE_H

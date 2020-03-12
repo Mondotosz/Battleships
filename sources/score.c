@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include "utilities/utilities.h"
 #include "score.h"
 
@@ -21,6 +22,7 @@ void displayScores() {
 
     //gets the scoreboard
     currentScoreboard = getScoreboard();
+    currentScoreboard = bubbleSortScoreboard(currentScoreboard);
 
     //displays its content
     if (currentScoreboard.range > 0) {
@@ -155,4 +157,29 @@ void newScore(scores newScore) {
     }
     fclose(filePointer);
 
+}
+
+/**
+ * bubble sort algorithm to sort scores
+ * @param unsortedScoreboard
+ * @return
+ */
+scoreboard bubbleSortScoreboard(scoreboard unsortedScoreboard) {
+    scores swapScore;
+    bool isOrdered;
+
+    //bubble sort moves the scores up by one if its value is lower than its upper neighbor
+    do {
+        isOrdered = true;
+        for (int i = 0; i < unsortedScoreboard.range - 1; ++i) {
+            if (unsortedScoreboard.existingScores[i].tries > unsortedScoreboard.existingScores[i + 1].tries) {
+                swapScore = unsortedScoreboard.existingScores[i];
+                unsortedScoreboard.existingScores[i] = unsortedScoreboard.existingScores[i + 1];
+                unsortedScoreboard.existingScores[i + 1] = swapScore;
+                isOrdered = false;
+            }
+        }
+    } while (!isOrdered);
+
+    return unsortedScoreboard;
 }
