@@ -73,7 +73,7 @@ scoreboard getScoreboard() {
             if (cursor == '"') {
                 //empty tempString
                 strcpy(tempString, "");
-                //get current var
+                //get current variable
                 do {
                     fflush(stdin);
                     fscanf(filePointer, "%c", &cursor);
@@ -84,6 +84,7 @@ scoreboard getScoreboard() {
                 //on exit we get the var name
             }
 
+            //translate chosen variable to a char usable in switch
             if (strcmp(tempString, "nickname") == 0) {
                 currentVar = NICKNAME;
             } else if (strcmp(tempString, "tries") == 0) {
@@ -92,20 +93,21 @@ scoreboard getScoreboard() {
                 currentVar = ' ';
             }
 
+            //if the variable is known then get its value
             if (currentVar != ' ') {
                 do {
                     fflush(stdin);
                     fscanf(filePointer, "%c", &cursor);
+                    //gets the value for the current variable
                     if (cursor == '"') {
-                        //empty tempString
                         strcpy(tempString, "");
-                        //get value
                         do {
                             fflush(stdin);
                             fscanf(filePointer, "%c", &cursor);
                             if (cursor != '"') {
                                 strncat(tempString, &cursor, 1);
                             } else {
+                                //puts the value in the correct variable
                                 switch (currentVar) {
                                     case NICKNAME:
                                         strncpy(currentScoreboard.existingScores[currentScoreboard.range].nickname,
@@ -132,6 +134,10 @@ scoreboard getScoreboard() {
     return currentScoreboard;
 }
 
+/**
+ * Adds a new score to the scoreboard file
+ * @param newScore
+ */
 void newScore(scores newScore) {
     FILE *filePointer;
     scoreboard currentScoreboard;
@@ -141,7 +147,7 @@ void newScore(scores newScore) {
     //add new score to the variable
     currentScoreboard.existingScores[currentScoreboard.range] = newScore;
     currentScoreboard.range++;
-
+    //outputs the scoreboard to the file
     filePointer = fopen(SCOREBOARD_JSON, "w");
     for (int i = 0; i < currentScoreboard.range; ++i) {
         fprintf(filePointer, "\"nickname\":\"%s\",\n", currentScoreboard.existingScores[i].nickname);
