@@ -4,12 +4,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
 #include "utilities/utilities.h"
 #include "authentication.h"
 
-//TODO:fix max name length issue
 
 /**
  *
@@ -51,7 +48,7 @@ users authenticateUser(users authenticatingUser) {
     //gets the username
     printf("Nickname : ");
     fflush(stdin);
-    gets(authenticatingUser.nickname);
+    scanf("%16s", authenticatingUser.nickname);
 
     //set user as authenticated
     authenticatingUser.authenticated = true;
