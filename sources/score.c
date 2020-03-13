@@ -149,6 +149,8 @@ void newScore(scores newScore) {
     //add new score to the variable
     currentScoreboard.existingScores[currentScoreboard.range] = newScore;
     currentScoreboard.range++;
+    //sort scores before saving
+    currentScoreboard = bubbleSortScoreboard(currentScoreboard);
     //outputs the scoreboard to the file
     filePointer = fopen(SCOREBOARD_JSON, "w");
     for (int i = 0; i < currentScoreboard.range; ++i) {
