@@ -23,4 +23,8 @@ int charToInt(char letter);
 
 char intToChar(int intValue);
 
+void offsetX(int offset);
+
+void offsetY(int offset);
+
 #endif //BATTLESHIPS_UTILITIES_H
