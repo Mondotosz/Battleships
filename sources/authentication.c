@@ -48,7 +48,7 @@ users authenticateUser(users authenticatingUser) {
     //gets the username
     printf("Nickname : ");
     fflush(stdin);
-    scanf("%16s", authenticatingUser.nickname);
+    scanf("%15s", authenticatingUser.nickname);
 
     //set user as authenticated
     authenticatingUser.authenticated = true;
