@@ -123,20 +123,22 @@ void displayGrid(grids displayedGrid) {
         offsetX(xOffsetValue);
         printf("%c %c%c", 186, intToChar(i + 1), 186);
 
+        //displays cell state
         for (int j = 0; j < MAX_Y; ++j) {
             switch (displayedGrid.grid[i][j]) {
                 case UNCHECKED:
-                    printf("%c%c%c", 176, 176, 186);
+                    printf("%c%c", 176, 176);
                     break;
                 case MISS:
-                    printf("  %c", 186);
+                    printf("  ");
                     break;
                 case HIT:
-                    printf("%c%c%c", 219, 219, 186);
+                    printf("%c%c", 219, 219);
                     break;
                 default:
                     printf("\nUnexpected value : %d\n", displayedGrid.grid[i][j]);
             }
+            printf("%c", 186);
         }
         printf("\n");
     }
