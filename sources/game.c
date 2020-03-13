@@ -64,28 +64,54 @@ void gameHub(users currentUser) {
 
 }
 
-//TODO:Close grid on the sides and add an offset
+/**
+ * Displays the grid with formatting
+ * @param displayedGrid
+ */
 void displayGrid(grids displayedGrid) {
+    int yOffsetValue = 2;
+    int xOffsetValue = 2 * yOffsetValue;
+
     system("cls");
 
-    printf(" %c", 186);
+    offsetY(yOffsetValue);
+
+    //grid top
+    offsetX(xOffsetValue);
+    printf("%c", 201);
+    for (int m = 0; m < MAX_X * 3 + 2; ++m) {
+        if ((m + 1) % 3 == 0) {
+            printf("%c", 203);
+        } else {
+            printf("%c", 205);
+        }
+    }
+    printf("%c\n", 187);
+
+    //integer markers
+    offsetX(xOffsetValue);
+    printf("%c  %c", 186, 186);
     for (int l = 1; l < 10; ++l) {
         printf("%d %c", l, 186);
     }
     printf("\n");
     for (int i = 0; i < MAX_X; ++i) {
 
-        //grid layout
-        for (int k = 0; k < MAX_X * 3 + 1; ++k) {
-            if ((k - 1) % 3 == 0) {
+        //vertical gap
+        offsetX(xOffsetValue);
+        printf("%c", 204);
+        for (int k = 0; k < MAX_X * 3 + 2; ++k) {
+            if ((k + 1) % 3 == 0) {
                 printf("%c", 206);
             } else {
                 printf("%c", 205);
             }
         }
         printf("%c\n", 185);
+
         //side letter indicators
-        printf("%c%c", intToChar(i + 1), 186);
+        offsetX(xOffsetValue);
+        printf("%c%c %c", 186, intToChar(i + 1), 186);
 
         for (int j = 0; j < MAX_Y; ++j) {
             switch (displayedGrid.grid[i][j]) {
@@ -104,6 +130,19 @@ void displayGrid(grids displayedGrid) {
         }
         printf("\n");
     }
+
+    //grid bottom
+    offsetX(xOffsetValue);
+    printf("%c", 200);
+    for (int m = 0; m < MAX_X * 3 + 2; ++m) {
+        if ((m + 1) % 3 == 0) {
+            printf("%c", 202);
+        } else {
+            printf("%c", 205);
+        }
+    }
+    printf("%c\n", 188);
+
 }
 
 grids fire(grids stateGrid) {
