@@ -19,6 +19,17 @@ typedef struct {
     int grid[MAX_X][MAX_Y];
 } grids;
 
+typedef struct {
+    int x;
+    int y;
+    int direction;
+} boats;
+
+typedef struct {
+    boats navy[5];
+    int numberOfBoats;
+} armada;
+
 void gameHub(users currentUser);
 
 grids fire(grids stateGrid);

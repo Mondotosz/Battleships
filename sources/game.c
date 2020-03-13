@@ -10,6 +10,8 @@
 #include "authentication.h"
 #include "game.h"
 
+//TODO:define grid with boats
+
 /**
  * main game function
  */
