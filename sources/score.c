@@ -69,8 +69,10 @@ scoreboard getScoreboard() {
         //gets the values in it
         strcpy(tempString, "");
         while (!feof(filePointer)) {
-            fflush(stdin);
-            fscanf(filePointer, "%c", &cursor);
+            do {
+                fflush(stdin);
+                fscanf(filePointer, "%c", &cursor);
+            } while (cursor == ' ');
             //detects variable name
             if (cursor == '"') {
                 //empty tempString
