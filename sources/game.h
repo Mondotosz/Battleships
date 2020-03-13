@@ -42,4 +42,6 @@ bool checkWin(grids stateGrid, grids checkGrid);
 
 void displayResult(users currentUser, int tries);
 
+scores missCount(grids currentGrid);
+
 #endif //BATTLESHIPS_GAME_H

@@ -33,7 +33,7 @@ void displayScores() {
         printf("%c\n", 187);
         for (int i = 0; i < currentScoreboard.range; ++i) {
             printf("%c %15s : %4d %c\n", 186, currentScoreboard.existingScores[i].nickname,
-                   currentScoreboard.existingScores[i].tries, 186);
+                   currentScoreboard.existingScores[i].misses, 186);
         }
         printf("%c", 200);
         for (int j = 0; j < 24; ++j) {
@@ -91,7 +91,7 @@ scoreboard getScoreboard() {
             //translate chosen variable to a char usable in switch
             if (strcmp(tempString, "nickname") == 0) {
                 currentVar = NICKNAME;
-            } else if (strcmp(tempString, "tries") == 0) {
+            } else if (strcmp(tempString, "misses") == 0) {
                 currentVar = TRIES;
             } else {
                 currentVar = ' ';
@@ -118,7 +118,7 @@ scoreboard getScoreboard() {
                                                 tempString, MAX_NICKNAME_LENGTH);
                                         break;
                                     case TRIES:
-                                        currentScoreboard.existingScores[currentScoreboard.range].tries = atoi(
+                                        currentScoreboard.existingScores[currentScoreboard.range].misses = atoi(
                                                 tempString);
                                         currentScoreboard.range++;
                                         break;
@@ -157,7 +157,7 @@ void newScore(scores newScore) {
     filePointer = fopen(SCOREBOARD_JSON, "w");
     for (int i = 0; i < currentScoreboard.range; ++i) {
         fprintf(filePointer, "\"nickname\":\"%s\",\n", currentScoreboard.existingScores[i].nickname);
-        fprintf(filePointer, "\"tries\":\"%d\",\n", currentScoreboard.existingScores[i].tries);
+        fprintf(filePointer, "\"misses\":\"%d\",\n", currentScoreboard.existingScores[i].misses);
     }
     fclose(filePointer);
 
@@ -176,7 +176,7 @@ scoreboard bubbleSortScoreboard(scoreboard unsortedScoreboard) {
     do {
         isOrdered = true;
         for (int i = 0; i < unsortedScoreboard.range - 1; ++i) {
-            if (unsortedScoreboard.existingScores[i].tries > unsortedScoreboard.existingScores[i + 1].tries) {
+            if (unsortedScoreboard.existingScores[i].misses > unsortedScoreboard.existingScores[i + 1].misses) {
                 swapScore = unsortedScoreboard.existingScores[i];
                 unsortedScoreboard.existingScores[i] = unsortedScoreboard.existingScores[i + 1];
                 unsortedScoreboard.existingScores[i + 1] = swapScore;

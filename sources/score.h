@@ -10,7 +10,7 @@
 
 typedef struct {
     char nickname[MAX_NICKNAME_LENGTH];
-    int tries;
+    int misses;
 } scores;
 
 typedef struct {
@@ -22,7 +22,7 @@ void displayScores(void);
 
 #define SCOREBOARD_JSON "scoreboard.json"
 #define NICKNAME 'n'
-#define TRIES 't'
+#define TRIES 'm'
 
 scoreboard getScoreboard();
 

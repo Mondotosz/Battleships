@@ -31,7 +31,7 @@ void gameHub(users currentUser) {
                                {1, 1, 1, 1, 1, 1, 1, 1, 1},
                                {1, 1, 1, 1, 1, 1, 1, 1, 1}}};
 
-    currentScore.tries = 0;
+    currentScore.misses = 0;
 
     //setup
     for (int i = 0; i < MAX_X; ++i) {
@@ -46,17 +46,17 @@ void gameHub(users currentUser) {
         displayGrid(stateGrid);
         offsetY(2);
         offsetX(4);
-        printf("tries : %d\n", currentScore.tries);
+        printf("misses : %d\n", currentScore.misses);
         //select the shooting coordinates
         stateGrid = fire(stateGrid);
-        currentScore.tries++;
+        currentScore = missCount(stateGrid);
         //compare the 2 grids
         stateGrid = checkState(stateGrid, checkGrid);
         //check if it's a win
         win = checkWin(stateGrid, checkGrid);
     } while (win == false);
 
-    displayResult(currentUser, currentScore.tries);
+    displayResult(currentUser, currentScore.misses);
 
     system("cls");
     if (!currentUser.authenticated) {
@@ -215,7 +215,7 @@ bool checkWin(grids stateGrid, grids checkGrid) {
     return win;
 }
 
-void displayResult(users currentUser, int tries) {
+void displayResult(users currentUser, int misses) {
     system("cls");
     if (currentUser.authenticated) {
         printf("Well done %s !\n", currentUser.nickname);
@@ -224,7 +224,23 @@ void displayResult(users currentUser, int tries) {
     }
 
     printf("\n");
-    printf("Tries : %d", tries);
+    printf("misses : %d", misses);
     printf("\n");
     pause();
+}
+
+scores missCount(grids currentGrid) {
+    scores currentScore;
+    currentScore.misses = 0;
+
+    for (int i = 0; i < MAX_X; ++i) {
+        for (int j = 0; j < MAX_Y; ++j) {
+            if (currentGrid.grid[i][j] == MISS) {
+                currentScore.misses++;
+            }
+        }
+
+    }
+
+    return currentScore;
 }
