@@ -135,7 +135,23 @@ int charToInt(char letter) {
 char intToChar(int intValue) {
     char letter;
 
-    letter='A'-1+intValue;
+    letter = 'A' - 1 + intValue;
 
     return letter;
+}
+
+void offsetX(int offset) {
+
+    for (int i = 0; i < offset; ++i) {
+        printf(" ");
+    }
+
+}
+
+void offsetY(int offset) {
+
+    for (int i = 0; i < offset; ++i) {
+        printf("\n");
+    }
+
 }
