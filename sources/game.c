@@ -42,7 +42,8 @@ void gameHub(users currentUser) {
     do {
         //displays the grid before firing
         displayGrid(stateGrid);
-        printf("\n");
+        offsetY(2);
+        offsetX(4);
         printf("tries : %d\n", currentScore.tries);
         //select the shooting coordinates
         stateGrid = fire(stateGrid);
@@ -55,12 +56,19 @@ void gameHub(users currentUser) {
 
     displayResult(currentUser, currentScore.tries);
 
+    system("cls");
+    if (!currentUser.authenticated) {
+        printf("\n");
+        printf("Would you like to save your score ?");
+        if (trueFalse()) {
+            currentUser = authenticateUser(currentUser);
+        }
+    }
+
     if (currentUser.authenticated) {
         strcpy(currentScore.nickname, currentUser.nickname);
         newScore(currentScore);
     }
-
-    //TODO:enhance result functions
 
 }
 
@@ -91,8 +99,8 @@ void displayGrid(grids displayedGrid) {
     //integer markers
     offsetX(xOffsetValue);
     printf("%c  %c", 186, 186);
-    for (int l = 1; l < 10; ++l) {
-        printf("%d %c", l, 186);
+    for (int l = 1; l < MAX_X + 1; ++l) {
+        printf("%2d%c", l, 186);
     }
     printf("\n");
     for (int i = 0; i < MAX_X; ++i) {
@@ -111,7 +119,7 @@ void displayGrid(grids displayedGrid) {
 
         //side letter indicators
         offsetX(xOffsetValue);
-        printf("%c%c %c", 186, intToChar(i + 1), 186);
+        printf("%c %c%c", 186, intToChar(i + 1), 186);
 
         for (int j = 0; j < MAX_Y; ++j) {
             switch (displayedGrid.grid[i][j]) {
@@ -145,6 +153,8 @@ void displayGrid(grids displayedGrid) {
 
 }
 
+//TODO:fire takes both values at once
+
 grids fire(grids stateGrid) {
     int x;
     int y;
@@ -152,11 +162,13 @@ grids fire(grids stateGrid) {
     do {
         printf("\n");
         //asks for x coordinates
+        offsetX(4);
         printf("x ");
         x = getInt(OFFSET, MAX_X);
         x -= OFFSET;
 
         //asks for y coordinates and convert them
+        offsetX(4);
         printf("y ");
         y = getIntFromChar(OFFSET, MAX_Y);
         y -= OFFSET;
