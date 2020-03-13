@@ -19,7 +19,9 @@ void gameHub(users currentUser) {
     bool win = false;
     scores currentScore;
     grids stateGrid;
-    //hard codded grid
+    grids checkGrid;
+    armada squadron;
+    /*
     grids checkGrid = {{
                                {1, 1, 1, 1, 1, 1, 1, 1, 1},
                                {1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -30,8 +32,9 @@ void gameHub(users currentUser) {
                                {1, 1, 1, 1, 1, 1, 1, 1, 1},
                                {1, 1, 1, 1, 1, 1, 1, 1, 1},
                                {1, 1, 1, 1, 1, 1, 1, 1, 1}}};
+*/
 
-    currentScore.misses = 0;
+
 
     //setup
     for (int i = 0; i < MAX_X; ++i) {
@@ -39,6 +42,13 @@ void gameHub(users currentUser) {
             stateGrid.grid[i][j] = UNCHECKED;
         }
     }
+
+    //gets the standardized armada structure
+    squadron = getArmada();
+    //translates its boats to grid coordinates
+    checkGrid = armadaToGrid(squadron);
+    //defaults miss count to 0
+    currentScore.misses = 0;
 
     //game
     do {
@@ -243,4 +253,67 @@ scores missCount(grids currentGrid) {
     }
 
     return currentScore;
+}
+
+armada getArmada() {
+    armada returnedArmada = {
+            {
+                    {"Destroyer", 2, 0, 0, HORIZONTAL, false},
+                    {"Submarine", 3, 0, 0, HORIZONTAL, false},
+                    {"Cruiser", 3, 0, 0, HORIZONTAL, false},
+                    {"Battleship", 4, 0, 0, HORIZONTAL, false},
+                    {"Carrier", 5, 0, 0, HORIZONTAL, false}
+            },
+            5
+    };
+
+    return returnedArmada;
+}
+
+grids armadaToGrid(armada chosenArmada) {
+    grids translatedGrid;
+
+    //defaults every values to MISS
+    for (int i = 0; i < MAX_X; ++i) {
+        for (int j = 0; j < MAX_Y; ++j) {
+            translatedGrid.grid[i][j] = MISS;
+        }
+    }
+
+
+    for (int i = 0; i < chosenArmada.numberOfBoats; ++i) {
+
+        //only adds existing boats
+        if (chosenArmada.navy[i].exists) {
+
+            //places them according to direction
+            switch (chosenArmada.navy[i].direction) {
+                case HORIZONTAL:
+
+                    //repeats for the length of the boat
+                    for (int j = 0; j < chosenArmada.navy[i].length; ++j) {
+                        translatedGrid.grid[chosenArmada.navy[i].y][chosenArmada.navy[i].x + j] = HIT;
+                    }
+
+                    break;
+                case VERTICAL:
+
+                    //repeats for the length of the boat
+                    for (int j = 0; j < chosenArmada.navy[i].length; ++j) {
+                        translatedGrid.grid[chosenArmada.navy[i].y + j][chosenArmada.navy[i].x] = HIT;
+                    }
+
+                    break;
+                default:
+                    //error
+                    printf("Unexpected direction : %c for : %s\n", chosenArmada.navy[i].direction,
+                           chosenArmada.navy[i].name);
+                    break;
+            }
+
+        }
+
+    }
+
+    return translatedGrid;
 }

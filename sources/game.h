@@ -14,19 +14,26 @@
 #define MISS 1
 #define HIT 2
 #define CHECKING 3
+#define MAX_BOAT_NAME_LENGTH 16
+#define MAX_BOATS 5
+#define HORIZONTAL 'H'
+#define VERTICAL 'V'
 
 typedef struct {
     int grid[MAX_X][MAX_Y];
 } grids;
 
 typedef struct {
+    char name[MAX_BOAT_NAME_LENGTH];
+    int length;
     int x;
     int y;
     int direction;
+    bool exists;
 } boats;
 
 typedef struct {
-    boats navy[5];
+    boats navy[MAX_BOATS];
     int numberOfBoats;
 } armada;
 
@@ -43,5 +50,9 @@ bool checkWin(grids stateGrid, grids checkGrid);
 void displayResult(users currentUser, int tries);
 
 scores missCount(grids currentGrid);
+
+armada getArmada();
+
+grids armadaToGrid(armada chosenArmada);
 
 #endif //BATTLESHIPS_GAME_H
