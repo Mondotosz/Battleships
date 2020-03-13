@@ -26,20 +26,50 @@ void displayScores() {
 
     //displays its content
     if (currentScoreboard.range > 0) {
+
+        //top border
         printf("%c", 201);
         for (int j = 0; j < 24; ++j) {
-            printf("%c", 205);
+            if (j == 17) {
+                printf("%c", 203);
+            } else {
+                printf("%c", 205);
+            }
         }
         printf("%c\n", 187);
+
+        //header
+        printf("%c        nickname %cmisses%c\n", 186, 186, 186);
+
+        //separator
+        printf("%c", 204);
+        for (int j = 0; j < 24; ++j) {
+            if (j == 17) {
+                printf("%c", 206);
+            } else {
+                printf("%c", 205);
+            }
+        }
+        printf("%c\n", 185);
+
+        //scores
         for (int i = 0; i < currentScoreboard.range; ++i) {
-            printf("%c %15s : %4d %c\n", 186, currentScoreboard.existingScores[i].nickname,
+            printf("%c %15s %c %4d %c\n", 186, currentScoreboard.existingScores[i].nickname, 186,
                    currentScoreboard.existingScores[i].misses, 186);
         }
+
+        //footer
         printf("%c", 200);
         for (int j = 0; j < 24; ++j) {
-            printf("%c", 205);
+            if (j == 17) {
+                printf("%c", 202);
+            } else {
+                printf("%c", 205);
+            }
         }
         printf("%c\n", 188);
+
+
     } else {
         printf("No scores yet!\n");
     }
