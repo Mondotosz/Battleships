@@ -47,6 +47,7 @@ bool trueFalse() {
     return result;
 }
 
+//TODO:Fix bug with max value
 /**
  * @warning avoid 0 as min value as letters
  * gets an int value from user
