@@ -20,7 +20,7 @@ void gameHub(users currentUser) {
     scores currentScore;
     grids stateGrid;
     grids checkGrid;
-    armada squadron;
+    armada fleet;
 
     //setup
     for (int i = 0; i < MAX_X; ++i) {
@@ -30,9 +30,9 @@ void gameHub(users currentUser) {
     }
 
     //gets the standardized armada structure
-    squadron = getArmada();
+    fleet = getArmada();
     //translates its boats to grid coordinates
-    checkGrid = armadaToGrid(squadron);
+    checkGrid = armadaToGrid(fleet);
     //defaults miss count to 0
     currentScore.misses = 0;
 
