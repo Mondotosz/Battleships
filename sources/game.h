@@ -58,8 +58,6 @@ void displayResult(users currentUser, int tries);
 
 scores missCount(grids currentGrid);
 
-armada getArmada();
-
 armada getRandomFleet();
 
 grids armadaToGrid(armada chosenArmada);
