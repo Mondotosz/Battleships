@@ -37,10 +37,10 @@ typedef struct {
     int y;
     int direction;
     bool exists;
-} boats;
+} boat;
 
 typedef struct {
-    boats boat[MAX_BOATS];
+    boat boats[MAX_BOATS];
     int numberOfBoats;
 } armada;
 
@@ -59,6 +59,8 @@ void displayResult(users currentUser, int tries);
 scores missCount(grids currentGrid);
 
 armada getArmada();
+
+armada getRandomFleet();
 
 grids armadaToGrid(armada chosenArmada);
 

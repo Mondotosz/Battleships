@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "utilities/utilities.h"
 #include "score.h"
 #include "authentication.h"
@@ -30,7 +31,8 @@ void gameHub(users currentUser) {
     }
 
     //gets the standardized armada structure
-    fleet = getArmada();
+    //fleet = getArmada();
+    fleet = getRandomFleet();
     //translates its boats to grid coordinates
     checkGrid = armadaToGrid(fleet);
     //defaults miss count to 0
@@ -321,20 +323,20 @@ armada getArmada() {
                                 //puts the value in the correct variable
                                 switch (currentVar) {
                                     case BOAT_LENGTH:
-                                        returnedArmada.boat[currentBoat].length = atoi(tempString);
+                                        returnedArmada.boats[currentBoat].length = atoi(tempString);
                                         break;
                                     case BOAT_DIRECTION:
-                                        returnedArmada.boat[currentBoat].direction = tempString[0];
+                                        returnedArmada.boats[currentBoat].direction = tempString[0];
                                         break;
                                     case BOAT_X:
-                                        returnedArmada.boat[currentBoat].x = atoi(tempString) - 1;
+                                        returnedArmada.boats[currentBoat].x = atoi(tempString) - 1;
                                         break;
                                     case BOAT_Y:
-                                        returnedArmada.boat[currentBoat].y = atoi(tempString) - 1;
+                                        returnedArmada.boats[currentBoat].y = atoi(tempString) - 1;
                                         break;
                                     case BOAT_EXISTS:
                                         if (strcmp(tempString, "true") == 0) {
-                                            returnedArmada.boat[currentBoat].exists = true;
+                                            returnedArmada.boats[currentBoat].exists = true;
                                         }
                                         currentBoat++;
                                         break;
@@ -354,6 +356,43 @@ armada getArmada() {
     return returnedArmada;
 }
 
+armada getRandomFleet() {
+    armada fleet = {
+            {
+                    {"Destroyer", 2, 0, 0, HORIZONTAL, false},
+                    {"Submarine", 3, 0, 0, HORIZONTAL, false},
+                    {"Cruiser", 3, 0, 0, HORIZONTAL, false},
+                    {"Battleship", 4, 0, 0, HORIZONTAL, false},
+                    {"Carrier", 5, 0, 0, HORIZONTAL, false}
+            },
+            MAX_BOATS
+    };
+
+    //currently doesn't check for collisions
+
+    //initialize a random seed
+    srand((unsigned) time(NULL));
+
+    for (int i = 0; i < fleet.numberOfBoats; ++i) {
+
+        //randomize the direction
+        if (rand() % 2 == 0) {
+            fleet.boats[i].direction = VERTICAL;
+            fleet.boats[i].x = 1 + rand() % (MAX_X - fleet.boats[i].length + 1);
+            fleet.boats[i].y = 1 + rand() % MAX_Y;
+            fleet.boats[i].exists = true;
+        } else {
+            fleet.boats[i].direction = HORIZONTAL;
+            fleet.boats[i].y = 1 + rand() % (MAX_Y - fleet.boats[i].length + 1);
+            fleet.boats[i].x = 1 + rand() % MAX_X;
+            fleet.boats[i].exists = true;
+        }
+
+    }
+
+    return fleet;
+}
+
 grids armadaToGrid(armada chosenArmada) {
     grids translatedGrid;
 
@@ -368,30 +407,30 @@ grids armadaToGrid(armada chosenArmada) {
     for (int i = 0; i < chosenArmada.numberOfBoats; ++i) {
 
         //only adds existing boats
-        if (chosenArmada.boat[i].exists) {
+        if (chosenArmada.boats[i].exists) {
 
             //places them according to direction
-            switch (chosenArmada.boat[i].direction) {
+            switch (chosenArmada.boats[i].direction) {
                 case HORIZONTAL:
 
                     //repeats for the length of the boat
-                    for (int j = 0; j < chosenArmada.boat[i].length; ++j) {
-                        translatedGrid.grid[chosenArmada.boat[i].y][chosenArmada.boat[i].x + j] = HIT;
+                    for (int j = 0; j < chosenArmada.boats[i].length; ++j) {
+                        translatedGrid.grid[chosenArmada.boats[i].y][chosenArmada.boats[i].x + j] = HIT;
                     }
 
                     break;
                 case VERTICAL:
 
                     //repeats for the length of the boat
-                    for (int j = 0; j < chosenArmada.boat[i].length; ++j) {
-                        translatedGrid.grid[chosenArmada.boat[i].y + j][chosenArmada.boat[i].x] = HIT;
+                    for (int j = 0; j < chosenArmada.boats[i].length; ++j) {
+                        translatedGrid.grid[chosenArmada.boats[i].y + j][chosenArmada.boats[i].x] = HIT;
                     }
 
                     break;
                 default:
                     //error
-                    printf("Unexpected direction : %c for : %s\n", chosenArmada.boat[i].direction,
-                           chosenArmada.boat[i].name);
+                    printf("Unexpected direction : %c for : %s\n", chosenArmada.boats[i].direction,
+                           chosenArmada.boats[i].name);
                     break;
             }
 
