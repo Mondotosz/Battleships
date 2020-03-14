@@ -41,7 +41,7 @@ void gameHub(users currentUser) {
     //game
     do {
         //displays the grid before firing
-        displayGrid(stateGrid);
+        displayGrid(checkGrid);
         offsetY(2);
         offsetX(4);
         printf("misses : %d\n", currentScore.misses);
@@ -378,13 +378,13 @@ armada getRandomFleet() {
         //randomize the direction
         if (rand() % 2 == 0) {
             fleet.boats[i].direction = VERTICAL;
-            fleet.boats[i].x = 1 + rand() % (MAX_X - fleet.boats[i].length + 1);
-            fleet.boats[i].y = 1 + rand() % MAX_Y;
+            fleet.boats[i].y = rand() % (MAX_X - fleet.boats[i].length + 1);
+            fleet.boats[i].x = rand() % MAX_Y;
             fleet.boats[i].exists = true;
         } else {
             fleet.boats[i].direction = HORIZONTAL;
-            fleet.boats[i].y = 1 + rand() % (MAX_Y - fleet.boats[i].length + 1);
-            fleet.boats[i].x = 1 + rand() % MAX_X;
+            fleet.boats[i].x = rand() % (MAX_Y - fleet.boats[i].length + 1);
+            fleet.boats[i].y = rand() % MAX_X;
             fleet.boats[i].exists = true;
         }
 
