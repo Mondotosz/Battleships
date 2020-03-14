@@ -87,7 +87,7 @@ void displayGrid(grids displayedGrid) {
     //grid top
     offsetX(xOffsetValue);
     printf("%c", 201);
-    for (int m = 0; m < MAX_X * 3 + 2; ++m) {
+    for (int m = 0; m < MAX_Y * 3 + 2; ++m) {
         if ((m + 1) % 3 == 0) {
             printf("%c", 203);
         } else {
@@ -99,7 +99,7 @@ void displayGrid(grids displayedGrid) {
     //integer markers
     offsetX(xOffsetValue);
     printf("%c  %c", 186, 186);
-    for (int l = 1; l < MAX_X + 1; ++l) {
+    for (int l = 1; l < MAX_Y + 1; ++l) {
         printf("%2d%c", l, 186);
     }
     printf("\n");
@@ -108,7 +108,7 @@ void displayGrid(grids displayedGrid) {
         //vertical gap
         offsetX(xOffsetValue);
         printf("%c", 204);
-        for (int k = 0; k < MAX_X * 3 + 2; ++k) {
+        for (int k = 0; k < MAX_Y * 3 + 2; ++k) {
             if ((k + 1) % 3 == 0) {
                 printf("%c", 206);
             } else {
@@ -144,7 +144,7 @@ void displayGrid(grids displayedGrid) {
     //grid bottom
     offsetX(xOffsetValue);
     printf("%c", 200);
-    for (int m = 0; m < MAX_X * 3 + 2; ++m) {
+    for (int m = 0; m < MAX_Y * 3 + 2; ++m) {
         if ((m + 1) % 3 == 0) {
             printf("%c", 202);
         } else {
@@ -255,8 +255,9 @@ armada getRandomFleet() {
             },
             MAX_BOATS
     };
+    bool overlap;
 
-    //currently doesn't check for collisions
+    //TODO:avoid overlap
 
     //initialize a random seed
     srand((unsigned) time(NULL));
