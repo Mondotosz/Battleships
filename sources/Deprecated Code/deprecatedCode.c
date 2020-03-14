@@ -3,6 +3,21 @@
 //
 
 
+//Header part
+
+/*
+#define BOATS_JSON "boats.json"
+#define BOAT_LENGTH 'L'
+#define BOAT_DIRECTION 'D'
+#define BOAT_X 'X'
+#define BOAT_Y 'Y'
+#define BOAT_EXISTS 'E'
+
+armada getArmada() ;
+
+
+ */
+
 /**
  * old function to get a fleet from a file
  * overcomplicated would only result on slowing down the code
