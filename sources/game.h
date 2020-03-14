@@ -40,7 +40,7 @@ typedef struct {
 } boats;
 
 typedef struct {
-    boats navy[MAX_BOATS];
+    boats boat[MAX_BOATS];
     int numberOfBoats;
 } armada;
 
