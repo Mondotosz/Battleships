@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "utilities/utilities.h"
+#include "utilities/logs.h"
 #include "score.h"
 
 /**
@@ -38,7 +39,7 @@ void displayScores() {
         printf("%c\n", 187);
 
         //header
-        printf("%c %-15s %cmisses%c\n", 186, "nickname",186, 186);
+        printf("%c %-15s %cmisses%c\n", 186, "nickname", 186, 186);
 
         //separator
         printf("%c", 204);
@@ -188,7 +189,10 @@ void newScore(scores newScore) {
         fprintf(filePointer, "\"nickname\":\"%s\",\n", currentScoreboard.existingScores[i].nickname);
         fprintf(filePointer, "\"misses\":\"%d\",\n", currentScoreboard.existingScores[i].misses);
     }
+
     fclose(filePointer);
+
+    runtimeLog(INFO, "saved score");
 
 }
 
@@ -213,6 +217,8 @@ scoreboard bubbleSortScoreboard(scoreboard unsortedScoreboard) {
             }
         }
     } while (!isOrdered);
+
+    runtimeLog(INFO, "sorted scoreboard");
 
     return unsortedScoreboard;
 }
