@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
 #include "utilities/utilities.h"
 #include "score.h"
 
@@ -39,7 +38,7 @@ void displayScores() {
         printf("%c\n", 187);
 
         //header
-        printf("%c        nickname %cmisses%c\n", 186, 186, 186);
+        printf("%c %-15s %cmisses%c\n", 186, "nickname",186, 186);
 
         //separator
         printf("%c", 204);
@@ -54,7 +53,7 @@ void displayScores() {
 
         //scores
         for (int i = 0; i < currentScoreboard.range; ++i) {
-            printf("%c %15s %c %4d %c\n", 186, currentScoreboard.existingScores[i].nickname, 186,
+            printf("%c %-15s %c %4d %c\n", 186, currentScoreboard.existingScores[i].nickname, 186,
                    currentScoreboard.existingScores[i].misses, 186);
         }
 
