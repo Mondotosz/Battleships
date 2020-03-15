@@ -7,8 +7,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
+#include <string.h>
 
+#include "sources/utilities/logs.h"
 #include "sources/utilities/utilities.h"
 #include "sources/authentication.h"
 #include "sources/score.h"
@@ -40,6 +41,9 @@ void menu() {
     int selection;
     bool quit = false;
     users currentUser;
+
+    //default user
+    strncpy(currentUser.nickname, "User", MAX_NICKNAME_LENGTH);
     currentUser.authenticated = false;
 
     do {
@@ -51,23 +55,26 @@ void menu() {
         //resulting calls
         switch (selection) {
             case 1://Start
+                runtimeLog(INFO, "%s => play()", currentUser.nickname);
                 gameHub(currentUser);
                 break;
             case 2://Help
+                runtimeLog(INFO, "%s => help()", currentUser.nickname);
                 displayHelp();
                 break;
             case 3://Scoreboard
+                runtimeLog(INFO, "%s => scoreboard()", currentUser.nickname);
                 displayScores();
                 break;
             case 4://User
+                runtimeLog(INFO, "%s => authentication menu()", currentUser.nickname);
                 currentUser = authenticationMenu(currentUser);
                 break;
             case 5://Quit
                 quit = true;
                 break;
             default:
-                printf("Unexpected selection : %d", selection);
-                system("pause");
+                runtimeLog(ERROR, "%s unexpected selection in menu : %d", currentUser.nickname, selection);
         }
 
     } while (quit == false);
@@ -79,6 +86,8 @@ void menu() {
  * @return 0
  */
 int main() {
+    runtimeLog(INFO, "Game started");
     menu();
+    runtimeLog(INFO, "Quit game correctly");
     return 0;
 }
