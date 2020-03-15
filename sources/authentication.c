@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "utilities/utilities.h"
+#include "utilities/logs.h"
 #include "authentication.h"
 
 
@@ -52,6 +53,8 @@ users authenticateUser(users authenticatingUser) {
 
     //set user as authenticated
     authenticatingUser.authenticated = true;
+
+    runtimeLog(INFO, "user authenticated as %s", authenticatingUser.nickname);
 
     return authenticatingUser;
 }
