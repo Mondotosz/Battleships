@@ -22,6 +22,8 @@ void runtimeLog(char logType, char *string, ...) {
     struct tm *tmp;
     char currentTime[50];
 
+    strcpy(formattedString, "");
+
     //parses through args
     va_start(argList, string);
 
