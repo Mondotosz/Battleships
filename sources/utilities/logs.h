@@ -12,6 +12,7 @@
 #define INFO 'i'
 #define UNEXPECTED 'u'
 
-void runtimeLog(char string[255], char logType);
+
+void runtimeLog(char logType, char string[255], ...);
 
 #endif //BATTLESHIPS_LOGS_H
