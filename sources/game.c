@@ -157,6 +157,11 @@ void displayGrid(grids displayedGrid) {
 
 //TODO:fire takes both values at once
 
+/**
+ * changes grid state on chosen coordinates
+ * @param stateGrid
+ * @return
+ */
 grids fire(grids stateGrid) {
     int x;
     int y;
@@ -188,6 +193,14 @@ grids fire(grids stateGrid) {
     return stateGrid;
 }
 
+//TODO:Check grid without translating => in game info on which boat was sunk
+
+/**
+ * compares the 2 grids and updates targeted coordinates
+ * @param stateGrid
+ * @param checkGrid
+ * @return updated grid
+ */
 grids checkState(grids stateGrid, grids checkGrid) {
     for (int i = 0; i < MAX_X; ++i) {
         for (int j = 0; j < MAX_Y; ++j) {
@@ -199,6 +212,12 @@ grids checkState(grids stateGrid, grids checkGrid) {
     return stateGrid;
 }
 
+/**
+ * checks if there are any boats left on the grid
+ * @param stateGrid
+ * @param checkGrid
+ * @return true / false
+ */
 bool checkWin(grids stateGrid, grids checkGrid) {
     bool win = true;
 
@@ -213,6 +232,11 @@ bool checkWin(grids stateGrid, grids checkGrid) {
     return win;
 }
 
+/**
+ * displays a grid from its values
+ * @param currentUser
+ * @param misses
+ */
 void displayResult(users currentUser, int misses) {
     system("cls");
     if (currentUser.authenticated) {
@@ -227,6 +251,11 @@ void displayResult(users currentUser, int misses) {
     pause();
 }
 
+/**
+ * counts how many miss the user had
+ * @param currentGrid
+ * @return
+ */
 scores missCount(grids currentGrid) {
     scores currentScore;
     currentScore.misses = 0;
@@ -243,7 +272,10 @@ scores missCount(grids currentGrid) {
     return currentScore;
 }
 
-
+/**
+ * generates the 5 standard boats at random coordinates
+ * @return random fleet
+ */
 armada getRandomFleet() {
     armada fleet = {
             {
@@ -376,6 +408,12 @@ armada getRandomFleet() {
     return fleet;
 }
 
+/**
+ * translates armada structure to grid structure
+ * @warning isn't optimal as we always have 2 grids + the fleet on the buffer
+ * @param chosenArmada
+ * @return
+ */
 grids armadaToGrid(armada chosenArmada) {
     grids translatedGrid;
 
