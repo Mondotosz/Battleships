@@ -12,11 +12,13 @@
  * pauses the program until the user presses enter
  */
 void pause() {
+    int buffer;
     //wait for input to return
     printf("\n");
     printf("press any key to return\n");
     fflush(stdin);
-    getch();
+    //empties getch to avoid overflow
+    buffer = getch();
 }
 
 /**
