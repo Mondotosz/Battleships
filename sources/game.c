@@ -41,7 +41,7 @@ void gameHub(users currentUser) {
     //game
     do {
         //displays the grid before firing
-        displayGrid(checkGrid);
+        displayGrid(stateGrid);
         offsetY(2);
         offsetX(4);
         printf("misses : %d\n", currentScore.misses);
@@ -66,7 +66,7 @@ void gameHub(users currentUser) {
     }
 
     if (currentUser.authenticated) {
-        strcpy(currentScore.nickname, currentUser.nickname);
+        strncpy(currentScore.nickname, currentUser.nickname, MAX_NICKNAME_LENGTH - 1);
         newScore(currentScore);
     }
 
@@ -257,8 +257,6 @@ armada getRandomFleet() {
     };
     bool overlap;
 
-    //TODO:avoid overlap
-
     //initialize a random seed
     srand((unsigned) time(NULL));
 
@@ -272,18 +270,17 @@ armada getRandomFleet() {
             if (rand() % 2 == 0) {
                 //gives random coordinates to a vertical boat
                 fleet.boats[cBoat].direction = VERTICAL;
-                fleet.boats[cBoat].y = rand() % (MAX_X - fleet.boats[cBoat].length + 1);
-                fleet.boats[cBoat].x = rand() % MAX_Y;
+                fleet.boats[cBoat].y = 1 + rand() % (MAX_X - fleet.boats[cBoat].length - 1);
+                fleet.boats[cBoat].x = 1 + rand() % MAX_Y - 1;
                 fleet.boats[cBoat].exists = true;
                 //check if it overlaps with any previous boat
                 for (int pBoat = 0; pBoat < cBoat; ++pBoat) {
 
                     //depending on previous boats states
-                    if (!fleet.boats[pBoat].exists) {
+                    if (fleet.boats[pBoat].exists) {
 
                         switch (fleet.boats[pBoat].direction) {
-                            case VERTICAL:
-                                //parallel
+                            case VERTICAL://parallel (current boat & past boat are vertical)
                                 for (int cBoatL = 0; cBoatL < fleet.boats[cBoat].length; ++cBoatL) {
                                     for (int pBoatL = 0; pBoatL < fleet.boats[pBoat].length; ++pBoatL) {
                                         //check for each cell
@@ -295,8 +292,7 @@ armada getRandomFleet() {
                                 }
                                 break;
 
-                            case HORIZONTAL:
-                                //cross
+                            case HORIZONTAL://(current boat is vertical and past boat is horizontal)
                                 for (int cBoatL = 0; cBoatL < fleet.boats[cBoat].length; ++cBoatL) {
                                     for (int pBoatL = 0; pBoatL < fleet.boats[pBoat].length; ++pBoatL) {
                                         //check for each cell
@@ -318,18 +314,19 @@ armada getRandomFleet() {
                     }
 
                 }
+
             } else {
                 //gives random coordinates to an horizontal boat
                 fleet.boats[cBoat].direction = HORIZONTAL;
-                fleet.boats[cBoat].x = rand() % (MAX_Y - fleet.boats[cBoat].length + 1);
-                fleet.boats[cBoat].y = rand() % MAX_X;
+                fleet.boats[cBoat].x = 1 + rand() % (MAX_Y - fleet.boats[cBoat].length - 1);
+                fleet.boats[cBoat].y = 1 + rand() % MAX_X - 1;
                 fleet.boats[cBoat].exists = true;
 
                 //check if it overlaps with any previous boat
                 for (int pBoat = 0; pBoat < cBoat; ++pBoat) {
 
                     //depending on previous boats states
-                    if (!fleet.boats[pBoat].exists) {
+                    if (fleet.boats[pBoat].exists) {
 
                         switch (fleet.boats[pBoat].direction) {
                             case VERTICAL:
@@ -337,8 +334,8 @@ armada getRandomFleet() {
                                 for (int cBoatL = 0; cBoatL < fleet.boats[cBoat].length; ++cBoatL) {
                                     for (int pBoatL = 0; pBoatL < fleet.boats[pBoat].length; ++pBoatL) {
                                         //check for each cell
-                                        if (fleet.boats[cBoat].y + cBoatL == fleet.boats[pBoat].y + pBoatL &&
-                                            fleet.boats[cBoat].x == fleet.boats[pBoat].x) {
+                                        if (fleet.boats[cBoat].y == fleet.boats[pBoat].y + pBoatL &&
+                                            fleet.boats[cBoat].x + cBoatL == fleet.boats[pBoat].x) {
                                             overlap = true;
                                         }
 
@@ -351,8 +348,8 @@ armada getRandomFleet() {
                                 for (int cBoatL = 0; cBoatL < fleet.boats[cBoat].length; ++cBoatL) {
                                     for (int pBoatL = 0; pBoatL < fleet.boats[pBoat].length; ++pBoatL) {
                                         //check for each cell
-                                        if (fleet.boats[cBoat].y + cBoatL == fleet.boats[pBoat].y &&
-                                            fleet.boats[cBoat].x == fleet.boats[pBoat].x + pBoatL) {
+                                        if (fleet.boats[cBoat].y == fleet.boats[pBoat].y &&
+                                            fleet.boats[cBoat].x + cBoatL == fleet.boats[pBoat].x + pBoatL) {
                                             overlap = true;
                                         }
                                     }
