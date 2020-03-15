@@ -72,6 +72,8 @@ void gameHub(users currentUser) {
 
 }
 
+//TODO:use format specifiers to simplify display
+
 /**
  * Displays the grid with formatting
  * @param displayedGrid
