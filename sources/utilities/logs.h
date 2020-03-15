@@ -10,6 +10,7 @@
 #define ERROR 'e'
 #define WARNING 'w'
 #define INFO 'i'
+#define UNEXPECTED 'u'
 
 void runtimeLog(char string[255], char logType);
 
