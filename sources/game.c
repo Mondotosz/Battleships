@@ -7,6 +7,7 @@
 #include <string.h>
 #include <time.h>
 #include "utilities/utilities.h"
+#include "utilities/logs.h"
 #include "score.h"
 #include "authentication.h"
 #include "game.h"
@@ -192,6 +193,8 @@ grids fire(grids stateGrid) {
     //puts them in stateGrid
     stateGrid.grid[y][x] = CHECKING;
 
+    runtimeLog(INFO, "player shot at x : %d y : %d", y, x);
+
     return stateGrid;
 }
 
@@ -208,6 +211,17 @@ grids checkState(grids stateGrid, grids checkGrid) {
         for (int j = 0; j < MAX_Y; ++j) {
             if (stateGrid.grid[i][j] == CHECKING) {
                 stateGrid.grid[i][j] = checkGrid.grid[i][j];
+                switch (stateGrid.grid[i][j]) {
+                    case MISS:
+                        runtimeLog(INFO, "Miss");
+                        break;
+                    case HIT:
+                        runtimeLog(INFO, "Hit");
+                        break;
+                    default:
+                        runtimeLog(ERROR, "unexpected state : %d", stateGrid.grid[i][j]);
+                        break;
+                }
             }
         }
     }
@@ -230,6 +244,8 @@ bool checkWin(grids stateGrid, grids checkGrid) {
             }
         }
     }
+
+    if (win) runtimeLog(INFO, "player won");
 
     return win;
 }
@@ -338,10 +354,7 @@ armada getRandomFleet() {
                                 }
                                 break;
                             default:
-                                //error
-                                printf("\n");
-                                printf("Direction error : %c\n", fleet.boats[pBoat].direction);
-                                pause();
+                                runtimeLog(ERROR, "Direction error : %c", fleet.boats[pBoat].direction);
                                 break;
                         }
 
@@ -390,10 +403,7 @@ armada getRandomFleet() {
                                 }
                                 break;
                             default:
-                                //error
-                                printf("\n");
-                                printf("Direction error : %c\n", fleet.boats[pBoat].direction);
-                                pause();
+                                runtimeLog(ERROR, "Direction error : %c", fleet.boats[pBoat].direction);
                                 break;
                         }
 
@@ -402,8 +412,16 @@ armada getRandomFleet() {
                 }
 
             }
-
+            if (overlap)runtimeLog(WARNING, "overlap detected");//for statistics
         } while (overlap == true);
+
+    }
+
+    for (int k = 0; k < fleet.numberOfBoats; ++k) {
+        //logs boats information
+        runtimeLog(INFO, "generated boat[%d] name:%s length:%d direction:%c x:%d y:%d",
+                   k, fleet.boats[k].name, fleet.boats[k].length,
+                   fleet.boats[k].direction, fleet.boats[k].x, fleet.boats[k].y);
 
     }
 
@@ -451,9 +469,8 @@ grids armadaToGrid(armada chosenArmada) {
 
                     break;
                 default:
-                    //error
-                    printf("Unexpected direction : %c for : %s\n", chosenArmada.boats[i].direction,
-                           chosenArmada.boats[i].name);
+                    runtimeLog(ERROR, "Unexpected direction : %c for : %s", chosenArmada.boats[i].direction,
+                               chosenArmada.boats[i].name);
                     break;
             }
 
