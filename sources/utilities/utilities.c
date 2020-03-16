@@ -115,7 +115,7 @@ int base26(char string[16]) {
 
     for (int i = (int) (strlen(string)); i >= 0; --i) {
         if (isalpha(string[i])) {
-            result += string[i] - 'a' + 1 * count;
+            result += (string[i] - 'a' + 1) * count;
             count *= 26;
         }
     }
