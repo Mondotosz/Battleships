@@ -4,7 +4,6 @@
 
 #include "utilities.h"
 #include <stdio.h>
-#include <stdlib.h>
 #include <conio.h>
 #include <ctype.h>
 #include <string.h>
@@ -77,7 +76,7 @@ int getInt(int min, int max) {
 /**
  *
  * @param string
- * @return int from 1 to max or 0 if there were no int
+ * @return returns the integers found in a string
  */
 int stringToInt(char *string) {
     int result = 0;
@@ -102,8 +101,11 @@ int stringToInt(char *string) {
 int base26(char string[16]) {
     int result = 0;
     int count = 1;
+
+    //make the string all lower cases to ease the process
     strlwr(string);
 
+    //parses the string for alphabet chars
     for (int i = (int) (strlen(string)); i >= 0; --i) {
         if (isalpha(string[i])) {
             result += (string[i] - 'a' + 1) * count;
