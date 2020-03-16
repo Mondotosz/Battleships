@@ -156,8 +156,6 @@ void displayGrid(grids displayedGrid) {
 
 }
 
-//TODO:fire takes both values at once
-
 /**
  * changes grid state on chosen coordinates
  * @param stateGrid
@@ -169,7 +167,6 @@ grids fire(grids stateGrid) {
     char input[16];
 
     do {
-
 
         do {
             //asks for xy coordinates and convert them
@@ -184,6 +181,7 @@ grids fire(grids stateGrid) {
         x -= OFFSET;
         y -= OFFSET;
 
+        //check whether the cell was already checked
         if (stateGrid.grid[x][y] != UNCHECKED) {
             printf("\n");
             printf("You already checked this cell !\n");

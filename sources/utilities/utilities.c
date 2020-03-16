@@ -83,7 +83,7 @@ int stringToInt(char *string) {
     int count = 1;
 
     //parses the string for digits
-    for (int i = 0; i < (int) (strlen(string)); i++) {
+    for (int i = (int) (strlen(string)); i >= 0; --i) {
         if (isdigit(string[i])) {
             result += (string[i] - '0') * count;
             count *= 10;
