@@ -15,7 +15,7 @@ bool trueFalse(void);
 
 int getInt(int min, int max);
 
-int stringToInt(char *string, int maxReturnedValue);
+int stringToInt(char *string);
 
 int getIntFromChar(int min, int max);
 

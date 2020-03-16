@@ -68,7 +68,7 @@ int getInt(int min, int max) {
     do {
         fflush(stdin);
         scanf("%s", string);
-        selection = stringToInt(string, max);
+        selection = stringToInt(string);
     } while (selection < min || selection > max);
 
     return selection;
@@ -80,10 +80,10 @@ int getInt(int min, int max) {
  * @param string
  * @return int from 1 to max or 0 if there were no int
  */
-int stringToInt(char *string, int maxReturnedValue) {
+int stringToInt(char *string) {
     char *pointer = NULL;
     int intValue;
-    intValue = strtol(string, &pointer, maxReturnedValue + 1);
+    intValue = strtol(string, &pointer, 10);
     return intValue;
 }
 

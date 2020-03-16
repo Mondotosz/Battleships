@@ -12,8 +12,6 @@
 #include "authentication.h"
 #include "game.h"
 
-//TODO:create log functions to have a followup on errors
-
 /**
  * main game function
  */
