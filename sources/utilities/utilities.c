@@ -80,8 +80,18 @@ int getInt(int min, int max) {
  * @return int from 1 to max or 0 if there were no int
  */
 int stringToInt(char *string) {
-    char *pointer = NULL;
-    return strtol(string, &pointer, 10);;
+    int result = 0;
+    int count = 1;
+
+    //parses the string for digits
+    for (int i = 0; i < (int) (strlen(string)); i++) {
+        if (isdigit(string[i])) {
+            result += (string[i] - '0') * count;
+            count *= 10;
+        }
+    }
+
+    return result;
 }
 
 /**
