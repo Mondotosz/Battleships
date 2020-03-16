@@ -88,7 +88,7 @@ void displayGrid(grids displayedGrid) {
     //grid top
     offsetX(xOffsetValue);
     printf("%c", 201);
-    for (int m = 0; m < MAX_Y * 3 + 2; ++m) {
+    for (int m = 0; m < MAX_X * 3 + 2; ++m) {
         if ((m + 1) % 3 == 0) {
             printf("%c", 203);
         } else {
@@ -100,16 +100,16 @@ void displayGrid(grids displayedGrid) {
     //integer markers
     offsetX(xOffsetValue);
     printf("%c  %c", 186, 186);
-    for (int l = 1; l < MAX_Y + 1; ++l) {
+    for (int l = 1; l < MAX_X + 1; ++l) {
         printf("%2d%c", l, 186);
     }
     printf("\n");
-    for (int i = 0; i < MAX_X; ++i) {
+    for (int i = 0; i < MAX_Y; ++i) {
 
         //vertical gap
         offsetX(xOffsetValue);
         printf("%c", 204);
-        for (int k = 0; k < MAX_Y * 3 + 2; ++k) {
+        for (int k = 0; k < MAX_X * 3 + 2; ++k) {
             if ((k + 1) % 3 == 0) {
                 printf("%c", 206);
             } else {
@@ -123,8 +123,8 @@ void displayGrid(grids displayedGrid) {
         printf("%c %c%c", 186, intToChar(i + 1), 186);
 
         //displays cell state
-        for (int j = 0; j < MAX_Y; ++j) {
-            switch (displayedGrid.grid[i][j]) {
+        for (int j = 0; j < MAX_X; ++j) {
+            switch (displayedGrid.grid[j][i]) {
                 case UNCHECKED:
                     printf("%c%c", 176, 176);
                     break;
@@ -135,7 +135,7 @@ void displayGrid(grids displayedGrid) {
                     printf("%c%c", 219, 219);
                     break;
                 default:
-                    printf("\nUnexpected value : %d\n", displayedGrid.grid[i][j]);
+                    runtimeLog(WARNING, "Unexpected value grid[%d][%d]=%d", i, j, displayedGrid.grid[i][j]);
             }
             printf("%c", 186);
         }
@@ -145,7 +145,7 @@ void displayGrid(grids displayedGrid) {
     //grid bottom
     offsetX(xOffsetValue);
     printf("%c", 200);
-    for (int m = 0; m < MAX_Y * 3 + 2; ++m) {
+    for (int m = 0; m < MAX_X * 3 + 2; ++m) {
         if ((m + 1) % 3 == 0) {
             printf("%c", 202);
         } else {
@@ -166,6 +166,7 @@ void displayGrid(grids displayedGrid) {
 grids fire(grids stateGrid) {
     int x;
     int y;
+    char input[16];
 
     do {
         printf("\n");
@@ -175,21 +176,25 @@ grids fire(grids stateGrid) {
         x = getInt(OFFSET, MAX_X);
         x -= OFFSET;
 
-        //asks for y coordinates and convert them
-        offsetX(4);
-        printf("y ");
-        y = getIntFromChar(OFFSET, MAX_Y);
+        do {
+            //asks for y coordinates and convert them
+            offsetX(4);
+            printf("y ");
+            fflush(stdin);
+            scanf("%s", input);
+            y = base26(input);
+        } while (y < 1 || y > MAX_Y);
         y -= OFFSET;
 
-        if (stateGrid.grid[y][x] != UNCHECKED) {
+        if (stateGrid.grid[x][y] != UNCHECKED) {
             printf("\n");
             printf("You already checked this cell !\n");
         }
 
-    } while (stateGrid.grid[y][x] != UNCHECKED);
+    } while (stateGrid.grid[x][y] != UNCHECKED);
 
     //puts them in stateGrid
-    stateGrid.grid[y][x] = CHECKING;
+    stateGrid.grid[x][y] = CHECKING;
 
     runtimeLog(INFO, "player shot at x : %d y : %d", y, x);
 
