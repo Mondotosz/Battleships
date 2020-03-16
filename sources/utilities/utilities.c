@@ -74,7 +74,6 @@ int getInt(int min, int max) {
     return selection;
 }
 
-//TODO:Check for bugs
 /**
  *
  * @param string
@@ -82,9 +81,7 @@ int getInt(int min, int max) {
  */
 int stringToInt(char *string) {
     char *pointer = NULL;
-    int intValue;
-    intValue = strtol(string, &pointer, 10);
-    return intValue;
+    return strtol(string, &pointer, 10);;
 }
 
 /**
