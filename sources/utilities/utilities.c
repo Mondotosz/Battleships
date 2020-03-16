@@ -85,29 +85,10 @@ int stringToInt(char *string) {
 }
 
 /**
- * @warning avoid 0 as min value as letters
- * gets a char from user and translates it to int
- * @param min value returned
- * @param max value returned
- * @return intValue
+ * translates alphabet chars to int
+ * @param string
+ * @return
  */
-int getIntFromChar(int min, int max) {
-    char charInput;
-    int selection;
-
-    //visual indicator
-    printf(": ");
-
-    //clean string to long
-    do {
-        fflush(stdin);
-        scanf("%c", &charInput);
-        selection = charToInt(charInput);
-    } while (selection < min || selection > max);
-
-    return selection;
-}
-
 int base26(char string[16]) {
     int result = 0;
     int count = 1;
@@ -121,25 +102,6 @@ int base26(char string[16]) {
     }
 
     return result;
-}
-
-/**
- *
- * @param string
- * @return int translated from letter or 0 if the passed char doesn't contain letters
- */
-int charToInt(char letter) {
-    int intValue = 0;
-
-    /*uppercase letters*/
-    if (letter >= 'A' && letter <= 'Z') {
-        intValue = letter - 'A' + 1;
-    }
-        /*lowercase letters*/
-    else if (letter >= 'a' && letter <= 'z') {
-        intValue = letter - 'a' + 1;
-    }
-    return intValue;
 }
 
 /**

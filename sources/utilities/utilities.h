@@ -17,10 +17,6 @@ int getInt(int min, int max);
 
 int stringToInt(char *string);
 
-int getIntFromChar(int min, int max);
-
-int charToInt(char letter);
-
 char intToChar(int intValue);
 
 void offsetX(int offset);
