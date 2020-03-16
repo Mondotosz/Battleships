@@ -27,4 +27,6 @@ void offsetX(int offset);
 
 void offsetY(int offset);
 
+int base26(char *string);
+
 #endif //BATTLESHIPS_UTILITIES_H

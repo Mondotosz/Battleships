@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
+#include <ctype.h>
 #include <string.h>
 
 /**
@@ -49,7 +50,6 @@ bool trueFalse() {
     return result;
 }
 
-//TODO:Fix bug with max value
 /**
  * @warning avoid 0 as min value as letters
  * gets an int value from user
@@ -106,6 +106,21 @@ int getIntFromChar(int min, int max) {
     } while (selection < min || selection > max);
 
     return selection;
+}
+
+int base26(char string[16]) {
+    int result = 0;
+    int count = 1;
+    strlwr(string);
+
+    for (int i = (int) (strlen(string)); i >= 0; --i) {
+        if (isalpha(string[i])) {
+            result += string[i] - 'a' + 1 * count;
+            count *= 26;
+        }
+    }
+
+    return result;
 }
 
 /**
