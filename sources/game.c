@@ -43,10 +43,10 @@ void gameHub(users currentUser) {
         displayGrid(stateGrid);
         offsetY(2);
         offsetX(4);
+        currentScore = missCount(stateGrid);
         printf("misses : %d\n", currentScore.misses);
         //select the shooting coordinates
         stateGrid = fire(stateGrid);
-        currentScore = missCount(stateGrid);
         //compare the 2 grids
         stateGrid = checkState(stateGrid, checkGrid);
         //check if it's a win
@@ -169,21 +169,19 @@ grids fire(grids stateGrid) {
     char input[16];
 
     do {
-        printf("\n");
-        //asks for x coordinates
-        offsetX(4);
-        printf("x ");
-        x = getInt(OFFSET, MAX_X);
-        x -= OFFSET;
+
 
         do {
-            //asks for y coordinates and convert them
+            //asks for xy coordinates and convert them
+            offsetY(2);
             offsetX(4);
-            printf("y ");
+            printf("coordinates : ");
             fflush(stdin);
             scanf("%s", input);
+            x = stringToInt(input);
             y = base26(input);
-        } while (y < 1 || y > MAX_Y);
+        } while (y < 1 || y > MAX_Y || x < 1 || x > MAX_X);
+        x -= OFFSET;
         y -= OFFSET;
 
         if (stateGrid.grid[x][y] != UNCHECKED) {
