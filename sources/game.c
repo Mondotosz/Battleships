@@ -69,6 +69,7 @@ void gameHub(users currentUser) {
         newScore(currentScore);
     }
 
+    runtimeLog(INFO, "%s exited gameHub() successfully", currentUser.nickname);
 }
 
 //TODO:use format specifiers to simplify display

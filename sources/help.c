@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include "help.h"
 #include "utilities/utilities.h"
+#include "utilities/logs.h"
 
 /**
  * Displays the help info
@@ -27,4 +28,5 @@ void displayHelp() {
     printf("Good luck on the sea young sailor!\n");
 
     pause();
+    runtimeLog(INFO, "exited help() successfully");
 }

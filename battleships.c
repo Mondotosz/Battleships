@@ -57,22 +57,18 @@ void menu() {
             case 1://Start
                 runtimeLog(INFO, "%s => gameHub()", currentUser.nickname);
                 gameHub(currentUser);
-                runtimeLog(INFO, "%s exit gameHub() successfully", currentUser.nickname);
                 break;
             case 2://Help
                 runtimeLog(INFO, "%s => help()", currentUser.nickname);
                 displayHelp();
-                runtimeLog(INFO, "%s exit help() successfully", currentUser.nickname);
                 break;
             case 3://Scoreboard
                 runtimeLog(INFO, "%s => scoreboard()", currentUser.nickname);
                 displayScores();
-                runtimeLog(INFO, "%s exit scoreboard() successfully", currentUser.nickname);
                 break;
             case 4://User
                 runtimeLog(INFO, "%s => authentication menu()", currentUser.nickname);
                 currentUser = authenticationMenu(currentUser);
-                runtimeLog(INFO, "%s exit authentication menu() successfully", currentUser.nickname);
                 break;
             case 5://Quit
                 quit = true;

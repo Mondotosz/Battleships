@@ -76,6 +76,7 @@ void displayScores() {
 
     pause();
 
+    runtimeLog(INFO, "exited scoreboard() successfully");
 }
 
 /**

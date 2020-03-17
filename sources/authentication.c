@@ -32,6 +32,7 @@ users authenticationMenu(users currentUser) {
         currentUser = authenticateUser(currentUser);
     }
 
+    runtimeLog(INFO, "%s exited authentication menu() successfully", currentUser.nickname);
     return currentUser;
 }
 
