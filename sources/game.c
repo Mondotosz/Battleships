@@ -29,8 +29,7 @@ void gameHub(users currentUser) {
         }
     }
 
-    //gets the standardized armada structure
-    //fleet = getArmada();
+    //gets a randomized armada structure
     fleet = getRandomFleet();
     //translates its boats to grid coordinates
     checkGrid = armadaToGrid(fleet);
@@ -41,29 +40,40 @@ void gameHub(users currentUser) {
     do {
         //displays the grid before firing
         displayGrid(stateGrid);
+
+        //gets and displays the stats
+        currentScore = missCount(stateGrid);
         offsetY(2);
         offsetX(4);
-        currentScore = missCount(stateGrid);
         printf("misses : %d\n", currentScore.misses);
+
         //select the shooting coordinates
         stateGrid = fire(stateGrid);
+
         //compare the 2 grids
         stateGrid = checkState(stateGrid, checkGrid);
+
         //check if it's a win
         win = checkWin(stateGrid, checkGrid);
+
     } while (win == false);
 
+    //displays the end result
     displayResult(currentUser, currentScore.misses);
 
+    //if the user didn't authenticate before playing
     system("cls");
     if (!currentUser.authenticated) {
         printf("\n");
         printf("Would you like to save your score ?");
+
+        //authenticate the user if he wants to save the score
         if (trueFalse()) {
             currentUser = authenticateUser(currentUser);
         }
     }
 
+    //saves the score if the user is authenticated
     if (currentUser.authenticated) {
         strncpy(currentScore.nickname, currentUser.nickname, MAX_NICKNAME_LENGTH - 1);
         newScore(currentScore);
@@ -209,8 +219,14 @@ grids fire(grids stateGrid) {
 grids checkState(grids stateGrid, grids checkGrid) {
     for (int i = 0; i < MAX_X; ++i) {
         for (int j = 0; j < MAX_Y; ++j) {
+
+            //seeks the cell which was shot
             if (stateGrid.grid[i][j] == CHECKING) {
+
+                //changes the cell state
                 stateGrid.grid[i][j] = checkGrid.grid[i][j];
+
+                //displays a message accordingly
                 switch (stateGrid.grid[i][j]) {
                     case MISS:
                         runtimeLog(INFO, "Miss");
@@ -237,6 +253,7 @@ grids checkState(grids stateGrid, grids checkGrid) {
 bool checkWin(grids stateGrid, grids checkGrid) {
     bool win = true;
 
+    //compares both grids and returns true if every cell with a boat has been hit
     for (int i = 0; i < MAX_X; ++i) {
         for (int j = 0; j < MAX_Y; ++j) {
             if (checkGrid.grid[i][j] == HIT && stateGrid.grid[i][j] != HIT) {
@@ -257,6 +274,8 @@ bool checkWin(grids stateGrid, grids checkGrid) {
  */
 void displayResult(users currentUser, int misses) {
     system("cls");
+
+    //displays the result text depending on the user status
     if (currentUser.authenticated) {
         printf("Well done %s !\n", currentUser.nickname);
     } else {
@@ -278,6 +297,7 @@ scores missCount(grids currentGrid) {
     scores currentScore;
     currentScore.misses = 0;
 
+    //counts every miss
     for (int i = 0; i < MAX_X; ++i) {
         for (int j = 0; j < MAX_Y; ++j) {
             if (currentGrid.grid[i][j] == MISS) {

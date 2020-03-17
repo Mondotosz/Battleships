@@ -9,6 +9,12 @@
 #include <stdarg.h>
 #include "logs.h"
 
+/**
+ * logs message to runtime.log file
+ * @param logType supports INFO,WARNING,ERROR
+ * @param string
+ * @param ... basic formatting arguments %c => char
+ */
 void runtimeLog(char logType, char *string, ...) {
     char *p;
     va_list argList;

@@ -10,6 +10,8 @@
 
 /**
  * pauses the program until the user presses enter
+ * @warning values from getch are transferred to a buffer to avoid corrupting the next input
+ * @warning workaround needs a definite fix
  */
 void pause() {
     int buffer;
@@ -74,7 +76,7 @@ int getInt(int min, int max) {
 }
 
 /**
- *
+ * an alternative for strtol / atoi which reads digits from right to left, ignoring chars other than digits
  * @param string
  * @return returns the integers found in a string
  */
@@ -117,7 +119,8 @@ int base26(char string[16]) {
 }
 
 /**
- *
+ * translates an integer value to alphabet
+ * @warning Doesn't support values higher than 26, will be replaced for the final version
  * @param intValue
  * @return a char from A=1, B=2 => ...
  */
@@ -129,14 +132,19 @@ char intToChar(int intValue) {
     return letter;
 }
 
+/**
+ * offset text horizontally
+ * @warning will be replaced with text formatting directly in the program in the end
+ * @param offset
+ */
 void offsetX(int offset) {
-
-    for (int i = 0; i < offset; ++i) {
-        printf(" ");
-    }
-
+    printf("%*s", offset, "");
 }
 
+/**
+ * offset the text vertically
+ * @param offset
+ */
 void offsetY(int offset) {
 
     for (int i = 0; i < offset; ++i) {

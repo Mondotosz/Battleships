@@ -1,7 +1,7 @@
 /**
  * \name battleships
  * \author augsburger kenan
- * \date 04.03.2020
+ * \date 17.03.2020
  * \version 0.1
  */
 
@@ -79,6 +79,7 @@ void menu() {
 
     } while (quit == false);
 
+    runtimeLog(INFO, "Quit game correctly");
 }
 
 /**
@@ -88,6 +89,5 @@ void menu() {
 int main() {
     runtimeLog(INFO, "Game started");
     menu();
-    runtimeLog(INFO, "Quit game correctly");
     return 0;
 }

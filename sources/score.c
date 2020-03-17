@@ -100,14 +100,18 @@ scoreboard getScoreboard() {
         //gets the values in it
         strcpy(tempString, "");
         while (!feof(filePointer)) {
+
             do {
                 fflush(stdin);
                 fscanf(filePointer, "%c", &cursor);
             } while (cursor == ' ');
+
             //detects variable name
             if (cursor == '"') {
+
                 //empty tempString
                 strcpy(tempString, "");
+
                 //get current variable
                 do {
                     fflush(stdin);
@@ -133,6 +137,7 @@ scoreboard getScoreboard() {
                 do {
                     fflush(stdin);
                     fscanf(filePointer, "%c", &cursor);
+
                     //gets the value for the current variable
                     if (cursor == '"') {
                         strcpy(tempString, "");
@@ -142,6 +147,7 @@ scoreboard getScoreboard() {
                             if (cursor != '"') {
                                 strncat(tempString, &cursor, 1);
                             } else {
+
                                 //puts the value in the correct variable
                                 switch (currentVar) {
                                     case NICKNAME:
@@ -179,11 +185,14 @@ void newScore(scores newScore) {
 
     //get current scoreboard
     currentScoreboard = getScoreboard();
+
     //add new score to the variable
     currentScoreboard.existingScores[currentScoreboard.range] = newScore;
     currentScoreboard.range++;
+
     //sort scores before saving
     currentScoreboard = bubbleSortScoreboard(currentScoreboard);
+
     //outputs the scoreboard to the file
     filePointer = fopen(SCOREBOARD_JSON, "w");
     for (int i = 0; i < currentScoreboard.range; ++i) {
@@ -194,7 +203,6 @@ void newScore(scores newScore) {
     fclose(filePointer);
 
     runtimeLog(INFO, "saved score");
-
 }
 
 /**
