@@ -92,6 +92,8 @@ int stringToInt(char *string) {
         }
     }
 
+    if (string[0] == '-') result *= -1;
+
     return result;
 }
 
