@@ -155,7 +155,7 @@ scoreboard getScoreboard() {
                                                 tempString, MAX_NICKNAME_LENGTH);
                                         break;
                                     case TRIES:
-                                        currentScoreboard.existingScores[currentScoreboard.range].misses = atoi(
+                                        currentScoreboard.existingScores[currentScoreboard.range].misses = stringToInt(
                                                 tempString);
                                         currentScoreboard.range++;
                                         break;
