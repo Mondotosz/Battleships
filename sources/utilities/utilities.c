@@ -31,7 +31,7 @@ bool trueFalse() {
     bool result;
 
     //displays the two available answers
-    printf("(%s/%s)\n",TRUE_STR,FALSE_STR);
+    printf("(%s/%s)\n", TRUE_STR, FALSE_STR);
     printf(": ");
 
     //asks until the answer is valid
@@ -59,7 +59,7 @@ bool trueFalse() {
  * @return
  */
 int getInt(int min, int max) {
-    char string[2];
+    char string[5];
     int selection;
 
     //visual indicator
@@ -68,7 +68,8 @@ int getInt(int min, int max) {
     //clean string to long
     do {
         fflush(stdin);
-        scanf("%s", string);
+        fgets(string, sizeof(string), stdin);
+        string[strcspn(string, "\n")] = '\0';
         selection = stringToInt(string);
     } while (selection < min || selection > max);
 
