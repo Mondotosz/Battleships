@@ -10,17 +10,16 @@
 
 /**
  * pauses the program until the user presses enter
- * @warning values from getch are transferred to a buffer to avoid corrupting the next input
- * @warning workaround needs a definite fix
  */
 void pause() {
-    int buffer;
-    //wait for input to return
+
+    //pause indicator
     printf("\n");
     printf("press any key to return\n");
-    fflush(stdin);
-    //empties getch to avoid overflow
-    buffer = getch();
+
+    //wait for input to return
+    while (kbhit() == 0);
+
 }
 
 /**
