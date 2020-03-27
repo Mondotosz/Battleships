@@ -76,6 +76,7 @@ int getInt(int min, int max) {
 }
 
 /**
+ * @warning the first char must be a '-' in order to get a negative value
  * an alternative for strtol / atoi which reads digits from right to left, ignoring chars other than digits
  * @param string
  * @return returns the integers found in a string
@@ -92,7 +93,6 @@ int stringToInt(char *string) {
         }
     }
 
-    //TODO:technically wrong
     if (string[0] == '-') result *= -1;
 
     return result;
