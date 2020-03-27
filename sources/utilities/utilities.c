@@ -100,6 +100,7 @@ int stringToInt(char *string) {
 
 /**
  * translates alphabet chars to int
+ * @warning value is always unsigned
  * @param string
  * @return
  */
