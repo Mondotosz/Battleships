@@ -52,7 +52,6 @@ bool trueFalse() {
 }
 
 /**
- * @warning avoid 0 as min value as letters
  * gets an int value from user
  * @param min value returned
  * @param max value returned
