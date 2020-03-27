@@ -83,6 +83,7 @@ void gameHub(users currentUser) {
 }
 
 //TODO:use format specifiers to simplify display
+//TODO: \033[33m%s\033[0m
 
 /**
  * Displays the grid with formatting
