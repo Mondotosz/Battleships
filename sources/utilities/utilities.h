@@ -11,6 +11,9 @@
 
 void pause();
 
+#define TRUE_STR "yes"
+#define FALSE_STR "no"
+
 bool trueFalse(void);
 
 int getInt(int min, int max);

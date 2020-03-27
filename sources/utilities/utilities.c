@@ -27,21 +27,22 @@ void pause() {
  * @return true/false
  */
 bool trueFalse() {
-    char answer;
+    char answer[5];
     bool result;
 
     //displays the two available answers
-    printf("(y/n)\n");
+    printf("(%s/%s)\n",TRUE_STR,FALSE_STR);
     printf(": ");
 
     //asks until the answer is valid
     do {
         fflush(stdin);
-        scanf("%s", &answer);
-    } while (strcmp(&answer, "y") != 0 && strcmp(&answer, "n") != 0);
+        fgets(answer, sizeof(answer), stdin);
+        answer[strcspn(answer, "\n")] = '\0';
+    } while (strncmp(answer, TRUE_STR, sizeof(answer)) != 0 && strncmp(answer, FALSE_STR, sizeof(answer)) != 0);
 
     //compare the answer in order to return true or false
-    if (strcmp(&answer, "y") == 0) {
+    if (strncmp(answer, TRUE_STR, sizeof(answer)) == 0) {
         result = true;
     } else {
         result = false;
