@@ -206,9 +206,18 @@ void newScore(scores newScore) {
     //get current scoreboard
     currentScoreboard = getScoreboard();
 
-    //add new score to the variable
-    currentScoreboard.existingScores[currentScoreboard.range] = newScore;
-    currentScoreboard.range++;
+
+    if (currentScoreboard.range < MAX_RECORDED_SCORES) {
+        //add new score to the variable
+        currentScoreboard.existingScores[currentScoreboard.range] = newScore;
+        currentScoreboard.range++;
+    } else {
+        //compares with the worst score
+        if (currentScoreboard.existingScores[MAX_RECORDED_SCORES - 1].misses > newScore.misses) {
+            currentScoreboard.existingScores[MAX_RECORDED_SCORES - 1] = newScore;
+        }
+
+    }
 
     //sort scores before saving
     currentScoreboard = bubbleSortScoreboard(currentScoreboard);
