@@ -22,7 +22,7 @@ void displayScores(void);
 
 #define SCOREBOARD_FILE "scoreboard.scores"
 #define NICKNAME 'n'
-#define TRIES 'm'
+#define MISSES 'm'
 
 scoreboard getScoreboard();
 

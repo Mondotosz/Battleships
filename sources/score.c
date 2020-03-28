@@ -103,7 +103,7 @@ scoreboard getScoreboard() {
 
         //gets the values in it
         tempString[0] = '\0';
-        while (!feof(filePointer)) {
+        while (!feof(filePointer) && currentScoreboard.range < MAX_RECORDED_SCORES) {
 
             do {
                 fflush(stdin);
@@ -131,7 +131,7 @@ scoreboard getScoreboard() {
             if (strcmp(tempString, "nickname") == 0) {
                 currentVar = NICKNAME;
             } else if (strcmp(tempString, "misses") == 0) {
-                currentVar = TRIES;
+                currentVar = MISSES;
             } else {
                 currentVar = ' ';
             }
@@ -153,17 +153,16 @@ scoreboard getScoreboard() {
                             } else {
 
                                 //puts the value in the correct variable
-                                switch (currentVar) {
-                                    case NICKNAME:
-                                        strncpy(currentScoreboard.existingScores[currentScoreboard.range].nickname,
-                                                tempString,
-                                                sizeof(currentScoreboard.existingScores[currentScoreboard.range].nickname)-1);
-                                        break;
-                                    case TRIES:
-                                        currentScoreboard.existingScores[currentScoreboard.range].misses = stringToInt(
-                                                tempString);
-                                        currentScoreboard.range++;
-                                        break;
+
+                                if (currentVar == NICKNAME) {
+                                    strncpy(currentScoreboard.existingScores[currentScoreboard.range].nickname,
+                                            tempString,
+                                            sizeof(currentScoreboard.existingScores[currentScoreboard.range].nickname) -
+                                            1);
+                                } else {
+                                    currentScoreboard.existingScores[currentScoreboard.range].misses = stringToInt(
+                                            tempString);
+                                    currentScoreboard.range++;
                                 }
 
                                 tempString[0] = '\0';
