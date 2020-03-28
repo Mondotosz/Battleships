@@ -94,9 +94,9 @@ scoreboard getScoreboard() {
     currentScoreboard.range = 0;
 
     //opens file
-    filePointer = fopen(SCOREBOARD_JSON, "r");
+    filePointer = fopen(SCOREBOARD_FILE, "r");
     if (filePointer == NULL) {
-        filePointer = fopen(SCOREBOARD_JSON, "w");
+        filePointer = fopen(SCOREBOARD_FILE, "w");
     } else {
 
         //gets the values in it
@@ -196,7 +196,7 @@ void newScore(scores newScore) {
     currentScoreboard = bubbleSortScoreboard(currentScoreboard);
 
     //outputs the scoreboard to the file
-    filePointer = fopen(SCOREBOARD_JSON, "w");
+    filePointer = fopen(SCOREBOARD_FILE, "w");
     for (int i = 0; i < currentScoreboard.range; ++i) {
         fprintf(filePointer, "\"nickname\":\"%s\",\n", currentScoreboard.existingScores[i].nickname);
         fprintf(filePointer, "\"misses\":\"%d\",\n", currentScoreboard.existingScores[i].misses);

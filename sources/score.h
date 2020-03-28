@@ -20,7 +20,7 @@ typedef struct {
 
 void displayScores(void);
 
-#define SCOREBOARD_JSON "scoreboard.json"
+#define SCOREBOARD_FILE "scoreboard.scores"
 #define NICKNAME 'n'
 #define TRIES 'm'
 
