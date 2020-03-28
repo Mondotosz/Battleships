@@ -13,6 +13,7 @@
  */
 void displayHelp() {
     const int offset = 4;
+    runtimeLog(INFO, "entered help()");
     //displays help
     system("cls");
     printf("%sHelp%s\n", T_BOLD, T_RESET);

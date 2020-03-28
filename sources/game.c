@@ -22,6 +22,8 @@ void gameHub(users currentUser) {
     grids checkGrid;
     armada fleet;
 
+    runtimeLog(INFO, "entered gameHub()");
+
     //setup
     for (int i = 0; i < MAX_X; ++i) {
         for (int j = 0; j < MAX_Y; ++j) {
@@ -79,7 +81,7 @@ void gameHub(users currentUser) {
         newScore(currentScore);
     }
 
-    runtimeLog(INFO, "%s exited gameHub() successfully", currentUser.nickname);
+    runtimeLog(INFO, "exited gameHub()");
 }
 
 //TODO:use format specifiers to simplify display

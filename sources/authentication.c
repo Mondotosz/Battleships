@@ -15,6 +15,8 @@
  * @return updated user
  */
 users authenticationMenu(users currentUser) {
+    runtimeLog(INFO, "entered authentication menu()");
+
     system("cls");
 
     //welcomes user depending on whether he is authenticated
@@ -32,7 +34,7 @@ users authenticationMenu(users currentUser) {
         currentUser = authenticateUser(currentUser);
     }
 
-    runtimeLog(INFO, "%s exited authentication menu() successfully", currentUser.nickname);
+    runtimeLog(INFO, "exited authentication menu()");
     return currentUser;
 }
 
@@ -44,7 +46,7 @@ users authenticationMenu(users currentUser) {
 users authenticateUser(users authenticatingUser) {
     //setup
     system("cls");
-    printf("%sAuthenticate%s\n",T_BOLD,T_RESET);
+    printf("%sAuthenticate%s\n", T_BOLD, T_RESET);
     printf("\n");
 
     //gets the username
@@ -55,7 +57,7 @@ users authenticateUser(users authenticatingUser) {
     //set user as authenticated
     authenticatingUser.authenticated = true;
 
-    runtimeLog(INFO, "user authenticated as %s", authenticatingUser.nickname);
+    runtimeLog(INFO, "authenticated as %s", authenticatingUser.nickname);
 
     return authenticatingUser;
 }

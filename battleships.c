@@ -25,7 +25,7 @@
 void displayMenu() {
     //display available options
     system("cls");
-    printf("%sBattleships%s\n",T_BOLD,T_RESET);
+    printf("%sBattleships%s\n", T_BOLD, T_RESET);
     printf("\n");
     printf("1 - Start\n");
     printf("2 - Help\n");
@@ -41,6 +41,7 @@ void menu() {
     int selection;
     bool quit = false;
     users currentUser;
+    runtimeLog(INFO, "entered menu()");
 
     //default user
     strncpy(currentUser.nickname, "User", MAX_NICKNAME_LENGTH);
@@ -55,31 +56,26 @@ void menu() {
         //resulting calls
         switch (selection) {
             case 1://Start
-                runtimeLog(INFO, "%s => gameHub()", currentUser.nickname);
                 gameHub(currentUser);
                 break;
             case 2://Help
-                runtimeLog(INFO, "%s => help()", currentUser.nickname);
                 displayHelp();
                 break;
             case 3://Scoreboard
-                runtimeLog(INFO, "%s => scoreboard()", currentUser.nickname);
                 displayScores();
                 break;
             case 4://User
-                runtimeLog(INFO, "%s => authentication menu()", currentUser.nickname);
                 currentUser = authenticationMenu(currentUser);
                 break;
             case 5://Quit
                 quit = true;
                 break;
             default:
-                runtimeLog(ERROR, "%s unexpected selection in menu : %d", currentUser.nickname, selection);
+                runtimeLog(ERROR, "unexpected selection in menu : %d", selection);
         }
 
     } while (quit == false);
-
-    runtimeLog(INFO, "Quit game correctly");
+    runtimeLog(INFO, "exited menu()");
 }
 
 /**
@@ -87,7 +83,8 @@ void menu() {
  * @return 0
  */
 int main() {
-    runtimeLog(INFO, "Game started");
+    runtimeLog(INFO, "Program start");
     menu();
+    runtimeLog(INFO, "Program end");
     return 0;
 }

@@ -15,6 +15,8 @@
 void displayScores() {
     scoreboard currentScoreboard;
 
+    runtimeLog(INFO, "entered scoreboard()");
+
     //setup
     system("cls");
     printf("%sScore%s\n",T_BOLD,T_RESET);
@@ -76,7 +78,7 @@ void displayScores() {
 
     pause();
 
-    runtimeLog(INFO, "exited scoreboard() successfully");
+    runtimeLog(INFO, "exited scoreboard()");
 }
 
 /**
