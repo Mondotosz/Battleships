@@ -138,13 +138,13 @@ void displayGrid(grids displayedGrid) {
         for (int j = 0; j < MAX_X; ++j) {
             switch (displayedGrid.grid[j][i]) {
                 case UNCHECKED:
-                    printf("%c%c", 176, 176);
-                    break;
-                case MISS:
                     printf("  ");
                     break;
+                case MISS:
+                    printf("%s%c%c%s", T_CYAN, 176, 176, T_RESET);
+                    break;
                 case HIT:
-                    printf("%c%c", 219, 219);
+                    printf("%s%c%c%s", T_RED, 219, 219, T_RESET);
                     break;
                 default:
                     runtimeLog(WARNING, "Unexpected value grid[%d][%d]=%d", i, j, displayedGrid.grid[i][j]);

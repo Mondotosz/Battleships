@@ -25,7 +25,7 @@
 void displayMenu() {
     //display available options
     system("cls");
-    printf("Battleships\n");
+    printf("%sBattleships%s\n",T_BOLD,T_RESET);
     printf("\n");
     printf("1 - Start\n");
     printf("2 - Help\n");

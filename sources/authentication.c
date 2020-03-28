@@ -44,7 +44,7 @@ users authenticationMenu(users currentUser) {
 users authenticateUser(users authenticatingUser) {
     //setup
     system("cls");
-    printf("Authenticate\n");
+    printf("%sAuthenticate%s\n",T_BOLD,T_RESET);
     printf("\n");
 
     //gets the username

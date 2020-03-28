@@ -14,7 +14,7 @@
 void displayHelp() {
     //displays help
     system("cls");
-    printf("Help\n");
+    printf("%sHelp%s\n",T_BOLD,T_RESET);
     printf("\n");
     printf("The goal of this game is to sink every boat in the grid.\n");
     printf("To do so you'll need to input coordinates to hit them.\n");

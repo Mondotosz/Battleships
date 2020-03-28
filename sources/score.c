@@ -17,7 +17,7 @@ void displayScores() {
 
     //setup
     system("cls");
-    printf("Score\n");
+    printf("%sScore%s\n",T_BOLD,T_RESET);
     printf("\n");
 
     //gets the scoreboard
