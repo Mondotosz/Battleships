@@ -9,6 +9,8 @@
 #include "utilities/logs.h"
 #include "score.h"
 
+//TODO:make it more flexible with format specifier %*s
+
 /**
  * displays scores from score file
  */
@@ -100,26 +102,26 @@ scoreboard getScoreboard() {
     } else {
 
         //gets the values in it
-        strcpy(tempString, "");
+        tempString[0] = '\0';
         while (!feof(filePointer)) {
 
             do {
                 fflush(stdin);
-                fscanf(filePointer, "%c", &cursor);
+                cursor = (char) fgetc(filePointer);
             } while (cursor == ' ');
 
             //detects variable name
             if (cursor == '"') {
 
                 //empty tempString
-                strcpy(tempString, "");
+                tempString[0] = '\0';
 
                 //get current variable
                 do {
                     fflush(stdin);
-                    fscanf(filePointer, "%c", &cursor);
+                    cursor = (char) fgetc(filePointer);
                     if (cursor != '"') {
-                        strncat(tempString, &cursor, 1);
+                        snprintf(tempString, sizeof(tempString), "%s%c", tempString, cursor);
                     }
                 } while (cursor != '"');
                 //on exit we get the var name
@@ -138,23 +140,24 @@ scoreboard getScoreboard() {
             if (currentVar != ' ') {
                 do {
                     fflush(stdin);
-                    fscanf(filePointer, "%c", &cursor);
+                    cursor = (char) fgetc(filePointer);
 
                     //gets the value for the current variable
                     if (cursor == '"') {
-                        strcpy(tempString, "");
+                        tempString[0] = '\0';
                         do {
                             fflush(stdin);
-                            fscanf(filePointer, "%c", &cursor);
+                            cursor = (char) fgetc(filePointer);
                             if (cursor != '"') {
-                                strncat(tempString, &cursor, 1);
+                                snprintf(tempString, sizeof(tempString), "%s%c", tempString, cursor);
                             } else {
 
                                 //puts the value in the correct variable
                                 switch (currentVar) {
                                     case NICKNAME:
                                         strncpy(currentScoreboard.existingScores[currentScoreboard.range].nickname,
-                                                tempString, MAX_NICKNAME_LENGTH);
+                                                tempString,
+                                                sizeof(currentScoreboard.existingScores[currentScoreboard.range].nickname)-1);
                                         break;
                                     case TRIES:
                                         currentScoreboard.existingScores[currentScoreboard.range].misses = stringToInt(
@@ -163,7 +166,7 @@ scoreboard getScoreboard() {
                                         break;
                                 }
 
-                                strcpy(tempString, "");
+                                tempString[0] = '\0';
                             }
                         } while (cursor != '"');
                     }
