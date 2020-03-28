@@ -185,13 +185,6 @@ void newScore(scores newScore) {
     FILE *filePointer;
     scoreboard currentScoreboard;
 
-    //parses the newScore for unwanted inputs and removes them
-    do {
-        newScore.nickname[strcspn(newScore.nickname, "\"")] = ' ';
-        newScore.nickname[strcspn(newScore.nickname, "\n")] = '\0';
-    } while (strcspn(newScore.nickname, "\"") != strlen(newScore.nickname) &&
-             strcspn(newScore.nickname, "\n") != strlen(newScore.nickname));
-
     //exits on overflow to avoid scoreboard corruption
     if (strlen(newScore.nickname) > MAX_NICKNAME_LENGTH) {
         runtimeLog(ERROR, "score.nickname overflow : score wasn't saved");
@@ -200,6 +193,13 @@ void newScore(scores newScore) {
         pause();
         exit(1);
     }
+
+    //parses the newScore for unwanted inputs and removes them
+    do {
+        newScore.nickname[strcspn(newScore.nickname, "\n")] = '\0';
+        newScore.nickname[strcspn(newScore.nickname, "\"")] = ' ';
+    } while (strcspn(newScore.nickname, "\"") != strlen(newScore.nickname) &&
+             strcspn(newScore.nickname, "\n") != strlen(newScore.nickname));
 
     //get current scoreboard
     currentScoreboard = getScoreboard();
