@@ -100,7 +100,6 @@ armada getArmada() {
                                 strncat(tempString, &cursor, 1);
                             } else {
 
-                                //TODO:replace atoi to avoid problems
                                 //puts the value in the correct variable
                                 switch (currentVar) {
                                     case BOAT_LENGTH:
