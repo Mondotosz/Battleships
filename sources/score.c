@@ -19,7 +19,7 @@ void displayScores() {
 
     //setup
     system("cls");
-    printf("%sScore%s\n",T_BOLD,T_RESET);
+    printf("%sScore%s\n", T_BOLD, T_RESET);
     printf("\n");
 
     //gets the scoreboard
@@ -184,6 +184,22 @@ scoreboard getScoreboard() {
 void newScore(scores newScore) {
     FILE *filePointer;
     scoreboard currentScoreboard;
+
+    //parses the newScore for unwanted inputs and removes them
+    do {
+        newScore.nickname[strcspn(newScore.nickname, "\"")] = ' ';
+        newScore.nickname[strcspn(newScore.nickname, "\n")] = '\0';
+    } while (strcspn(newScore.nickname, "\"") != strlen(newScore.nickname) &&
+             strcspn(newScore.nickname, "\n") != strlen(newScore.nickname));
+
+    //exits on overflow to avoid scoreboard corruption
+    if (strlen(newScore.nickname) > MAX_NICKNAME_LENGTH) {
+        runtimeLog(ERROR, "score.nickname overflow : score wasn't saved");
+        printf("\n");
+        printf("ERROR : Check runtime.log\n");
+        pause();
+        exit(1);
+    }
 
     //get current scoreboard
     currentScoreboard = getScoreboard();
