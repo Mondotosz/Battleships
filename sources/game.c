@@ -21,6 +21,7 @@ void gameHub(users player) {
 
     runtimeLog(INFO, "entered gameHub()");
 
+    //option listing
     system("cls");
     printf("%sGame mode%s\n", T_BOLD, T_RESET);
     printf("\n");

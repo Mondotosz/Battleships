@@ -29,8 +29,7 @@ void runtimeLog(char logType, char *string, ...) {
     char currentTime[50];
 
     fflush(stdin);
-
-    strcpy(formattedString, "");
+    formattedString[0] = '\0';
 
     //parses through args
     va_start(argList, string);
@@ -50,7 +49,7 @@ void runtimeLog(char logType, char *string, ...) {
                     break;
                 case 's':
                     s = va_arg(argList, char *);
-                    strncat(formattedString, s, sizeof(s) * 8);
+                    strncat(formattedString, s, sizeof(formattedString) / sizeof(formattedString[0]));
                     break;
                 case 'x':
                     i = va_arg(argList, int);
