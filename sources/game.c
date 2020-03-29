@@ -56,6 +56,7 @@ void gameHub(users player) {
  * @param player
  */
 void game(users player) {
+    char buffer[8];
     bool win = false;
     scores currentScore;
     grids stateGrid;
@@ -63,16 +64,31 @@ void game(users player) {
     armada fleet;
 
     //setup
-    for (int i = 0; i < MAX_X; ++i) {
-        for (int j = 0; j < MAX_Y; ++j) {
-            stateGrid.grid[i][j] = UNCHECKED;
+    system("cls");
+    printf("%sSetup%s\n", T_BOLD, T_RESET);
+    printf("\n");
+    printf("Grid size (min h8 / max z26)\n");
+
+    do {
+        fflush(stdin);
+        fgets(buffer, sizeof(buffer) / sizeof(buffer[0]), stdin);
+        buffer[strcspn(buffer, "\n")] = '\0';
+        stateGrid.maxX = stringToInt(buffer);
+        stateGrid.maxY = base26(buffer);
+    } while (stateGrid.maxX < 8 || stateGrid.maxY < 8 || stateGrid.maxX > MAX_X || stateGrid.maxY > MAX_Y);
+
+
+    for (int y = 0; y < stateGrid.maxY; ++y) {
+        for (int x = 0; x < stateGrid.maxX; ++x) {
+            stateGrid.grid[y][x] = UNCHECKED;
         }
     }
 
-    //gets a randomized armada structure
-    fleet = getRandomFleet();
+
+    //gets a randomized armada structure fitting the grid
+    fleet = getRandomFleet(stateGrid);
     //translates its boats to grid coordinates
-    checkGrid = armadaToGrid(fleet);
+    checkGrid = armadaToGrid(fleet, stateGrid);
     //defaults miss count to 0
     currentScore.misses = 0;
 
@@ -99,31 +115,11 @@ void game(users player) {
     } while (win == false);
 
     //displays the end result
-    displayResult(player, currentScore.misses);
-
-    //if the user didn't authenticate before playing
-    system("cls");
-    if (!player.authenticated) {
-        printf("\n");
-        printf("Would you like to save your score ?");
-
-        //authenticate the user if he wants to save the score
-        if (trueFalse()) {
-            player = authenticateUser(player);
-        }
-    }
-
-    //saves the score if the user is authenticated
-    if (player.authenticated) {
-        strncpy(currentScore.nickname, player.nickname, MAX_NICKNAME_LENGTH - 1);
-        newScore(currentScore);
-    }
-
+    displayResult(player, currentScore);
 
 }
 
 //TODO:use format specifiers to simplify display
-//TODO: \033[33m%s\033[0m
 
 /**
  * Displays the grid with formatting
@@ -140,7 +136,7 @@ void displayGrid(grids displayedGrid) {
     //grid top
     offsetX(xOffsetValue);
     printf("%c", 201);
-    for (int m = 0; m < MAX_X * 3 + 2; ++m) {
+    for (int m = 0; m < displayedGrid.maxX * 3 + 2; ++m) {
         if ((m + 1) % 3 == 0) {
             printf("%c", 203);
         } else {
@@ -152,16 +148,16 @@ void displayGrid(grids displayedGrid) {
     //integer markers
     offsetX(xOffsetValue);
     printf("%c  %c", 186, 186);
-    for (int l = 1; l < MAX_X + 1; ++l) {
+    for (int l = 1; l < displayedGrid.maxX + 1; ++l) {
         printf("%2d%c", l, 186);
     }
     printf("\n");
-    for (int i = 0; i < MAX_Y; ++i) {
+    for (int y = 0; y < displayedGrid.maxY; ++y) {
 
         //vertical gap
         offsetX(xOffsetValue);
         printf("%c", 204);
-        for (int k = 0; k < MAX_X * 3 + 2; ++k) {
+        for (int k = 0; k < displayedGrid.maxX * 3 + 2; ++k) {
             if ((k + 1) % 3 == 0) {
                 printf("%c", 206);
             } else {
@@ -172,11 +168,11 @@ void displayGrid(grids displayedGrid) {
 
         //side letter indicators
         offsetX(xOffsetValue);
-        printf("%c %c%c", 186, intToChar(i + 1), 186);
+        printf("%c %c%c", 186, intToChar(y + 1), 186);
 
         //displays cell state
-        for (int j = 0; j < MAX_X; ++j) {
-            switch (displayedGrid.grid[j][i]) {
+        for (int x = 0; x < displayedGrid.maxX; ++x) {
+            switch (displayedGrid.grid[y][x]) {
                 case UNCHECKED:
                     printf("  ");
                     break;
@@ -187,7 +183,7 @@ void displayGrid(grids displayedGrid) {
                     printf("%s%c%c%s", T_RED, 219, 219, T_RESET);
                     break;
                 default:
-                    runtimeLog(WARNING, "Unexpected value grid[%d][%d]=%d", i, j, displayedGrid.grid[i][j]);
+                    runtimeLog(WARNING, "Unexpected value grid[%d][%d]=%d", y, x, displayedGrid.grid[y][x]);
             }
             printf("%c", 186);
         }
@@ -197,7 +193,7 @@ void displayGrid(grids displayedGrid) {
     //grid bottom
     offsetX(xOffsetValue);
     printf("%c", 200);
-    for (int m = 0; m < MAX_X * 3 + 2; ++m) {
+    for (int m = 0; m < displayedGrid.maxX * 3 + 2; ++m) {
         if ((m + 1) % 3 == 0) {
             printf("%c", 202);
         } else {
@@ -210,13 +206,13 @@ void displayGrid(grids displayedGrid) {
 
 /**
  * changes grid state on chosen coordinates
- * @param stateGrid
+ * @param map
  * @return
  */
-grids fire(grids stateGrid) {
+grids fire(grids map) {
     int x;
     int y;
-    char input[16];
+    char buffer[16];
 
     do {
 
@@ -226,27 +222,28 @@ grids fire(grids stateGrid) {
             offsetX(4);
             printf("coordinates : ");
             fflush(stdin);
-            scanf("%s", input);
-            x = stringToInt(input);
-            y = base26(input);
-        } while (y < 1 || y > MAX_Y || x < 1 || x > MAX_X);
+            fgets(buffer, sizeof(buffer) / sizeof(buffer[0]), stdin);
+            buffer[strcspn(buffer, "\n")] = '\0';
+            x = stringToInt(buffer);
+            y = base26(buffer);
+        } while (y < 1 || y > map.maxY || x < 1 || x > map.maxX);
         x -= OFFSET;
         y -= OFFSET;
 
         //check whether the cell was already checked
-        if (stateGrid.grid[x][y] != UNCHECKED) {
+        if (map.grid[y][x] != UNCHECKED) {
             printf("\n");
             printf("You already checked this cell !\n");
         }
 
-    } while (stateGrid.grid[x][y] != UNCHECKED);
+    } while (map.grid[y][x] != UNCHECKED);
 
-    //puts them in stateGrid
-    stateGrid.grid[x][y] = CHECKING;
+    //puts them in map
+    map.grid[y][x] = CHECKING;
 
-    runtimeLog(INFO, "player shot at x : %d y : %d", y, x);
+    runtimeLog(INFO, "player shot at x : %d y : %d", x, y);
 
-    return stateGrid;
+    return map;
 }
 
 //TODO:Check grid without translating => in game info on which boat was sunk
@@ -258,17 +255,17 @@ grids fire(grids stateGrid) {
  * @return updated grid
  */
 grids checkState(grids stateGrid, grids checkGrid) {
-    for (int i = 0; i < MAX_X; ++i) {
-        for (int j = 0; j < MAX_Y; ++j) {
+    for (int y = 0; y < stateGrid.maxY; ++y) {
+        for (int x = 0; x < stateGrid.maxX; ++x) {
 
             //seeks the cell which was shot
-            if (stateGrid.grid[i][j] == CHECKING) {
+            if (stateGrid.grid[y][x] == CHECKING) {
 
                 //changes the cell state
-                stateGrid.grid[i][j] = checkGrid.grid[i][j];
+                stateGrid.grid[y][x] = checkGrid.grid[y][x];
 
                 //displays a message accordingly
-                switch (stateGrid.grid[i][j]) {
+                switch (stateGrid.grid[y][x]) {
                     case MISS:
                         runtimeLog(INFO, "Miss");
                         break;
@@ -276,7 +273,7 @@ grids checkState(grids stateGrid, grids checkGrid) {
                         runtimeLog(INFO, "Hit");
                         break;
                     default:
-                        runtimeLog(ERROR, "unexpected state : %d", stateGrid.grid[i][j]);
+                        runtimeLog(ERROR, "unexpected state : %d", stateGrid.grid[y][x]);
                         break;
                 }
             }
@@ -295,9 +292,9 @@ bool checkWin(grids stateGrid, grids checkGrid) {
     bool win = true;
 
     //compares both grids and returns true if every cell with a boat has been hit
-    for (int i = 0; i < MAX_X; ++i) {
-        for (int j = 0; j < MAX_Y; ++j) {
-            if (checkGrid.grid[i][j] == HIT && stateGrid.grid[i][j] != HIT) {
+    for (int y = 0; y < stateGrid.maxY; ++y) {
+        for (int x = 0; x < stateGrid.maxX; ++x) {
+            if (checkGrid.grid[y][x] == HIT && stateGrid.grid[y][x] != HIT) {
                 win = false;
             }
         }
@@ -310,38 +307,56 @@ bool checkWin(grids stateGrid, grids checkGrid) {
 
 /**
  * displays a grid from its values
- * @param currentUser
- * @param misses
+ * @param player
+ * @param score
  */
-void displayResult(users currentUser, int misses) {
+void displayResult(users player, scores score) {
     system("cls");
 
     //displays the result text depending on the user status
-    if (currentUser.authenticated) {
-        printf("Well done %s !\n", currentUser.nickname);
+    if (player.authenticated) {
+        printf("Well done %s !\n", player.nickname);
     } else {
         printf("Well done !\n");
     }
 
     printf("\n");
-    printf("misses : %d", misses);
+    printf("score : %d", score.misses);
     printf("\n");
     pause();
+
+    //if the user didn't authenticate before playing
+    system("cls");
+    if (!player.authenticated) {
+        printf("\n");
+        printf("Would you like to save your score ?");
+
+        //authenticate the user if he wants to save the score
+        if (trueFalse()) {
+            player = authenticateUser(player);
+        }
+    }
+
+    //saves the score if the user is authenticated
+    if (player.authenticated) {
+        strncpy(score.nickname, player.nickname, sizeof(score.nickname) / sizeof(score.nickname[0]));
+        newScore(score);
+    }
 }
 
 /**
  * counts how many miss the user had
- * @param currentGrid
+ * @param map
  * @return
  */
-scores missCount(grids currentGrid) {
+scores missCount(grids map) {
     scores currentScore;
     currentScore.misses = 0;
 
     //counts every miss
-    for (int i = 0; i < MAX_X; ++i) {
-        for (int j = 0; j < MAX_Y; ++j) {
-            if (currentGrid.grid[i][j] == MISS) {
+    for (int y = 0; y < map.maxY; ++y) {
+        for (int x = 0; x < map.maxX; ++x) {
+            if (map.grid[y][x] == MISS) {
                 currentScore.misses++;
             }
         }
@@ -355,7 +370,7 @@ scores missCount(grids currentGrid) {
  * generates the 5 standard boats at random coordinates
  * @return random fleet
  */
-armada getRandomFleet() {
+armada getRandomFleet(grids map) {
     armada fleet = {
             {
                     {"Destroyer", 2, 0, 0, HORIZONTAL, false},
@@ -381,8 +396,8 @@ armada getRandomFleet() {
             if (rand() % 2 == 0) {
                 //gives random coordinates to a vertical boat
                 fleet.boats[cBoat].direction = VERTICAL;
-                fleet.boats[cBoat].y = 1 + rand() % (MAX_X - fleet.boats[cBoat].length - 1);
-                fleet.boats[cBoat].x = 1 + rand() % MAX_Y - 1;
+                fleet.boats[cBoat].y = 1 + rand() % (map.maxY - fleet.boats[cBoat].length - 1);
+                fleet.boats[cBoat].x = 1 + rand() % map.maxX - 1;
                 fleet.boats[cBoat].exists = true;
                 //check if it overlaps with any previous boat
                 for (int pBoat = 0; pBoat < cBoat; ++pBoat) {
@@ -426,8 +441,8 @@ armada getRandomFleet() {
             } else {
                 //gives random coordinates to an horizontal boat
                 fleet.boats[cBoat].direction = HORIZONTAL;
-                fleet.boats[cBoat].x = 1 + rand() % (MAX_Y - fleet.boats[cBoat].length - 1);
-                fleet.boats[cBoat].y = 1 + rand() % MAX_X - 1;
+                fleet.boats[cBoat].x = 1 + rand() % (map.maxX - fleet.boats[cBoat].length - 1);
+                fleet.boats[cBoat].y = 1 + rand() % map.maxY - 1;
                 fleet.boats[cBoat].exists = true;
 
                 //check if it overlaps with any previous boat
@@ -482,7 +497,7 @@ armada getRandomFleet() {
         //logs boats information
         runtimeLog(INFO, "generated boat[%d] name:%s length:%d direction:%c x:%d y:%d",
                    k, fleet.boats[k].name, fleet.boats[k].length,
-                   fleet.boats[k].direction, fleet.boats[k].x, fleet.boats[k].y);
+                   fleet.boats[k].direction, fleet.boats[k].x + 1, fleet.boats[k].y + 1);
 
     }
 
@@ -495,16 +510,15 @@ armada getRandomFleet() {
  * @param chosenArmada
  * @return
  */
-grids armadaToGrid(armada chosenArmada) {
-    grids translatedGrid;
+grids armadaToGrid(armada chosenArmada, grids map) {
+    grids translatedGrid = map;
 
     //defaults every values to MISS
-    for (int i = 0; i < MAX_X; ++i) {
-        for (int j = 0; j < MAX_Y; ++j) {
-            translatedGrid.grid[i][j] = MISS;
+    for (int y = 0; y < map.maxY; ++y) {
+        for (int x = 0; x < map.maxX; ++x) {
+            translatedGrid.grid[y][x] = MISS;
         }
     }
-
 
     for (int i = 0; i < chosenArmada.numberOfBoats; ++i) {
 

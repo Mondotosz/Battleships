@@ -7,8 +7,8 @@
 
 #define MAX_NICKNAME_LENGTH 16
 
-#define MAX_X 9
-#define MAX_Y 9
+#define MAX_X 26
+#define MAX_Y 26
 #define OFFSET 1
 #define UNCHECKED 0
 #define MISS 1
@@ -21,7 +21,9 @@
 #define VERTICAL 'V'
 
 typedef struct {
-    int grid[MAX_X][MAX_Y];
+    int grid[MAX_Y][MAX_X];
+    int maxX;
+    int maxY;
 } grids;
 
 typedef struct {
@@ -42,7 +44,7 @@ void gameHub(users currentUser);
 
 void game(users player);
 
-grids fire(grids stateGrid);
+grids fire(grids map);
 
 grids checkState(grids stateGrid, grids checkGrid);
 
@@ -50,12 +52,12 @@ void displayGrid(grids stateGrid);
 
 bool checkWin(grids stateGrid, grids checkGrid);
 
-void displayResult(users currentUser, int tries);
+void displayResult(users player, scores score);
 
-scores missCount(grids currentGrid);
+scores missCount(grids map);
 
-armada getRandomFleet();
+armada getRandomFleet(grids map);
 
-grids armadaToGrid(armada chosenArmada);
+grids armadaToGrid(armada chosenArmada, grids map);
 
 #endif //BATTLESHIPS_GAME_H
