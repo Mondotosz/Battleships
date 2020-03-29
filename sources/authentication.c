@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "utilities/utilities.h"
 #include "utilities/logs.h"
 #include "authentication.h"
@@ -52,7 +53,10 @@ users authenticateUser(users authenticatingUser) {
     //gets the username
     printf("Nickname : ");
     fflush(stdin);
-    scanf("%15s", authenticatingUser.nickname);
+    fgets(authenticatingUser.nickname, sizeof(authenticatingUser.nickname) / sizeof(authenticatingUser.nickname[0]),
+          stdin);
+    authenticatingUser.nickname[strcspn(authenticatingUser.nickname, "\n")] = '\0';
+
 
     //set user as authenticated
     authenticatingUser.authenticated = true;
