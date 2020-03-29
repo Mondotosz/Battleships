@@ -40,6 +40,8 @@ typedef struct {
 
 void gameHub(users currentUser);
 
+void game(users player);
+
 grids fire(grids stateGrid);
 
 grids checkState(grids stateGrid, grids checkGrid);

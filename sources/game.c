@@ -13,16 +13,54 @@
 #include "game.h"
 
 /**
- * main game function
+ * Game menu
  */
-void gameHub(users currentUser) {
+void gameHub(users player) {
+    int i = 0;
+    int selection;
+
+    runtimeLog(INFO, "entered gameHub()");
+
+    system("cls");
+    printf("%sGame mode%s\n", T_BOLD, T_RESET);
+    printf("\n");
+    printf("%d - random map\n", ++i);
+    printf("%d - create\n", ++i);
+    printf("%d - list\n", ++i);
+    printf("%d - back\n", ++i);
+    printf("\n");
+
+    selection = getInt(1, i);
+
+    switch (selection) {
+        case 1:
+            game(player);
+            break;
+        case 2:
+            printf("Map creation not yet implemented\n");
+            pause();
+            break;
+        case 3:
+            printf("Map listing not yet implemented");
+            pause();
+            break;
+        default:
+            break;
+    }
+
+    runtimeLog(INFO, "exited gameHub()");
+}
+
+/**
+ * randomly generated game
+ * @param player
+ */
+void game(users player) {
     bool win = false;
     scores currentScore;
     grids stateGrid;
     grids checkGrid;
     armada fleet;
-
-    runtimeLog(INFO, "entered gameHub()");
 
     //setup
     for (int i = 0; i < MAX_X; ++i) {
@@ -61,27 +99,27 @@ void gameHub(users currentUser) {
     } while (win == false);
 
     //displays the end result
-    displayResult(currentUser, currentScore.misses);
+    displayResult(player, currentScore.misses);
 
     //if the user didn't authenticate before playing
     system("cls");
-    if (!currentUser.authenticated) {
+    if (!player.authenticated) {
         printf("\n");
         printf("Would you like to save your score ?");
 
         //authenticate the user if he wants to save the score
         if (trueFalse()) {
-            currentUser = authenticateUser(currentUser);
+            player = authenticateUser(player);
         }
     }
 
     //saves the score if the user is authenticated
-    if (currentUser.authenticated) {
-        strncpy(currentScore.nickname, currentUser.nickname, MAX_NICKNAME_LENGTH - 1);
+    if (player.authenticated) {
+        strncpy(currentScore.nickname, player.nickname, MAX_NICKNAME_LENGTH - 1);
         newScore(currentScore);
     }
 
-    runtimeLog(INFO, "exited gameHub()");
+
 }
 
 //TODO:use format specifiers to simplify display
