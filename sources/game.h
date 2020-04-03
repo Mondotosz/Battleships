@@ -38,11 +38,13 @@ typedef struct {
 typedef struct {
     boat boats[MAX_BOATS];
     int numberOfBoats;
+    int maxX;
+    int maxY;
 } armada;
 
 void gameHub(users currentUser);
 
-void game(users player);
+void game(users player, char mode);
 
 grids fire(grids map);
 

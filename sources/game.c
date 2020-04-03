@@ -56,7 +56,7 @@ void gameHub(users player) {
  * randomly generated game
  * @param player
  */
-void game(users player) {
+void game(users player, char mode) {
     char buffer[8];
     bool win = false;
     scores currentScore;
@@ -64,19 +64,30 @@ void game(users player) {
     grids checkGrid;
     armada fleet;
 
-    //setup
     system("cls");
-    printf("%sSetup%s\n", T_BOLD, T_RESET);
-    printf("\n");
-    printf("Grid size (min h8 / max z26)\n");
 
-    do {
-        fflush(stdin);
-        fgets(buffer, sizeof(buffer) / sizeof(buffer[0]), stdin);
-        buffer[strcspn(buffer, "\n")] = '\0';
-        stateGrid.maxX = stringToInt(buffer);
-        stateGrid.maxY = base26(buffer);
-    } while (stateGrid.maxX < 8 || stateGrid.maxY < 8 || stateGrid.maxX > MAX_X || stateGrid.maxY > MAX_Y);
+    //setup
+    switch (mode) {
+        case RANDOM_GEN:
+            printf("%sSetup%s\n", T_BOLD, T_RESET);
+            printf("\n");
+            printf("Grid size (min h8 / max z26)\n");
+
+            do {
+                fflush(stdin);
+                fgets(buffer, sizeof(buffer) / sizeof(buffer[0]), stdin);
+                buffer[strcspn(buffer, "\n")] = '\0';
+                stateGrid.maxX = stringToInt(buffer);
+                stateGrid.maxY = base26(buffer);
+            } while (stateGrid.maxX < 8 || stateGrid.maxY < 8 || stateGrid.maxX > MAX_X || stateGrid.maxY > MAX_Y);
+            //gets a randomized armada structure fitting the grid
+            fleet = getRandomFleet(stateGrid);
+            break;
+        case PRE_MADE:
+            exit(2);//currently not usable
+        default:
+            break;
+    }
 
 
     for (int y = 0; y < stateGrid.maxY; ++y) {
@@ -86,8 +97,6 @@ void game(users player) {
     }
 
 
-    //gets a randomized armada structure fitting the grid
-    fleet = getRandomFleet(stateGrid);
     //translates its boats to grid coordinates
     checkGrid = armadaToGrid(fleet, stateGrid);
     //defaults miss count to 0
