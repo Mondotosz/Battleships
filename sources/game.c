@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <ctype.h>
 #include "utilities/utilities.h"
 #include "utilities/logs.h"
 #include "score.h"
@@ -82,9 +83,12 @@ void game(users player, char mode) {
             } while (stateGrid.maxX < 8 || stateGrid.maxY < 8 || stateGrid.maxX > MAX_X || stateGrid.maxY > MAX_Y);
             //gets a randomized armada structure fitting the grid
             fleet = getRandomFleet(stateGrid);
+            //translates its boats to grid coordinates
+            checkGrid = armadaToGrid(fleet, stateGrid);
             break;
         case PRE_MADE:
-            exit(2);//currently not usable
+            checkGrid = getMap("test");
+            break;
         default:
             break;
     }
@@ -97,15 +101,14 @@ void game(users player, char mode) {
     }
 
 
-    //translates its boats to grid coordinates
-    checkGrid = armadaToGrid(fleet, stateGrid);
+
     //defaults miss count to 0
     currentScore.misses = 0;
 
     //game
     do {
         //displays the grid before firing
-        displayGrid(stateGrid);
+        displayGrid(checkGrid);
 
         //gets and displays the stats
         currentScore = missCount(stateGrid);
@@ -564,4 +567,88 @@ grids armadaToGrid(armada chosenArmada, grids map) {
     }
 
     return translatedGrid;
+}
+
+//TODO: Map listing
+//TODO: Map creation
+
+/**
+ * returns a grid from files
+ * @param mapName
+ * @return
+ */
+grids getMap(char *mapName) {
+    char path[32] = "maps/";
+    grids savedMap;
+    FILE *fp; //file pointer
+    char c;
+    char buffer[64];
+    int x = 0;
+    int y = 0;
+
+    //concatenate file path
+    strncat(path, mapName, strlen(mapName) + 1);
+    strncat(path, ".map", strlen(".map") + 1);
+
+    //read from target file
+    fp = fopen(path, "r");
+    if (fp == NULL) {
+        runtimeLog(WARNING, "map not found : %s", path);
+        exit(2);
+    } else {
+
+        //get map max X
+        buffer[0] = '\0';
+        do {
+            c = (char) fgetc(fp);
+
+            if (c != ';') {
+                strncat(buffer, &c, sizeof(buffer) / sizeof(buffer[0]));
+            } else {
+                savedMap.maxX = stringToInt(buffer);
+            }
+
+        } while (c != ';');
+
+        //get map max Y
+        buffer[0] = '\0';
+        do {
+            c = (char) fgetc(fp);
+
+            if (c != ';') {
+                strncat(buffer, &c, sizeof(buffer) / sizeof(buffer[0]));
+            } else {
+                savedMap.maxY = stringToInt(buffer);
+                break;
+            }
+
+        } while (c != ';');
+
+        //get map state
+        do {
+
+            do {
+                c = (char) fgetc(fp);
+            } while (c != '\0' && !isdigit(c));
+
+            if (c != '\0') {
+                savedMap.grid[y][x] = (int) c - '0';
+            }
+
+            if (x < savedMap.maxX - 1) {
+                x++;
+            } else if (y < savedMap.maxY - 1) {
+                y++;
+                x = 0;
+            } else {
+                break;
+            }
+
+        } while (c != '\0');
+
+
+    }
+    fclose(fp);
+
+    return savedMap;
 }

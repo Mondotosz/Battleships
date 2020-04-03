@@ -47,7 +47,7 @@ typedef struct {
 #define MAX_MAPS 50
 
 typedef struct {
-    char name[FILENAME_MAX];
+    char name[MAX_NICKNAME_LENGTH];
     char author[MAX_NICKNAME_LENGTH];
     grids content;
 } map;
@@ -76,5 +76,7 @@ scores missCount(grids map);
 armada getRandomFleet(grids grid);
 
 grids armadaToGrid(armada chosenArmada, grids map);
+
+grids getMap(char *mapName);
 
 #endif //BATTLESHIPS_GAME_H
