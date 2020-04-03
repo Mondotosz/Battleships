@@ -42,6 +42,21 @@ typedef struct {
     int maxY;
 } armada;
 
+#define RANDOM_GEN 'R'
+#define PRE_MADE 'P'
+#define MAX_MAPS 50
+
+typedef struct {
+    char name[FILENAME_MAX];
+    char author[MAX_NICKNAME_LENGTH];
+    grids content;
+} map;
+
+typedef struct {
+    map maps[MAX_MAPS];
+    int range;
+} mapList;
+
 void gameHub(users currentUser);
 
 void game(users player, char mode);
@@ -58,7 +73,7 @@ void displayResult(users player, scores score);
 
 scores missCount(grids map);
 
-armada getRandomFleet(grids map);
+armada getRandomFleet(grids grid);
 
 grids armadaToGrid(armada chosenArmada, grids map);
 

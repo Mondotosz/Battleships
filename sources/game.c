@@ -35,7 +35,7 @@ void gameHub(users player) {
 
     switch (selection) {
         case 1:
-            game(player);
+            game(player, RANDOM_GEN);
             break;
         case 2:
             printf("Map creation not yet implemented\n");
@@ -380,7 +380,7 @@ scores missCount(grids map) {
  * generates the 5 standard boats at random coordinates
  * @return random fleet
  */
-armada getRandomFleet(grids map) {
+armada getRandomFleet(grids grid) {
     armada fleet = {
             {
                     {"Destroyer", 2, 0, 0, HORIZONTAL, false},
@@ -406,8 +406,8 @@ armada getRandomFleet(grids map) {
             if (rand() % 2 == 0) {
                 //gives random coordinates to a vertical boat
                 fleet.boats[cBoat].direction = VERTICAL;
-                fleet.boats[cBoat].y = 1 + rand() % (map.maxY - fleet.boats[cBoat].length - 1);
-                fleet.boats[cBoat].x = 1 + rand() % map.maxX - 1;
+                fleet.boats[cBoat].y = 1 + rand() % (grid.maxY - fleet.boats[cBoat].length - 1);
+                fleet.boats[cBoat].x = 1 + rand() % grid.maxX - 1;
                 fleet.boats[cBoat].exists = true;
                 //check if it overlaps with any previous boat
                 for (int pBoat = 0; pBoat < cBoat; ++pBoat) {
@@ -451,8 +451,8 @@ armada getRandomFleet(grids map) {
             } else {
                 //gives random coordinates to an horizontal boat
                 fleet.boats[cBoat].direction = HORIZONTAL;
-                fleet.boats[cBoat].x = 1 + rand() % (map.maxX - fleet.boats[cBoat].length - 1);
-                fleet.boats[cBoat].y = 1 + rand() % map.maxY - 1;
+                fleet.boats[cBoat].x = 1 + rand() % (grid.maxX - fleet.boats[cBoat].length - 1);
+                fleet.boats[cBoat].y = 1 + rand() % grid.maxY - 1;
                 fleet.boats[cBoat].exists = true;
 
                 //check if it overlaps with any previous boat
