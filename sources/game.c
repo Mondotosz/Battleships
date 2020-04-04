@@ -572,6 +572,77 @@ grids armadaToGrid(armada chosenArmada, grids map) {
 //TODO: Map listing
 //TODO: Map creation
 
+
+/**
+ * gets the list of maps from a file
+ * @return list
+ */
+mapList getMapList() {
+    FILE *fp;
+    char c;
+    int i = 0;
+
+    //defaults list
+    mapList list;
+    list.range = 0;
+    list.maps->name[0] = '\0';
+    list.maps->author[0] = '\0';
+    list.maps->exist = false;
+
+    fp = fopen(MAP_LIST_FILE, "r");
+    if (fp != NULL) {
+        do {
+            c = (char) fgetc(fp);
+            if (c != '\0') {
+
+                if (c == ';') {
+                    i++;
+                } else {
+
+                    switch (i) {
+                        case 0:
+                            //map name
+                            strncat(list.maps[list.range].name, &c,
+                                    sizeof(list.maps[list.range].name) / sizeof(list.maps[list.range].name[0]));
+                            break;
+                        case 1:
+                            //map author
+                            strncat(list.maps[list.range].author, &c,
+                                    sizeof(list.maps[list.range].author) / sizeof(list.maps[list.range].author[0]));
+                            break;
+                        case 2:
+                            //exists and goes for the next one
+                            i = 0;
+                            list.maps[list.range].exist = true;
+                            list.range++;
+                            break;
+                        default:
+                            break;
+                    }
+
+                }
+
+
+            }
+
+
+            //name
+
+            //author
+
+            //exist
+
+
+        } while (c != '\0');
+
+    } else {
+        fp = fopen(MAP_LIST_FILE, "w");
+    }
+    fclose(fp);
+
+    return list;
+}
+
 /**
  * returns a grid from files
  * @param mapName
