@@ -50,7 +50,6 @@ typedef struct {
     char name[MAX_NICKNAME_LENGTH];
     char author[MAX_NICKNAME_LENGTH];
     grids content;
-    bool exist;
 } map;
 
 #define MAP_LIST_FILE "maps.list"
@@ -83,5 +82,7 @@ grids armadaToGrid(armada chosenArmada, grids map);
 grids getMap(char *mapName);
 
 mapList getMapList();
+
+void displayMapList(mapList list);
 
 #endif //BATTLESHIPS_GAME_H

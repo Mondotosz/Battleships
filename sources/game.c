@@ -572,6 +572,68 @@ grids armadaToGrid(armada chosenArmada, grids map) {
 //TODO: Map listing
 //TODO: Map creation
 
+void displayMapList(mapList list) {
+
+    runtimeLog(INFO, "displaying map list");
+
+    //setup
+    system("cls");
+    printf("%sMaps%s\n", T_BOLD, T_RESET);
+    printf("\n");
+
+    //displays list
+    if (list.range > 0) {
+
+        //top border
+        printf("%c", 201);
+        for (int j = 0; j < 40; ++j) {
+            if (j == 4 || j == 22) {
+                printf("%c", 203);
+            } else {
+                printf("%c", 205);
+            }
+        }
+        printf("%c\n", 187);
+
+        //header
+        printf("%c %-2s %c %-15s %c %-15s %c\n", 186, "id", 186, "map name", 186, "author", 186);
+
+        //separator
+        printf("%c", 204);
+        for (int j = 0; j < 40; ++j) {
+            if (j == 4 || j == 22) {
+                printf("%c", 206);
+            } else {
+                printf("%c", 205);
+            }
+        }
+        printf("%c\n", 185);
+
+        //maps
+        for (int i = 0; i < list.range; ++i) {
+            printf("%c %2d %c %-15s %c %-15s %c\n", 186, i + 1, 186, list.maps[i].name, 186,
+                   list.maps[i].author, 186);
+        }
+
+        //footer
+        printf("%c", 200);
+        for (int j = 0; j < 40; ++j) {
+            if (j == 4 || j == 22) {
+                printf("%c", 202);
+            } else {
+                printf("%c", 205);
+            }
+        }
+        printf("%c\n", 188);
+
+
+    } else {
+        printf("No maps yet!\n");
+    }
+
+    runtimeLog(INFO, "displayed map list");
+
+}
 
 /**
  * gets the list of maps from a file
@@ -593,7 +655,7 @@ mapList getMapList() {
         do {
             fflush(stdin);
             c = (char) fgetc(fp);
-            if (c != '\0' && c != '\n') {
+            if (c != '\0') {
 
                 if (c == ';') {
                     i++;
