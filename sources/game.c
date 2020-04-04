@@ -19,6 +19,12 @@
 void gameHub(users player) {
     int i = 0;
     int selection;
+    int mapSelection;
+    char buffer[8];
+    armada fleet;
+    grids checkGrid;
+    mapList list;
+
 
     runtimeLog(INFO, "entered gameHub()");
 
@@ -36,15 +42,67 @@ void gameHub(users player) {
 
     switch (selection) {
         case 1:
-            game(player, RANDOM_GEN);
+            system("cls");
+            printf("%sSetup%s\n", T_BOLD, T_RESET);
+            printf("\n");
+            printf("Grid size (min h8 / max z26)\n");
+
+            do {
+                fflush(stdin);
+                fgets(buffer, sizeof(buffer) / sizeof(buffer[0]), stdin);
+                buffer[strcspn(buffer, "\n")] = '\0';
+                checkGrid.maxX = stringToInt(buffer);
+                checkGrid.maxY = base26(buffer);
+            } while (checkGrid.maxX < 8 || checkGrid.maxY < 8 || checkGrid.maxX > MAX_X || checkGrid.maxY > MAX_Y);
+            //gets a randomized armada structure fitting the grid
+            fleet = getRandomFleet(checkGrid);
+            //translates its boats to grid coordinates
+            checkGrid = armadaToGrid(fleet, checkGrid);
+            game(player, checkGrid);
             break;
         case 2:
             printf("Map creation not yet implemented\n");
             pause();
             break;
         case 3:
-            printf("Map listing not yet implemented");
-            pause();
+            list = getMapList();
+            displayMapList(list);
+
+            if (list.range > 0) {
+
+                printf("\n");
+                printf("%-6s - select a map\n", "id");
+                printf("%-6s - select a random map\n", "random");
+                printf("%-6s - go back to the menu\n", "back");
+                printf("\n");
+                printf(": ");
+
+                do {
+                    fflush(stdin);
+                    fgets(buffer, sizeof(buffer) / sizeof(buffer[0]), stdin);
+                    buffer[strcspn(buffer, "\n")] = '\0';
+
+                    mapSelection = stringToInt(buffer);
+
+                } while ((mapSelection < 1 || mapSelection > list.range) && strcmp(buffer, "back") != 0 &&
+                         strcmp(buffer, "random") != 0);
+
+                if (strcmp(buffer, "back") != 0) {
+                    if (mapSelection >= 1 && mapSelection <= list.range) {
+                        checkGrid = getMap(list.maps[mapSelection - 1].name);
+
+                    } else {
+                        srand((unsigned) time(NULL));
+                        checkGrid = getMap(list.maps[rand() % list.range].name);
+                    }
+                    game(player, checkGrid);
+                }
+
+
+            } else {
+                pause();
+            }
+
             break;
         default:
             break;
@@ -57,45 +115,16 @@ void gameHub(users player) {
  * randomly generated game
  * @param player
  */
-void game(users player, char mode) {
-    char buffer[8];
+void game(users player, grids checkGrid) {
+
     bool win = false;
     scores currentScore;
     grids stateGrid;
-    grids checkGrid;
-    armada fleet;
 
-    system("cls");
-
-    //setup
-    switch (mode) {
-        case RANDOM_GEN:
-            printf("%sSetup%s\n", T_BOLD, T_RESET);
-            printf("\n");
-            printf("Grid size (min h8 / max z26)\n");
-
-            do {
-                fflush(stdin);
-                fgets(buffer, sizeof(buffer) / sizeof(buffer[0]), stdin);
-                buffer[strcspn(buffer, "\n")] = '\0';
-                stateGrid.maxX = stringToInt(buffer);
-                stateGrid.maxY = base26(buffer);
-            } while (stateGrid.maxX < 8 || stateGrid.maxY < 8 || stateGrid.maxX > MAX_X || stateGrid.maxY > MAX_Y);
-            //gets a randomized armada structure fitting the grid
-            fleet = getRandomFleet(stateGrid);
-            //translates its boats to grid coordinates
-            checkGrid = armadaToGrid(fleet, stateGrid);
-            break;
-        case PRE_MADE:
-            checkGrid = getMap("test");
-            break;
-        default:
-            break;
-    }
-
-
-    for (int y = 0; y < stateGrid.maxY; ++y) {
-        for (int x = 0; x < stateGrid.maxX; ++x) {
+    stateGrid.maxX = checkGrid.maxX;
+    stateGrid.maxY = checkGrid.maxY;
+    for (int y = 0; y < checkGrid.maxY; ++y) {
+        for (int x = 0; x < checkGrid.maxX; ++x) {
             stateGrid.grid[y][x] = UNCHECKED;
         }
     }
@@ -108,7 +137,7 @@ void game(users player, char mode) {
     //game
     do {
         //displays the grid before firing
-        displayGrid(checkGrid);
+        displayGrid(stateGrid);
 
         //gets and displays the stats
         currentScore = missCount(stateGrid);
@@ -524,12 +553,11 @@ armada getRandomFleet(grids grid) {
  * @return
  */
 grids armadaToGrid(armada chosenArmada, grids map) {
-    grids translatedGrid = map;
 
     //defaults every values to MISS
     for (int y = 0; y < map.maxY; ++y) {
         for (int x = 0; x < map.maxX; ++x) {
-            translatedGrid.grid[y][x] = MISS;
+            map.grid[y][x] = MISS;
         }
     }
 
@@ -544,7 +572,7 @@ grids armadaToGrid(armada chosenArmada, grids map) {
 
                     //repeats for the length of the boat
                     for (int j = 0; j < chosenArmada.boats[i].length; ++j) {
-                        translatedGrid.grid[chosenArmada.boats[i].y][chosenArmada.boats[i].x + j] = HIT;
+                        map.grid[chosenArmada.boats[i].y][chosenArmada.boats[i].x + j] = HIT;
                     }
 
                     break;
@@ -552,7 +580,7 @@ grids armadaToGrid(armada chosenArmada, grids map) {
 
                     //repeats for the length of the boat
                     for (int j = 0; j < chosenArmada.boats[i].length; ++j) {
-                        translatedGrid.grid[chosenArmada.boats[i].y + j][chosenArmada.boats[i].x] = HIT;
+                        map.grid[chosenArmada.boats[i].y + j][chosenArmada.boats[i].x] = HIT;
                     }
 
                     break;
@@ -566,10 +594,9 @@ grids armadaToGrid(armada chosenArmada, grids map) {
 
     }
 
-    return translatedGrid;
+    return map;
 }
 
-//TODO: Map listing
 //TODO: Map creation
 
 void displayMapList(mapList list) {
@@ -726,7 +753,7 @@ grids getMap(char *mapName) {
             c = (char) fgetc(fp);
 
             if (c != ';') {
-                strncat(buffer, &c, sizeof(buffer) / sizeof(buffer[0]));
+                strncat(buffer, &c, 1);
             } else {
                 savedMap.maxX = stringToInt(buffer);
             }
@@ -739,7 +766,7 @@ grids getMap(char *mapName) {
             c = (char) fgetc(fp);
 
             if (c != ';') {
-                strncat(buffer, &c, sizeof(buffer) / sizeof(buffer[0]));
+                strncat(buffer, &c, 1);
             } else {
                 savedMap.maxY = stringToInt(buffer);
                 break;

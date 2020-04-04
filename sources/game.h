@@ -61,7 +61,7 @@ typedef struct {
 
 void gameHub(users currentUser);
 
-void game(users player, char mode);
+void game(users player, grids checkGrid);
 
 grids fire(grids map);
 
