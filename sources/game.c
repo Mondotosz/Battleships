@@ -587,13 +587,13 @@ mapList getMapList() {
     list.range = 0;
     list.maps->name[0] = '\0';
     list.maps->author[0] = '\0';
-    list.maps->exist = false;
 
     fp = fopen(MAP_LIST_FILE, "r");
     if (fp != NULL) {
         do {
+            fflush(stdin);
             c = (char) fgetc(fp);
-            if (c != '\0') {
+            if (c != '\0' && c != '\n') {
 
                 if (c == ';') {
                     i++;
@@ -602,18 +602,16 @@ mapList getMapList() {
                     switch (i) {
                         case 0:
                             //map name
-                            strncat(list.maps[list.range].name, &c,
-                                    sizeof(list.maps[list.range].name) / sizeof(list.maps[list.range].name[0]));
+                            strncat(list.maps[list.range].name, &c, 1);
                             break;
                         case 1:
                             //map author
                             strncat(list.maps[list.range].author, &c,
-                                    sizeof(list.maps[list.range].author) / sizeof(list.maps[list.range].author[0]));
+                                    1);
                             break;
                         case 2:
                             //exists and goes for the next one
                             i = 0;
-                            list.maps[list.range].exist = true;
                             list.range++;
                             break;
                         default:
@@ -625,15 +623,7 @@ mapList getMapList() {
 
             }
 
-
-            //name
-
-            //author
-
-            //exist
-
-
-        } while (c != '\0');
+        } while (!feof(fp));
 
     } else {
         fp = fopen(MAP_LIST_FILE, "w");
