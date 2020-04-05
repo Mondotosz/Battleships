@@ -849,7 +849,7 @@ void createMap(users player) {
 
     do {
         fflush(stdin);
-        fgets(buffer, sizeof(buffer), stdin);
+        fgets(buffer, sizeof(buffer)/sizeof(buffer[0]), stdin);
         buffer[strcspn(buffer, "\n")] = '\0';
         do {
             buffer[strcspn(buffer, ";")] = '\0';
@@ -867,7 +867,7 @@ void createMap(users player) {
 
     } while (alreadyExist == true);
 
-    strncpy(newMap.name, buffer, sizeof(newMap.name) / sizeof(newMap.name[0]));
+    strncpy(newMap.name, buffer, sizeof(newMap.name)-1);
 
     //save author
     if (!player.authenticated) {
