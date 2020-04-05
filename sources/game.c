@@ -593,15 +593,17 @@ mapList getMapList() {
     FILE *fp;
     char c;
     int i = 0;
+    char buffer[32];
 
     //defaults list
     mapList list;
     list.range = 0;
-    list.maps->name[0] = '\0';
-    list.maps->author[0] = '\0';
+    memset(list.maps->name, '\0', sizeof(list.maps->name));
+    memset(list.maps->author, '\0', sizeof(list.maps->author));
 
     fp = fopen(MAP_LIST_FILE, "r");
     if (fp != NULL) {
+        buffer[0] = '\0';
         do {
             fflush(stdin);
             c = (char) fgetc(fp);
@@ -609,26 +611,24 @@ mapList getMapList() {
 
                 if (c == ';') {
                     i++;
-                } else {
-
                     switch (i) {
-                        case 0:
-                            //map name
-                            strncat(list.maps[list.range].name, &c, 1);
-                            break;
                         case 1:
-                            //map author
-                            strncat(list.maps[list.range].author, &c,
-                                    1);
+                            strncpy(list.maps[list.range].name, buffer, sizeof(list.maps[list.range].name));
                             break;
                         case 2:
-                            //exists and goes for the next one
+                            strncpy(list.maps[list.range].author, buffer, sizeof(list.maps[list.range].author));
                             i = 0;
                             list.range++;
                             break;
                         default:
                             break;
                     }
+                    buffer[0] = '\0';
+
+                } else {
+
+                    strncat(buffer, &c, 1);
+                    buffer[strcspn(buffer, "\n")] = '\0';
 
                 }
 
@@ -849,7 +849,7 @@ void createMap(users player) {
 
     do {
         fflush(stdin);
-        fgets(buffer, sizeof(buffer)/sizeof(buffer[0]), stdin);
+        fgets(buffer, sizeof(buffer) / sizeof(buffer[0]), stdin);
         buffer[strcspn(buffer, "\n")] = '\0';
         do {
             buffer[strcspn(buffer, ";")] = '\0';
@@ -867,7 +867,7 @@ void createMap(users player) {
 
     } while (alreadyExist == true);
 
-    strncpy(newMap.name, buffer, sizeof(newMap.name)-1);
+    strncpy(newMap.name, buffer, sizeof(newMap.name) - 1);
 
     //save author
     if (!player.authenticated) {
