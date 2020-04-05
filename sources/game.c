@@ -607,16 +607,16 @@ mapList getMapList() {
         do {
             fflush(stdin);
             c = (char) fgetc(fp);
-            if (c != '\0') {
+            if (c != '\0' && list.range < MAX_MAPS) {
 
                 if (c == ';') {
                     i++;
                     switch (i) {
                         case 1:
-                            strncpy(list.maps[list.range].name, buffer, sizeof(list.maps[list.range].name));
+                            strncpy(list.maps[list.range].name, buffer, sizeof(list.maps[list.range].name) - 1);
                             break;
                         case 2:
-                            strncpy(list.maps[list.range].author, buffer, sizeof(list.maps[list.range].author));
+                            strncpy(list.maps[list.range].author, buffer, sizeof(list.maps[list.range].author) - 1);
                             i = 0;
                             list.range++;
                             break;
@@ -635,7 +635,7 @@ mapList getMapList() {
 
             }
 
-        } while (!feof(fp));
+        } while (!feof(fp) && list.range < MAX_MAPS);
 
     } else {
         fp = fopen(MAP_LIST_FILE, "w");
