@@ -161,8 +161,6 @@ void game(users player, grids checkGrid) {
 
 }
 
-//TODO:use format specifiers to simplify display
-
 /**
  * Displays the grid with formatting
  * @param displayedGrid
@@ -424,115 +422,40 @@ armada getRandomFleet(grids grid) {
             MAX_BOATS
     };
     bool overlap;
+    boat newBoat;
 
     //initialize a random seed
     srand((unsigned) time(NULL));
 
     for (int cBoat = 0; cBoat < fleet.numberOfBoats; ++cBoat) {
-
+        newBoat = fleet.boats[cBoat];
         //loops until boats don't overlap, not optimal but needed
         do {
-            overlap = false;
 
             //randomize the direction
             if (rand() % 2 == 0) {
                 //gives random coordinates to a vertical boat
-                fleet.boats[cBoat].direction = VERTICAL;
-                fleet.boats[cBoat].y = 1 + rand() % (grid.maxY - fleet.boats[cBoat].length - 1);
-                fleet.boats[cBoat].x = 1 + rand() % grid.maxX - 1;
-                fleet.boats[cBoat].exists = true;
-                //check if it overlaps with any previous boat
-                for (int pBoat = 0; pBoat < cBoat; ++pBoat) {
-
-                    //depending on previous boats states
-                    if (fleet.boats[pBoat].exists) {
-
-                        switch (fleet.boats[pBoat].direction) {
-                            case VERTICAL://parallel (current boat & past boat are vertical)
-                                for (int cBoatL = 0; cBoatL < fleet.boats[cBoat].length; ++cBoatL) {
-                                    for (int pBoatL = 0; pBoatL < fleet.boats[pBoat].length; ++pBoatL) {
-                                        //check for each cell
-                                        if (fleet.boats[cBoat].x == fleet.boats[pBoat].x &&
-                                            fleet.boats[cBoat].y + cBoatL == fleet.boats[pBoat].y + pBoatL) {
-                                            overlap = true;
-                                        }
-                                    }
-                                }
-                                break;
-
-                            case HORIZONTAL://(current boat is vertical and past boat is horizontal)
-                                for (int cBoatL = 0; cBoatL < fleet.boats[cBoat].length; ++cBoatL) {
-                                    for (int pBoatL = 0; pBoatL < fleet.boats[pBoat].length; ++pBoatL) {
-                                        //check for each cell
-                                        if (fleet.boats[cBoat].x == fleet.boats[pBoat].x + pBoatL &&
-                                            fleet.boats[cBoat].y + cBoatL == fleet.boats[pBoat].y) {
-                                            overlap = true;
-                                        }
-                                    }
-                                }
-                                break;
-                            default:
-                                runtimeLog(ERROR, "Direction error : %c", fleet.boats[pBoat].direction);
-                                break;
-                        }
-
-                    }
-
-                }
+                newBoat.direction = VERTICAL;
+                newBoat.y = 1 + rand() % (grid.maxY - fleet.boats[cBoat].length - 1);
+                newBoat.x = 1 + rand() % grid.maxX - 1;
+                newBoat.exists = true;
 
             } else {
                 //gives random coordinates to an horizontal boat
-                fleet.boats[cBoat].direction = HORIZONTAL;
-                fleet.boats[cBoat].x = 1 + rand() % (grid.maxX - fleet.boats[cBoat].length - 1);
-                fleet.boats[cBoat].y = 1 + rand() % grid.maxY - 1;
-                fleet.boats[cBoat].exists = true;
-
-                //check if it overlaps with any previous boat
-                for (int pBoat = 0; pBoat < cBoat; ++pBoat) {
-
-                    //depending on previous boats states
-                    if (fleet.boats[pBoat].exists) {
-
-                        switch (fleet.boats[pBoat].direction) {
-                            case VERTICAL:
-                                //parallel
-                                for (int cBoatL = 0; cBoatL < fleet.boats[cBoat].length; ++cBoatL) {
-                                    for (int pBoatL = 0; pBoatL < fleet.boats[pBoat].length; ++pBoatL) {
-                                        //check for each cell
-                                        if (fleet.boats[cBoat].y == fleet.boats[pBoat].y + pBoatL &&
-                                            fleet.boats[cBoat].x + cBoatL == fleet.boats[pBoat].x) {
-                                            overlap = true;
-                                        }
-
-                                    }
-                                }
-                                break;
-
-                            case HORIZONTAL:
-                                //cross
-                                for (int cBoatL = 0; cBoatL < fleet.boats[cBoat].length; ++cBoatL) {
-                                    for (int pBoatL = 0; pBoatL < fleet.boats[pBoat].length; ++pBoatL) {
-                                        //check for each cell
-                                        if (fleet.boats[cBoat].y == fleet.boats[pBoat].y &&
-                                            fleet.boats[cBoat].x + cBoatL == fleet.boats[pBoat].x + pBoatL) {
-                                            overlap = true;
-                                        }
-                                    }
-                                }
-                                break;
-                            default:
-                                runtimeLog(ERROR, "Direction error : %c", fleet.boats[pBoat].direction);
-                                break;
-                        }
-
-                    }
-
-                }
+                newBoat.direction = HORIZONTAL;
+                newBoat.x = 1 + rand() % (grid.maxX - fleet.boats[cBoat].length - 1);
+                newBoat.y = 1 + rand() % grid.maxY - 1;
+                newBoat.exists = true;
 
             }
-            if (overlap)runtimeLog(WARNING, "overlap detected");//for statistics
-        } while (overlap == true);
 
+            overlap = checkOverlap(fleet, newBoat);
+
+            if (overlap)runtimeLog(WARNING, "overlap detected");//for statistics
+
+
+        } while (overlap);
+        fleet.boats[cBoat] = newBoat;
     }
 
     for (int k = 0; k < fleet.numberOfBoats; ++k) {
@@ -822,6 +745,7 @@ void createMap(users player) {
             MAX_BOATS
     };
     bool overlap;
+    boat newBoat;
 
 
     //create map
@@ -855,6 +779,7 @@ void createMap(users player) {
 
         printf("\n");
         printf("place the %s (length %d)\n", fleet.boats[cBoat].name, fleet.boats[cBoat].length);
+        newBoat = fleet.boats[cBoat];
 
 
         do {
@@ -870,7 +795,7 @@ void createMap(users player) {
 
             } while (buffer[0] != HORIZONTAL && buffer[0] != VERTICAL);
 
-            fleet.boats[cBoat].direction = buffer[0];
+            newBoat.direction = buffer[0];
 
             do {
                 coordOK = true;
@@ -882,7 +807,7 @@ void createMap(users player) {
                 x = stringToInt(buffer);
                 y = base26(buffer);
 
-                if (fleet.boats[cBoat].direction == VERTICAL) {
+                if (newBoat.direction == VERTICAL) {
                     if (y < 1 || y > newMap.content.maxY - fleet.boats[cBoat].length + 1 || x < 1 ||
                         x > newMap.content.maxX) {
                         coordOK = false;
@@ -897,101 +822,19 @@ void createMap(users player) {
 
             } while (!coordOK);
 
-            fleet.boats[cBoat].x = x - 1;
-            fleet.boats[cBoat].y = y - 1;
-            fleet.boats[cBoat].exists = true;
+            newBoat.x = x - 1;
+            newBoat.y = y - 1;
+            newBoat.exists = true;
 
-            overlap = false;
+            overlap = checkOverlap(fleet, newBoat);
 
-            if (fleet.boats[cBoat].direction == VERTICAL) {
-                //check if it overlaps with any previous boat
-                for (int pBoat = 0; pBoat < cBoat; ++pBoat) {
-
-                    //depending on previous boats states
-                    if (fleet.boats[pBoat].exists) {
-
-                        switch (fleet.boats[pBoat].direction) {
-                            case VERTICAL://parallel (current boat & past boat are vertical)
-                                for (int cBoatL = 0; cBoatL < fleet.boats[cBoat].length; ++cBoatL) {
-                                    for (int pBoatL = 0; pBoatL < fleet.boats[pBoat].length; ++pBoatL) {
-                                        //check for each cell
-                                        if (fleet.boats[cBoat].x == fleet.boats[pBoat].x &&
-                                            fleet.boats[cBoat].y + cBoatL == fleet.boats[pBoat].y + pBoatL) {
-                                            overlap = true;
-                                        }
-                                    }
-                                }
-                                break;
-
-                            case HORIZONTAL://(current boat is vertical and past boat is horizontal)
-                                for (int cBoatL = 0; cBoatL < fleet.boats[cBoat].length; ++cBoatL) {
-                                    for (int pBoatL = 0; pBoatL < fleet.boats[pBoat].length; ++pBoatL) {
-                                        //check for each cell
-                                        if (fleet.boats[cBoat].x == fleet.boats[pBoat].x + pBoatL &&
-                                            fleet.boats[cBoat].y + cBoatL == fleet.boats[pBoat].y) {
-                                            overlap = true;
-                                        }
-                                    }
-                                }
-                                break;
-                            default:
-                                runtimeLog(ERROR, "Direction error : %c", fleet.boats[pBoat].direction);
-                                break;
-                        }
-
-                    }
-
-                }
-
-            } else {
-                //check if it overlaps with any previous boat
-                for (int pBoat = 0; pBoat < cBoat; ++pBoat) {
-
-                    //depending on previous boats states
-                    if (fleet.boats[pBoat].exists) {
-
-                        switch (fleet.boats[pBoat].direction) {
-                            case VERTICAL:
-                                //parallel
-                                for (int cBoatL = 0; cBoatL < fleet.boats[cBoat].length; ++cBoatL) {
-                                    for (int pBoatL = 0; pBoatL < fleet.boats[pBoat].length; ++pBoatL) {
-                                        //check for each cell
-                                        if (fleet.boats[cBoat].y == fleet.boats[pBoat].y + pBoatL &&
-                                            fleet.boats[cBoat].x + cBoatL == fleet.boats[pBoat].x) {
-                                            overlap = true;
-                                        }
-
-                                    }
-                                }
-                                break;
-
-                            case HORIZONTAL:
-                                //cross
-                                for (int cBoatL = 0; cBoatL < fleet.boats[cBoat].length; ++cBoatL) {
-                                    for (int pBoatL = 0; pBoatL < fleet.boats[pBoat].length; ++pBoatL) {
-                                        //check for each cell
-                                        if (fleet.boats[cBoat].y == fleet.boats[pBoat].y &&
-                                            fleet.boats[cBoat].x + cBoatL == fleet.boats[pBoat].x + pBoatL) {
-                                            overlap = true;
-                                        }
-                                    }
-                                }
-                                break;
-                            default:
-                                runtimeLog(ERROR, "Direction error : %c", fleet.boats[pBoat].direction);
-                                break;
-                        }
-
-                    }
-
-                }
-
-            }
             if (overlap) {
                 printf("Boat overlaps another, please retry\n");
             }
 
         } while (overlap);
+
+        fleet.boats[cBoat] = newBoat;
         newMap.content = armadaToGrid(fleet, newMap.content);
     }
 
@@ -1084,4 +927,86 @@ void saveMap(map newMap) {
 
     fclose(fp);
 
+}
+
+bool checkOverlap(armada fleet, boat newBoat) {
+    bool overlap = false;
+
+    for (int cBoat = 0; cBoat < fleet.numberOfBoats; ++cBoat) {
+
+        if (fleet.boats[cBoat].exists) {
+            //check if it overlaps with any previous boat
+            if (newBoat.direction == VERTICAL) {
+                switch (fleet.boats[cBoat].direction) {
+                    case VERTICAL://parallel (new boat & past boat are vertical)
+                        for (int newBoatL = 0; newBoatL < newBoat.length; ++newBoatL) {
+                            for (int cBoatL = 0; cBoatL < fleet.boats[cBoat].length; ++cBoatL) {
+                                //check for each cell
+                                if (newBoat.x == fleet.boats[cBoat].x &&
+                                    newBoat.y + newBoatL == fleet.boats[cBoat].y + cBoatL) {
+                                    overlap = true;
+                                }
+                            }
+                        }
+                        break;
+
+                    case HORIZONTAL://(new boat is vertical and past boat is horizontal)
+                        for (int newBoatL = 0; newBoatL < newBoat.length; ++newBoatL) {
+                            for (int cBoatL = 0; cBoatL < fleet.boats[cBoat].length; ++cBoatL) {
+                                //check for each cell
+                                if (newBoat.x == fleet.boats[cBoat].x + cBoatL &&
+                                    newBoat.y + newBoatL == fleet.boats[cBoat].y) {
+                                    overlap = true;
+                                }
+                            }
+                        }
+                        break;
+                    default:
+                        runtimeLog(ERROR, "Direction error : %c", fleet.boats[cBoat].direction);
+                        break;
+                }
+
+
+            } else {
+
+                switch (fleet.boats[cBoat].direction) {
+                    case VERTICAL:
+                        //parallel
+                        for (int newBoatL = 0; newBoatL < newBoat.length; ++newBoatL) {
+                            for (int cBoatL = 0; cBoatL < fleet.boats[cBoat].length; ++cBoatL) {
+                                //check for each cell
+                                if (newBoat.y == fleet.boats[cBoat].y + cBoatL &&
+                                    newBoat.x + newBoatL == fleet.boats[cBoat].x) {
+                                    overlap = true;
+                                }
+
+                            }
+                        }
+                        break;
+
+                    case HORIZONTAL:
+                        //cross
+                        for (int newBoatL = 0; newBoatL < newBoat.length; ++newBoatL) {
+                            for (int cBoatL = 0; cBoatL < fleet.boats[cBoat].length; ++cBoatL) {
+                                //check for each cell
+                                if (newBoat.y == fleet.boats[cBoat].y &&
+                                    newBoat.x + newBoatL == fleet.boats[cBoat].x + cBoatL) {
+                                    overlap = true;
+                                }
+                            }
+                        }
+                        break;
+                    default:
+                        runtimeLog(ERROR, "Direction error : %c", fleet.boats[cBoat].direction);
+                        break;
+                }
+
+
+            }
+
+        }
+
+    }
+
+    return overlap;
 }

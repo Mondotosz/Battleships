@@ -89,4 +89,6 @@ void saveMap(map newMap);
 
 void createMap(users player);
 
+bool checkOverlap(armada fleet, boat newBoat);
+
 #endif //BATTLESHIPS_GAME_H
