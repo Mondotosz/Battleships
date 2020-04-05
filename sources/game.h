@@ -87,7 +87,7 @@ void displayMapList(mapList list);
 
 void saveMap(map newMap);
 
-void createMap(users player);
+map createMap(users player);
 
 bool checkOverlap(armada fleet, boat newBoat);
 

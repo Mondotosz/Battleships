@@ -43,11 +43,13 @@ void gameHub(users player) {
 
     switch (selection) {
         case 1:
+            //standard randomly generated game
             system("cls");
             printf("%sSetup%s\n", T_BOLD, T_RESET);
             printf("\n");
             printf("Grid size (min h8 / max z26)\n");
 
+            //gets the size of the map
             do {
                 fflush(stdin);
                 fgets(buffer, sizeof(buffer) / sizeof(buffer[0]), stdin);
@@ -55,21 +57,29 @@ void gameHub(users player) {
                 checkGrid.maxX = stringToInt(buffer);
                 checkGrid.maxY = base26(buffer);
             } while (checkGrid.maxX < 8 || checkGrid.maxY < 8 || checkGrid.maxX > MAX_X || checkGrid.maxY > MAX_Y);
+
             //gets a randomized armada structure fitting the grid
             fleet = getRandomFleet(checkGrid);
+
             //translates its boats to grid coordinates
             checkGrid = armadaToGrid(fleet, checkGrid);
+
+            //launches the game with the newly generated map
             game(player, checkGrid);
             break;
         case 2:
-            createMap(player);
+            //create a new map
+            saveMap(createMap(player));
             break;
         case 3:
+            //play on a player made map
             list = getMapList();
             displayMapList(list);
 
+            //lets the user choose the map he wants if any are available
             if (list.range > 0) {
 
+                //available options
                 printf("\n");
                 printf("%-6s - select a map\n", "id");
                 printf("%-6s - select a random map\n", "random");
@@ -77,6 +87,7 @@ void gameHub(users player) {
                 printf("\n");
                 printf(": ");
 
+                //gets the player choice
                 do {
                     fflush(stdin);
                     fgets(buffer, sizeof(buffer) / sizeof(buffer[0]), stdin);
@@ -87,11 +98,14 @@ void gameHub(users player) {
                 } while ((mapSelection < 1 || mapSelection > list.range) && strcmp(buffer, "back") != 0 &&
                          strcmp(buffer, "random") != 0);
 
+                //exit the menu if the player chose "back"
                 if (strcmp(buffer, "back") != 0) {
                     if (mapSelection >= 1 && mapSelection <= list.range) {
+                        //if the player chose a specific map
                         checkGrid = getMap(list.maps[mapSelection - 1].name);
 
                     } else {
+                        //if the player chose to play a random map
                         srand((unsigned) time(NULL));
                         checkGrid = getMap(list.maps[rand() % list.range].name);
                     }
@@ -112,7 +126,7 @@ void gameHub(users player) {
 }
 
 /**
- * randomly generated game
+ * Main game functions
  * @param player
  */
 void game(users player, grids checkGrid) {
@@ -121,6 +135,7 @@ void game(users player, grids checkGrid) {
     scores currentScore;
     grids stateGrid;
 
+    //state grid setup
     stateGrid.maxX = checkGrid.maxX;
     stateGrid.maxY = checkGrid.maxY;
     for (int y = 0; y < checkGrid.maxY; ++y) {
@@ -286,8 +301,6 @@ grids fire(grids map) {
     return map;
 }
 
-//TODO:Check grid without translating => in game info on which boat was sunk
-
 /**
  * compares the 2 grids and updates targeted coordinates
  * @param stateGrid
@@ -438,23 +451,23 @@ armada getRandomFleet(grids grid) {
                 newBoat.direction = VERTICAL;
                 newBoat.y = 1 + rand() % (grid.maxY - fleet.boats[cBoat].length - 1);
                 newBoat.x = 1 + rand() % grid.maxX - 1;
-                newBoat.exists = true;
 
             } else {
                 //gives random coordinates to an horizontal boat
                 newBoat.direction = HORIZONTAL;
                 newBoat.x = 1 + rand() % (grid.maxX - fleet.boats[cBoat].length - 1);
                 newBoat.y = 1 + rand() % grid.maxY - 1;
-                newBoat.exists = true;
 
             }
-
+            newBoat.exists = true;
+            //verifies whether the boat overlaps or not and regenerate it if needed
             overlap = checkOverlap(fleet, newBoat);
 
             if (overlap)runtimeLog(WARNING, "overlap detected");//for statistics
 
 
         } while (overlap);
+        //adds the new boat to the fleet once it's good to go
         fleet.boats[cBoat] = newBoat;
     }
 
@@ -520,8 +533,10 @@ grids armadaToGrid(armada chosenArmada, grids map) {
     return map;
 }
 
-//TODO: Map creation
-
+/**
+ * Displays content of a map list
+ * @param list
+ */
 void displayMapList(mapList list) {
 
     runtimeLog(INFO, "displaying map list");
@@ -610,13 +625,16 @@ mapList getMapList() {
             if (c != '\0' && list.range < MAX_MAPS) {
 
                 if (c == ';') {
+                    //copies the buffer content in the right variable
                     i++;
                     switch (i) {
                         case 1:
-                            strncpy(list.maps[list.range].name, buffer, sizeof(list.maps[list.range].name) - 1);
+                            strncpy(list.maps[list.range].name, buffer,
+                                    sizeof(list.maps[list.range].name) / sizeof(list.maps[list.range].name[0]) - 1);
                             break;
                         case 2:
-                            strncpy(list.maps[list.range].author, buffer, sizeof(list.maps[list.range].author) - 1);
+                            strncpy(list.maps[list.range].author, buffer,
+                                    sizeof(list.maps[list.range].author) / sizeof(list.maps[list.range].author[0]) - 1);
                             i = 0;
                             list.range++;
                             break;
@@ -626,7 +644,7 @@ mapList getMapList() {
                     buffer[0] = '\0';
 
                 } else {
-
+                    //appends each characters in a buffer until the cursor reaches a semicolon
                     strncat(buffer, &c, 1);
                     buffer[strcspn(buffer, "\n")] = '\0';
 
@@ -697,7 +715,7 @@ grids getMap(char *mapName) {
 
         } while (c != ';');
 
-        //get map state
+        //get map cell state
         do {
 
             do {
@@ -726,7 +744,12 @@ grids getMap(char *mapName) {
     return savedMap;
 }
 
-void createMap(users player) {
+/**
+ * Creates a new map
+ * @param player
+ * @return newMap
+ */
+map createMap(users player) {
     char buffer[20];
     map newMap;
     int x;
@@ -807,6 +830,7 @@ void createMap(users player) {
                 x = stringToInt(buffer);
                 y = base26(buffer);
 
+                //verifies whether the input is valid
                 if (newBoat.direction == VERTICAL) {
                     if (y < 1 || y > newMap.content.maxY - fleet.boats[cBoat].length + 1 || x < 1 ||
                         x > newMap.content.maxX) {
@@ -822,10 +846,12 @@ void createMap(users player) {
 
             } while (!coordOK);
 
+            //offsets the values to the grid
             newBoat.x = x - 1;
             newBoat.y = y - 1;
             newBoat.exists = true;
 
+            //checks for overlap
             overlap = checkOverlap(fleet, newBoat);
 
             if (overlap) {
@@ -834,10 +860,13 @@ void createMap(users player) {
 
         } while (overlap);
 
+        //adds the new boat to the fleet
         fleet.boats[cBoat] = newBoat;
+        //updates the map preview
         newMap.content = armadaToGrid(fleet, newMap.content);
     }
 
+    //final preview of the map
     system("cls");
     displayGrid(newMap.content);
     printf("\n");
@@ -847,6 +876,7 @@ void createMap(users player) {
     printf("\n");
     printf(": ");
 
+    //gets the name
     do {
         fflush(stdin);
         fgets(buffer, sizeof(buffer) / sizeof(buffer[0]), stdin);
@@ -855,8 +885,8 @@ void createMap(users player) {
             buffer[strcspn(buffer, ";")] = '\0';
         } while (strcspn(buffer, ";") != strlen(buffer));
 
+        //verifies if it's available
         alreadyExist = false;
-
         for (int i = 0; i < list.range; ++i) {
             if (strcmp(buffer, list.maps[i].name) == 0) {
                 alreadyExist = true;
@@ -867,18 +897,23 @@ void createMap(users player) {
 
     } while (alreadyExist == true);
 
+    //saves the name
     strncpy(newMap.name, buffer, sizeof(newMap.name) - 1);
 
-    //save author
+    //saves the author name
     if (!player.authenticated) {
         player = authenticateUser(player);
     }
     strncpy(newMap.author, player.nickname,
             sizeof(newMap.author) / sizeof(newMap.author[0]));
 
-    saveMap(newMap);
+    return newMap;
 }
 
+/**
+ * Saves the given map in the map folder and lists it as available
+ * @param newMap
+ */
 void saveMap(map newMap) {
     FILE *fp;
     mapList list = getMapList();
@@ -929,6 +964,12 @@ void saveMap(map newMap) {
 
 }
 
+/**
+ * check whether the new boat overlaps with the old ones
+ * @param fleet
+ * @param newBoat
+ * @return true if  there's an overlap
+ */
 bool checkOverlap(armada fleet, boat newBoat) {
     bool overlap = false;
 

@@ -1,8 +1,8 @@
 /**
  * \name battleships
  * \author augsburger kenan
- * \date 17.03.2020
- * \version 0.1
+ * \date 5.04.2020
+ * \version 1.0
  */
 
 #include <stdio.h>
