@@ -802,3 +802,50 @@ grids getMap(char *mapName) {
 
     return savedMap;
 }
+
+void saveMap(map newMap) {
+    FILE *fp;
+    mapList list = getMapList();
+    char path[32] = MAP_FOLDER;
+
+    //saves the map
+    //concatenate the file path
+    strncat(path, newMap.name, strlen(newMap.name));
+    strncat(path, MAP_EXTENSION, sizeof(MAP_EXTENSION));
+
+    fp = fopen(path, "w");
+
+    //write maxX and maxY
+    fprintf(fp, "%d;%d;\n", newMap.content.maxX, newMap.content.maxY);
+
+    //saves raw grid
+    for (int y = 0; y < newMap.content.maxY; ++y) {
+        for (int x = 0; x < newMap.content.maxX; ++x) {
+            fprintf(fp, "%d", newMap.content.grid[y][x]);
+        }
+        fprintf(fp, "\n");
+    }
+
+    fclose(fp);
+
+    //updates list
+    if (list.range == 50) {
+        list.range--;
+    }
+
+    for (int i = list.range; i > 0; --i) {
+        list.maps[i] = list.maps[i - 1];
+    }
+    list.maps[0] = newMap;
+    list.range++;
+
+    fp = fopen(MAP_LIST_FILE, "w");
+
+    //rewrites the map list
+    for (int i = 0; i < list.range; ++i) {
+        fprintf(fp, "%s;%s;\n", list.maps[i].name, list.maps[i].author);
+    }
+
+    fclose(fp);
+
+}

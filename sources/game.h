@@ -42,9 +42,6 @@ typedef struct {
     int maxY;
 } armada;
 
-#define RANDOM_GEN 'R'
-#define PRE_MADE 'P'
-#define MAX_MAPS 50
 
 typedef struct {
     char name[MAX_NICKNAME_LENGTH];
@@ -53,6 +50,9 @@ typedef struct {
 } map;
 
 #define MAP_LIST_FILE "maps.list"
+#define MAP_FOLDER "maps/"
+#define MAP_EXTENSION ".map"
+#define MAX_MAPS 50
 
 typedef struct {
     map maps[MAX_MAPS];
@@ -84,5 +84,7 @@ grids getMap(char *mapName);
 mapList getMapList();
 
 void displayMapList(mapList list);
+
+void saveMap(map newMap);
 
 #endif //BATTLESHIPS_GAME_H
