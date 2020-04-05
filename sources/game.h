@@ -87,4 +87,6 @@ void displayMapList(mapList list);
 
 void saveMap(map newMap);
 
+void createMap(users player);
+
 #endif //BATTLESHIPS_GAME_H

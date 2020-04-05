@@ -7,6 +7,7 @@
 #include <string.h>
 #include <time.h>
 #include <ctype.h>
+#include <dir.h>
 #include "utilities/utilities.h"
 #include "utilities/logs.h"
 #include "score.h"
@@ -61,8 +62,7 @@ void gameHub(users player) {
             game(player, checkGrid);
             break;
         case 2:
-            printf("Map creation not yet implemented\n");
-            pause();
+            createMap(player);
             break;
         case 3:
             list = getMapList();
@@ -803,10 +803,246 @@ grids getMap(char *mapName) {
     return savedMap;
 }
 
+void createMap(users player) {
+    char buffer[20];
+    map newMap;
+    int x;
+    int y;
+    bool coordOK;
+    mapList list = getMapList();
+    bool alreadyExist;
+    armada fleet = {
+            {
+                    {"Destroyer", 2, 0, 0, HORIZONTAL, false},
+                    {"Submarine", 3, 0, 0, HORIZONTAL, false},
+                    {"Cruiser", 3, 0, 0, HORIZONTAL, false},
+                    {"Battleship", 4, 0, 0, HORIZONTAL, false},
+                    {"Carrier", 5, 0, 0, HORIZONTAL, false}
+            },
+            MAX_BOATS
+    };
+    bool overlap;
+
+
+    //create map
+    //pick the size
+    system("cls");
+    printf("%sSetup%s\n", T_BOLD, T_RESET);
+    printf("\n");
+    printf("Grid size (min h8 / max z26)\n");
+
+    do {
+        fflush(stdin);
+        fgets(buffer, sizeof(buffer) / sizeof(buffer[0]), stdin);
+        buffer[strcspn(buffer, "\n")] = '\0';
+        newMap.content.maxX = stringToInt(buffer);
+        newMap.content.maxY = base26(buffer);
+    } while (newMap.content.maxX < 8 || newMap.content.maxY < 8 || newMap.content.maxX > MAX_X ||
+             newMap.content.maxY > MAX_Y);
+
+    //defaults every values to MISS
+    for (int i = 0; i < newMap.content.maxY; ++i) {
+        for (int j = 0; j < newMap.content.maxX; ++j) {
+            newMap.content.grid[i][j] = MISS;
+        }
+    }
+
+    //boats position
+    for (int cBoat = 0; cBoat < fleet.numberOfBoats; ++cBoat) {
+
+        //preview
+        displayGrid(newMap.content);
+
+        printf("\n");
+        printf("place the %s (length %d)\n", fleet.boats[cBoat].name, fleet.boats[cBoat].length);
+
+
+        do {
+
+            //asks for boat direction
+            do {
+                printf("direction (H/V) : ");
+                fflush(stdin);
+                fgets(buffer, sizeof(buffer) / sizeof(buffer[0]), stdin);
+                buffer[strcspn(buffer, "\n")] = '\0';
+
+                buffer[0] = (char) toupper(buffer[0]);
+
+            } while (buffer[0] != HORIZONTAL && buffer[0] != VERTICAL);
+
+            fleet.boats[cBoat].direction = buffer[0];
+
+            do {
+                coordOK = true;
+                //asks for xy coordinates and convert them
+                printf("coordinates : ");
+                fflush(stdin);
+                fgets(buffer, sizeof(buffer) / sizeof(buffer[0]), stdin);
+                buffer[strcspn(buffer, "\n")] = '\0';
+                x = stringToInt(buffer);
+                y = base26(buffer);
+
+                if (fleet.boats[cBoat].direction == VERTICAL) {
+                    if (y < 1 || y > newMap.content.maxY - fleet.boats[cBoat].length + 1 || x < 1 ||
+                        x > newMap.content.maxX) {
+                        coordOK = false;
+                    }
+                } else {
+                    if (y < 1 || y > newMap.content.maxY || x < 1 ||
+                        x > newMap.content.maxX - fleet.boats[cBoat].length + 1) {
+                        coordOK = false;
+                    }
+
+                }
+
+            } while (!coordOK);
+
+            fleet.boats[cBoat].x = x - 1;
+            fleet.boats[cBoat].y = y - 1;
+            fleet.boats[cBoat].exists = true;
+
+            overlap = false;
+
+            if (fleet.boats[cBoat].direction == VERTICAL) {
+                //check if it overlaps with any previous boat
+                for (int pBoat = 0; pBoat < cBoat; ++pBoat) {
+
+                    //depending on previous boats states
+                    if (fleet.boats[pBoat].exists) {
+
+                        switch (fleet.boats[pBoat].direction) {
+                            case VERTICAL://parallel (current boat & past boat are vertical)
+                                for (int cBoatL = 0; cBoatL < fleet.boats[cBoat].length; ++cBoatL) {
+                                    for (int pBoatL = 0; pBoatL < fleet.boats[pBoat].length; ++pBoatL) {
+                                        //check for each cell
+                                        if (fleet.boats[cBoat].x == fleet.boats[pBoat].x &&
+                                            fleet.boats[cBoat].y + cBoatL == fleet.boats[pBoat].y + pBoatL) {
+                                            overlap = true;
+                                        }
+                                    }
+                                }
+                                break;
+
+                            case HORIZONTAL://(current boat is vertical and past boat is horizontal)
+                                for (int cBoatL = 0; cBoatL < fleet.boats[cBoat].length; ++cBoatL) {
+                                    for (int pBoatL = 0; pBoatL < fleet.boats[pBoat].length; ++pBoatL) {
+                                        //check for each cell
+                                        if (fleet.boats[cBoat].x == fleet.boats[pBoat].x + pBoatL &&
+                                            fleet.boats[cBoat].y + cBoatL == fleet.boats[pBoat].y) {
+                                            overlap = true;
+                                        }
+                                    }
+                                }
+                                break;
+                            default:
+                                runtimeLog(ERROR, "Direction error : %c", fleet.boats[pBoat].direction);
+                                break;
+                        }
+
+                    }
+
+                }
+
+            } else {
+                //check if it overlaps with any previous boat
+                for (int pBoat = 0; pBoat < cBoat; ++pBoat) {
+
+                    //depending on previous boats states
+                    if (fleet.boats[pBoat].exists) {
+
+                        switch (fleet.boats[pBoat].direction) {
+                            case VERTICAL:
+                                //parallel
+                                for (int cBoatL = 0; cBoatL < fleet.boats[cBoat].length; ++cBoatL) {
+                                    for (int pBoatL = 0; pBoatL < fleet.boats[pBoat].length; ++pBoatL) {
+                                        //check for each cell
+                                        if (fleet.boats[cBoat].y == fleet.boats[pBoat].y + pBoatL &&
+                                            fleet.boats[cBoat].x + cBoatL == fleet.boats[pBoat].x) {
+                                            overlap = true;
+                                        }
+
+                                    }
+                                }
+                                break;
+
+                            case HORIZONTAL:
+                                //cross
+                                for (int cBoatL = 0; cBoatL < fleet.boats[cBoat].length; ++cBoatL) {
+                                    for (int pBoatL = 0; pBoatL < fleet.boats[pBoat].length; ++pBoatL) {
+                                        //check for each cell
+                                        if (fleet.boats[cBoat].y == fleet.boats[pBoat].y &&
+                                            fleet.boats[cBoat].x + cBoatL == fleet.boats[pBoat].x + pBoatL) {
+                                            overlap = true;
+                                        }
+                                    }
+                                }
+                                break;
+                            default:
+                                runtimeLog(ERROR, "Direction error : %c", fleet.boats[pBoat].direction);
+                                break;
+                        }
+
+                    }
+
+                }
+
+            }
+            if (overlap) {
+                printf("Boat overlaps another, please retry\n");
+            }
+
+        } while (overlap);
+        newMap.content = armadaToGrid(fleet, newMap.content);
+    }
+
+    system("cls");
+    displayGrid(newMap.content);
+    printf("\n");
+
+    //name map
+    printf("Name your map\n");
+    printf("\n");
+    printf(": ");
+
+    do {
+        fflush(stdin);
+        fgets(buffer, sizeof(buffer), stdin);
+        buffer[strcspn(buffer, "\n")] = '\0';
+        do {
+            buffer[strcspn(buffer, ";")] = '\0';
+        } while (strcspn(buffer, ";") != strlen(buffer));
+
+        alreadyExist = false;
+
+        for (int i = 0; i < list.range; ++i) {
+            if (strcmp(buffer, list.maps[i].name) == 0) {
+                alreadyExist = true;
+                printf("Map already exists\n");
+                printf(": ");
+            }
+        }
+
+    } while (alreadyExist == true);
+
+    strncpy(newMap.name, buffer, sizeof(newMap.name) / sizeof(newMap.name[0]));
+
+    //save author
+    if (!player.authenticated) {
+        player = authenticateUser(player);
+    }
+    strncpy(newMap.author, player.nickname,
+            sizeof(newMap.author) / sizeof(newMap.author[0]));
+
+    saveMap(newMap);
+}
+
 void saveMap(map newMap) {
     FILE *fp;
     mapList list = getMapList();
     char path[32] = MAP_FOLDER;
+
+    //creates the map folder if it didn't exist
+    mkdir("maps");
 
     //saves the map
     //concatenate the file path
